@@ -1,0 +1,226 @@
+[
+  {
+    "category": "social-engineering",
+    "difficulty": "intermediate",
+    "room": 5,
+    "title": "Tailgating & Physical Badge Access Pretext",
+    "scenario": {
+      "type": "social_engineering",
+      "sender": "Person with heavy delivery boxes outside corporate security doors",
+      "subject": "Physical Security Access",
+      "timestamp": "Today at 08:55 AM",
+      "body": "You are swiping your employee badge to enter a secure corporate research facility. A person carrying two huge catering trays full of hot coffee and muffins rushes up behind you, smiling stressed: 'Hey! Could you please hold the door for a sec? My hands are totally full and my badge is in my backpack! Thanks so much!'",
+      "urgencyLevel": "medium",
+      "context": "Simulated physical tailgating social engineering attack exploiting natural politeness."
+    },
+    "options": [
+      { "text": "COMPLY — Hold the door open politely because they are holding breakfast and look friendly", "value": "comply" },
+      { "text": "REFUSE POLITELY — Hold the door closed, explain security policy requires everyone to badge in independently, and direct them to the reception check-in desk", "value": "refuse" },
+      { "text": "Take the donuts and let them inside", "value": "take_donuts" }
+    ],
+    "correctAnswer": "refuse",
+    "indicators": [
+      { "type": "tailgating", "description": "Classic physical penetration testing tactic exploiting social norms of politeness", "points": 20 },
+      { "type": "prop_distraction", "description": "Using props (coffee, heavy boxes, crutches) to prevent badge inspection", "points": 15 },
+      { "type": "security_perimeter", "description": "Bypasses electronic badge audit trail and physical access control", "points": 15 }
+    ],
+    "explanation": "Tailgating (Piggybacking) relies on people's reluctance to seem rude or unhelpful. Physical red teamers and industrial spies regularly use props like coffee trays or fake delivery boxes to slip past badge readers without leaving an access log.",
+    "hints": [
+      "Why is physical badge access individual and logged per person?",
+      "How do security auditors test employee compliance at entrance doors?",
+      "Polite security is firm security: 'I'm sorry, company policy requires all personnel and visitors to badge in or register at reception.'"
+    ],
+    "learningObjective": "Enforce strict physical access control and defeat tailgating pretexting without fear of social awkwardness.",
+    "consequenceChain": [
+      "You held the door open for the pleasant individual carrying coffee",
+      "The individual was a corporate spy who placed a hardware packet sniffer (LAN Turtle) behind a conference room printer",
+      "Internal network traffic captured for 3 weeks undetected"
+    ],
+    "recoverySteps": [
+      "Escort unauthorized individual back to security reception desk immediately",
+      "Alert building physical security operations",
+      "Conduct floor sweep for planted rogue hardware implants"
+    ],
+    "order": 1
+  },
+  {
+    "category": "social-engineering",
+    "difficulty": "intermediate",
+    "room": 5,
+    "title": "Authority Pretexting: Executive VIP Rush Request",
+    "scenario": {
+      "type": "social_engineering",
+      "sender": "Executive VP of Product (via Direct Messaging)",
+      "senderAddress": "vp-mark.turner@company-slack-direct.org",
+      "subject": "Urgent Board Meeting Deliverable",
+      "timestamp": "Today at 04:40 PM",
+      "body": "Hey, I'm currently presenting live in the board of directors room with the CEO. We need the unmasked customer dataset for our EMEA enterprise accounts exported to CSV immediately for our slide presentation. Don't submit an IT ticket — that takes 2 days. Upload it directly to my personal Dropbox right now. The CEO is watching the clock!",
+      "urgencyLevel": "critical",
+      "context": "Authority pressure & fear-based social engineering bypassing compliance controls."
+    },
+    "options": [
+      { "text": "COMPLY — The VP and CEO need it immediately and you don't want to get fired", "value": "comply" },
+      { "text": "REJECT & VERIFY — Follow mandatory data governance protocol; never export unmasked PII to personal cloud storage or via informal chat", "value": "reject" },
+      { "text": "Email the data directly to all board members", "value": "email_board" }
+    ],
+    "correctAnswer": "reject",
+    "indicators": [
+      { "type": "authority_pressure", "description": "Weaponizing executive hierarchy ('CEO is watching') to coerce rule violation", "points": 20 },
+      { "type": "policy_bypass", "description": "Explicit instruction to skip standard compliance/IT change control", "points": 20 },
+      { "type": "shadow_it", "description": "Directing sensitive PII to personal unmanaged Dropbox account", "points": 15 }
+    ],
+    "explanation": "Attackers pose as high-ranking executives to induce panic and intimidate employees into bypassing compliance safeguards. Legitimate executives understand that compliance and data protection rules cannot be overridden through informal chat requests.",
+    "hints": [
+      "Why is the request pressuring you to bypass official data governance tickets?",
+      "Should sensitive customer PII ever be uploaded to personal cloud storage?",
+      "No executive request supersedes legal privacy regulations (GDPR/HIPAA)."
+    ],
+    "learningObjective": "Resist executive authority coercion and maintain data loss prevention protocols.",
+    "consequenceChain": [
+      "You exported 100,000 customer records to the external Dropbox folder",
+      "The message was from an external attacker who compromised a secondary Slack token",
+      "Company suffered massive regulatory fine for willful data governance breach"
+    ],
+    "recoverySteps": [
+      "Notify Data Privacy Officer (DPO) and Legal Counsel",
+      "Rotate compromised data store credentials and audit database export logs",
+      "File breach notification with regulatory authorities within statutory timeframe"
+    ],
+    "order": 2
+  },
+  {
+    "category": "social-engineering",
+    "difficulty": "advanced",
+    "room": 5,
+    "title": "IT Helpdesk Caller ID Spoofing (Vishing)",
+    "scenario": {
+      "type": "vishing",
+      "sender": "Internal IT Helpdesk (+1-555-0100)",
+      "senderAddress": "Caller ID: INTERNAL HELPDESK",
+      "subject": "Incoming Phone Call",
+      "timestamp": "Today at 02:00 PM",
+      "body": "Your desk phone rings. Caller ID shows 'INTERNAL HELPDESK x100'. The caller says: 'Hi, this is Marcus from Tier 2 Network Ops. We're observing abnormal outbound DDoS traffic from your workstation IP. I need you to go to quick-support-remote.me so I can patch your network driver before security disables your switch port.'",
+      "urgencyLevel": "high",
+      "context": "Voice Phishing (Vishing) with spoofed internal Caller ID."
+    },
+    "options": [
+      { "text": "COMPLY — Caller ID clearly says 'INTERNAL HELPDESK' so it must be real IT", "value": "comply" },
+      { "text": "VERIFY OUT-OF-BAND — Hang up, check company internal directory, and call the verified IT desk extension directly to verify Marcus's ticket", "value": "verify" },
+      { "text": "Give him your Windows password over the phone instead", "value": "give_password" }
+    ],
+    "correctAnswer": "verify",
+    "indicators": [
+      { "type": "caller_id_spoof", "description": "Caller ID numbers and text names can be easily spoofed using VoIP SIP trunks", "points": 25 },
+      { "type": "remote_access_lure", "description": "Directs user to third-party unapproved remote control website", "points": 15 },
+      { "type": "threat_of_disconnect", "description": "Threatens switch port disconnection to pressure immediate obedience", "points": 10 }
+    ],
+    "explanation": "Caller ID is completely untrustworthy because VoIP phone technology allows anyone to display any phone number or name they want. Always hang up and call the published internal helpdesk number yourself.",
+    "hints": [
+      "Can phone caller IDs be forged by external callers?",
+      "Why should you always hang up and initiate the call back yourself?",
+      "Does your real IT department use third-party '.me' websites for remote management?"
+    ],
+    "learningObjective": "Defeat Voice Phishing (Vishing) and recognize that Caller ID provides zero cryptographic proof of identity.",
+    "consequenceChain": [
+      "You went to the website and ran the remote support executable",
+      "Vishing caller installed Cobalt Strike beacon on your endpoint",
+      "Attacker dumped LSASS memory and obtained domain administrator privileges"
+    ],
+    "recoverySteps": [
+      "Disconnect machine immediately from corporate Ethernet / Wi-Fi",
+      "Report active vishing attack to Security Operations Center",
+      "Re-image the compromised workstation from known-clean golden image"
+    ],
+    "order": 3
+  },
+  {
+    "category": "social-engineering",
+    "difficulty": "advanced",
+    "room": 5,
+    "title": "Baiting: Malicious USB Drive in Corporate Parking Lot",
+    "scenario": {
+      "type": "baiting",
+      "sender": "Branded USB 3.0 Flash Drive found on asphalt near executive parking slot",
+      "subject": "Physical Discovery",
+      "timestamp": "This Morning at 08:30 AM",
+      "body": "While walking into the office, you notice a sleek 128GB metallic USB flash drive on the ground labeled 'Q3 Executive Bonuses & Salary Benchmarks (Confidential)'. What should you do with it?",
+      "urgencyLevel": "low",
+      "context": "Simulated physical USB Drop / Baiting attack exploiting human curiosity."
+    },
+    "options": [
+      { "text": "Plug it into your work laptop to find the owner's resume or files so you can return it to them", "value": "plug_in" },
+      { "text": "Plug it into a friend's computer instead to be safe", "value": "plug_friend" },
+      { "text": "DO NOT PLUG IT IN — Hand it directly to Corporate Physical Security / IT Security for safe isolation analysis", "value": "hand_security" }
+    ],
+    "correctAnswer": "hand_security",
+    "indicators": [
+      { "type": "usb_baiting", "description": "Classic physical baiting attack (Rubber Ducky / BadUSB / USB Killer)", "points": 25 },
+      { "type": "curiosity_trigger", "description": "Labeling device with enticing sensitive topics (salaries, executive plans)", "points": 15 },
+      { "type": "hardware_attack", "description": "Malicious USB microcontrollers emulate keyboards (HID) to inject keystroke exploits in milliseconds", "points": 20 }
+    ],
+    "explanation": "Plugging an unknown USB drive into a computer is extremely dangerous. BadUSB hardware devices (such as USB Rubber Ducky or Bash Bunny) masquerade as keyboards, injecting hundreds of commands per second the instant they are inserted, bypassing antivirus.",
+    "hints": [
+      "Can a USB flash drive contain a microcontroller that emulates a keyboard to hack your PC in 2 seconds?",
+      "Why are dropped USB drives strategically placed in executive parking lots?",
+      "Never insert unknown storage hardware into any computer."
+    ],
+    "learningObjective": "Resist physical USB baiting attacks and understand BadUSB / HID keyboard injection vectors.",
+    "consequenceChain": [
+      "You plugged the USB drive into your workstation",
+      "Device emulated a high-speed keyboard, opened PowerShell, and downloaded ransomware",
+      "All corporate network shares encrypted within 4 minutes"
+    ],
+    "recoverySteps": [
+      "Isolate affected network segments and restore systems from immutable backups",
+      "Enforce group policy (GPO) disabling USB removable storage on all corporate endpoints",
+      "Conduct physical sweep of campus grounds for additional dropped media"
+    ],
+    "order": 4
+  },
+  {
+    "category": "social-engineering",
+    "difficulty": "expert",
+    "room": 5,
+    "title": "Watering Hole & Industry Forum Reconnaissance",
+    "scenario": {
+      "type": "recon_social_eng",
+      "sender": "Private Message on Professional Developer Forum",
+      "senderAddress": "dev-expert-alex@forum-cybersecurity-discussion.net",
+      "subject": "Help debugging custom cryptographic library",
+      "timestamp": "Yesterday at 07:00 PM",
+      "body": "Hey! Saw your insightful post on StackOverflow regarding our mutual employer's internal microservices architecture. I'm building an open-source tool for engineers in our specific niche. Could you test this zero-dependency utility on your workstation and let me know if it solves the latency issue?",
+      "links": ["https://github.com/alex-tools-project/microservice-bench.tar.gz"],
+      "urgencyLevel": "low",
+      "context": "Watering hole / targeted developer supply chain reconnaissance attack (Lazarus style)."
+    },
+    "options": [
+      { "text": "COMPLY — Run the benchmark script to help a fellow niche developer", "value": "comply" },
+      { "text": "ANALYZE & REFUSE — Review repo code in an isolated sandbox, never discuss internal company architecture online, and report the targeted outreach", "value": "refuse" },
+      { "text": "Share your corporate GitHub API token with them", "value": "share_token" }
+    ],
+    "correctAnswer": "refuse",
+    "indicators": [
+      { "type": "developer_targeting", "description": "State-sponsored campaigns targeting software developers with malicious source repositories", "points": 25 },
+      { "type": "osint_recon", "description": "Attacker mapped target's employment and technical stack via public social media and StackOverflow", "points": 20 },
+      { "type": "untrusted_binary", "description": "Pre-compiled tar.gz containing malicious build script (postinstall hook)", "points": 15 }
+    ],
+    "explanation": "Advanced threat groups (e.g. Lazarus/Diamond Sleet) create fake developer personas on LinkedIn, GitHub, and X. They flatter developers with collaboration requests or fake job interviews, then send trojanized coding tests that deploy malware upon execution.",
+    "hints": [
+      "How did this stranger find information about your company's internal technology stack?",
+      "Why are developer workstations high-value targets for nation-state attackers?",
+      "Never execute unvetted third-party code on a corporate or personal development machine."
+    ],
+    "learningObjective": "Identify targeted developer social engineering and avoid executing trojanized collaboration code.",
+    "consequenceChain": [
+      "You ran npm install / tar.gz which executed an obfuscated post-install script",
+      "Malware stole SSH keys, AWS credentials, and source code repositories",
+      "Attacker pushed backdoor commit into company's main production branch"
+    ],
+    "recoverySteps": [
+      "Revoke and rotate all GitHub, AWS, and SSH signing keys",
+      "Audit git commit history and CI/CD pipelines for injected tampering",
+      "Review employee public social media profiles to eliminate internal architecture disclosures"
+    ],
+    "order": 5
+  }
+]

@@ -1,0 +1,78 @@
+import React, { createContext, useState, useEffect } from 'react';
+import api from '../services/api';
+
+export const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem('cyberlock_token') || null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (token) {
+      loadUser();
+    } else {
+      setLoading(false);
+    }
+  }, [token]);
+
+  const loadUser = async () => {
+    try {
+      setLoading(true);
+      const res = await api.get('/auth/me');
+      setUser(res.data.user);
+    } catch (err) {
+      console.error(err);
+      localStorage.removeItem('cyberlock_token');
+      setToken(null);
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const login = async (email, password) => {
+    try {
+      setLoading(true);
+      const res = await api.post('/auth/login', { email, password });
+      localStorage.setItem('cyberlock_token', res.data.token);
+      setToken(res.data.token);
+      setUser(res.data.user);
+      return { success: true };
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed');
+      return { success: false, error: err.response?.data?.message };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const register = async (username, email, password) => {
+    try {
+      setLoading(true);
+      const res = await api.post('/auth/register', { username, email, password });
+      localStorage.setItem('cyberlock_token', res.data.token);
+      setToken(res.data.token);
+      setUser(res.data.user);
+      return { success: true };
+    } catch (err) {
+      setError(err.response?.data?.message || 'Registration failed');
+      return { success: false, error: err.response?.data?.message };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const logout = () => {
+    localStorage.removeItem('cyberlock_token');
+    setToken(null);
+    setUser(null);
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, token, loading, error, isAuthenticated: !!user, login, register, logout, loadUser }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};

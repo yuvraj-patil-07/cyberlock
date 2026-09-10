@@ -1,0 +1,329 @@
+[
+  {
+    "category": "qr",
+    "difficulty": "beginner",
+    "room": 3,
+    "title": "Street Parking Meter Overlay Sticker",
+    "scenario": {
+      "type": "qr_code",
+      "context": "You park your car in downtown. On the metallic parking meter, a freshly printed sticker covers the original payment instructions: 'Quick Pay by QR Code — Scan to Avoid $50 Citation'.",
+      "qrDestination": "https://city-parking-meter-quickpay.online/pay?meterId=4920",
+      "urgencyLevel": "high"
+    },
+    "options": [
+      { "text": "SAFE — Convenient modern contactless municipal payment", "value": "safe" },
+      { "text": "SUSPICIOUS — Verify whether physical sticker is pasted over the original meter and pay via official meter keypad/app", "value": "suspicious" },
+      { "text": "MALICIOUS — Physical QR sticker overlay harvesting credit cards on generic .online domain", "value": "malicious" }
+    ],
+    "correctAnswer": "malicious",
+    "indicators": [
+      { "type": "physical_tampering", "description": "Adhesive sticker placed over official municipal parking hardware", "points": 20 },
+      { "type": "domain", "description": "Unofficial '.online' domain rather than municipal government '.gov'", "points": 15 },
+      { "type": "citation_threat", "description": "Threat of immediate $50 citation to rush payment decision", "points": 10 }
+    ],
+    "explanation": "Criminals paste malicious QR stickers over legitimate parking meters across major cities. Scanning the code opens a fake payment portal that steals credit card numbers while victims still get ticketed because parking was never paid.",
+    "hints": [
+      "Is the QR code physically printed onto the machine itself or is it an adhesive sticker slapped on top?",
+      "Does the URL domain end with an official city .gov or a private .online extension?",
+      "Can you pay using the official municipal parking app or physical coin/card slot instead?"
+    ],
+    "learningObjective": "Inspect physical QR code surfaces for sticker overlays and verify domain authenticity.",
+    "consequenceChain": [
+      "You scanned the overlaid sticker and entered credit card details",
+      "Card details saved to fraudster's database and sold online",
+      "Parking authority issued $50 ticket because parking was never actually registered"
+    ],
+    "recoverySteps": [
+      "Report compromised parking meter to city parking enforcement",
+      "Cancel and replace the credit card used on the fraudulent portal",
+      "Dispute unauthorized recurring charges"
+    ],
+    "order": 1
+  },
+  {
+    "category": "qr",
+    "difficulty": "beginner",
+    "room": 3,
+    "title": "Restaurant Table Digital Menu & 50% Coupon",
+    "scenario": {
+      "type": "qr_code",
+      "context": "At a crowded café, a loose printed acrylic card on your table reads: 'Scan for Full Digital Menu + Get Instant 50% OFF Your Bill!'.",
+      "qrDestination": "https://restaurant-deals-app-download.info/install-apk?promo=50off",
+      "urgencyLevel": "medium"
+    },
+    "options": [
+      { "text": "SAFE — Great restaurant promotion", "value": "safe" },
+      { "text": "SUSPICIOUS — Ask waiter for physical menu and avoid downloading third-party APKs", "value": "suspicious" },
+      { "text": "MALICIOUS — Android malware / APK installer disguised as a discount coupon", "value": "malicious" }
+    ],
+    "correctAnswer": "malicious",
+    "indicators": [
+      { "type": "file_download", "description": "Attempts to download executable APK file rather than displaying a web menu", "points": 25 },
+      { "type": "unrealistic_offer", "description": "50% discount used as psychological bait to compromise smartphone", "points": 10 },
+      { "type": "domain", "description": "Third-party generic .info APK download site", "points": 15 }
+    ],
+    "explanation": "QR codes that prompt you to download or install an application (especially .APK files on Android or configuration profiles on iOS) are almost always Trojan malware. Menus and coupons only require standard web pages.",
+    "hints": [
+      "Why would a restaurant menu require installing an APK application file?",
+      "Does viewing a menu ever require downloading executable software?",
+      "Always inspect the destination before accepting any device download prompts."
+    ],
+    "learningObjective": "Never install application files (.apk, .mobileconfig) prompted by QR codes.",
+    "consequenceChain": [
+      "You scanned QR and tapped 'Install APK anyway'",
+      "Banking trojan installed in background with Accessibility permissions",
+      "Trojan recorded banking credentials and intercepted SMS OTPs"
+    ],
+    "recoverySteps": [
+      "Boot phone into Safe Mode and uninstall rogue application",
+      "Revoke Device Admin and Accessibility Service permissions",
+      "Factory reset smartphone if deep persistence was established"
+    ],
+    "order": 2
+  },
+  {
+    "category": "qr",
+    "difficulty": "intermediate",
+    "room": 3,
+    "title": "University Campus Student Event Flyer",
+    "scenario": {
+      "type": "qr_code",
+      "context": "A poster pinned to the student union bulletin board advertises: 'Campus Spring Gala 2024 — Free Pizza & Concert Tickets! Scan QR code to log into Student Portal and RSVP'.",
+      "qrDestination": "https://student-sso-auth-campus-event.xyz/login?event=springgala",
+      "urgencyLevel": "medium"
+    },
+    "options": [
+      { "text": "SAFE — Standard university student club poster", "value": "safe" },
+      { "text": "SUSPICIOUS — Check university student activities website independently", "value": "suspicious" },
+      { "text": "MALICIOUS — Phishing portal on .xyz domain harvesting campus SSO credentials", "value": "malicious" }
+    ],
+    "correctAnswer": "malicious",
+    "indicators": [
+      { "type": "campus_impersonation", "description": "Mimics campus event to harvest student and faculty university credentials", "points": 15 },
+      { "type": "domain", "description": "Unofficial '.xyz' domain instead of university '.edu'", "points": 20 },
+      { "type": "free_incentive", "description": "Free food and tickets used to lower student vigilance", "points": 10 }
+    ],
+    "explanation": "Anyone with a printer can pin flyers to open public bulletin boards. Campus phishing via QR codes exploits trust in university branding to steal .edu email credentials and tuition payment portals.",
+    "hints": [
+      "Check if the URL ends in your university's legitimate '.edu' domain.",
+      "Can anyone pin posters to a public campus bulletin board?",
+      "Log into your student portal via your bookmarked campus URL instead."
+    ],
+    "learningObjective": "Recognize campus bulletin board quishing targeting higher education credentials.",
+    "consequenceChain": [
+      "You submitted campus SSO credentials on the fake login page",
+      "Attacker logged into student portal and changed tuition refund bank account",
+      "Stolen .edu address used to blast internal phishing emails across the student directory"
+    ],
+    "recoverySteps": [
+      "Alert Campus Information Security / IT Helpdesk",
+      "Reset university single-sign-on password immediately",
+      "Verify direct deposit financial aid routing details"
+    ],
+    "order": 3
+  },
+  {
+    "category": "qr",
+    "difficulty": "intermediate",
+    "room": 3,
+    "title": "Delivery Notice Tag Attached to Front Door",
+    "scenario": {
+      "type": "qr_code",
+      "context": "You find a yellow card clipped to your apartment door: 'Missed Package Delivery #8921. Driver unable to access gate. Scan QR to pay $2.50 redelivery fee and confirm address'.",
+      "qrDestination": "https://doorstep-parcel-redelivery-portal.cc/track?id=8921",
+      "urgencyLevel": "high"
+    },
+    "options": [
+      { "text": "SAFE — Normal courier missed delivery card", "value": "safe" },
+      { "text": "SUSPICIOUS — Contact your building management or use the tracking number on official carrier app", "value": "suspicious" },
+      { "text": "MALICIOUS — Physical doorstep scam collecting payment cards and residential occupancy patterns", "value": "malicious" }
+    ],
+    "correctAnswer": "malicious",
+    "indicators": [
+      { "type": "physical_social_eng", "description": "Physical flyer placed on door to create high perceived legitimacy", "points": 20 },
+      { "type": "domain", "description": "Shady '.cc' top-level domain", "points": 15 },
+      { "type": "micro_payment", "description": "Small fee ($2.50) designed to extract credit card details effortlessly", "points": 15 }
+    ],
+    "explanation": "Criminals blanket entire apartment complexes with fake missed delivery notices. The physical touchpoint builds instant credibility, but the QR code routes to an off-brand payment harvester.",
+    "hints": [
+      "Look at the domain extension in the QR destination preview (.cc).",
+      "Does the card name a recognized postal or courier carrier?",
+      "Always track packages by typing the tracking code directly on the official postal website."
+    ],
+    "learningObjective": "Identify physical doorstep delivery card scams and resist impulse fee payments.",
+    "consequenceChain": [
+      "You scanned QR and entered credit card details for $2.50 redelivery",
+      "Card details recorded and charged for unauthorized international retail purchases",
+      "No package ever existed"
+    ],
+    "recoverySteps": [
+      "Alert apartment building management about unauthorized door solicitations",
+      "Freeze compromised payment card and file bank fraud dispute",
+      "Warn neighbors about the scam notices"
+    ],
+    "order": 4
+  },
+  {
+    "category": "qr",
+    "difficulty": "advanced",
+    "room": 3,
+    "title": "Electric Scooter QR Code Unlock Tamper",
+    "scenario": {
+      "type": "qr_code",
+      "context": "You want to rent a shared electric scooter on the sidewalk. You notice the QR code between the handlebars looks slightly raised and misaligned compared to the scooter's factory paint.",
+      "qrDestination": "https://urban-mobility-unlock-session.net/scooter?id=SC-402",
+      "urgencyLevel": "low"
+    },
+    "options": [
+      { "text": "SAFE — Standard scooter unlock code", "value": "safe" },
+      { "text": "SUSPICIOUS — Use the scooter ID number inside the official pre-installed app instead of scanning the camera code", "value": "suspicious" },
+      { "text": "MALICIOUS — Physical sticker replacement redirecting riders to fake billing portal", "value": "malicious" }
+    ],
+    "correctAnswer": "malicious",
+    "indicators": [
+      { "type": "physical_tamper", "description": "Raised and misaligned sticker covering the manufacturer's laser-etched QR code", "points": 20 },
+      { "type": "domain", "description": "Generic website destination instead of deep-linking into the verified mobile app", "points": 15 },
+      { "type": "app_bypass", "description": "Bypasses mobile OS verified app link handler", "points": 15 }
+    ],
+    "explanation": "Scammers replace laser-etched QR codes on shared mobility scooters and bikes with adhesive stickers. Scanning them opens a fake unlock site rather than triggering the official mobile app's in-app handler.",
+    "hints": [
+      "Feel the edges of the QR code — is it a sticker pasted over the original surface?",
+      "Why did the QR code open a browser web page instead of opening your installed scooter app?",
+      "Most rental apps let you manually type in the scooter's visible numeric vehicle ID."
+    ],
+    "learningObjective": "Differentiate between genuine in-app deep-linking QR codes and malicious browser redirects.",
+    "consequenceChain": [
+      "You scanned the counterfeit sticker and entered card info on the website",
+      "The scooter never unlocked because the real rental service received no command",
+      "Attacker obtained credit card data while you were left stranded"
+    ],
+    "recoverySteps": [
+      "Report vandalized vehicle number to mobility company support",
+      "Cancel payment card through your bank app",
+      "Only unlock mobility vehicles using in-app numeric entry"
+    ],
+    "order": 5
+  },
+  {
+    "category": "qr",
+    "difficulty": "advanced",
+    "room": 3,
+    "title": "Airport Wi-Fi Connect QR Code",
+    "scenario": {
+      "type": "qr_code",
+      "context": "At an international airport departure lounge, a flyer on the seating table displays: 'Fast Free 5G Airport Wi-Fi — Scan QR to Connect Instantly'. Scanning prompts your phone to download an iOS Mobile Configuration Profile / Android VPN Profile.",
+      "qrDestination": "https://airport-guest-wifi-auth.info/profile/install.mobileconfig",
+      "urgencyLevel": "medium"
+    },
+    "options": [
+      { "text": "SAFE — Standard profile installation required for enterprise airport Wi-Fi certificates", "value": "safe" },
+      { "text": "SUSPICIOUS — Wi-Fi networks should not require installing root configuration profiles or private VPN profiles", "value": "suspicious" },
+      { "text": "MALICIOUS — Rogue configuration profile installing malicious root CA certificate to decrypt SSL traffic (MITM)", "value": "malicious" }
+    ],
+    "correctAnswer": "malicious",
+    "indicators": [
+      { "type": "root_cert_injection", "description": "Prompts installation of .mobileconfig containing rogue root certificate authority", "points": 25 },
+      { "type": "traffic_decryption", "description": "Rogue root certificate allows attackers to perform SSL decryption on all encrypted traffic", "points": 20 }
+    ],
+    "explanation": "Never install configuration profiles (.mobileconfig) or root certificates from public QR codes. A rogue root certificate grants the attacker full capability to intercept, inspect, and decrypt your HTTPS banking and email traffic in real time.",
+    "hints": [
+      "Does standard public Wi-Fi ever require installing an iOS Configuration Profile in Device Settings?",
+      "What happens when a device trusts an unknown root Certificate Authority?",
+      "Connect to Wi-Fi exclusively via your phone's native Settings menu."
+    ],
+    "learningObjective": "Understand the severe dangers of malicious configuration profiles and rogue root certificates.",
+    "consequenceChain": [
+      "You installed the profile in phone Settings and trusted the root certificate",
+      "Attacker's rogue gateway decrypted your HTTPS banking sessions",
+      "All login passwords and private messages intercepted in cleartext"
+    ],
+    "recoverySteps": [
+      "Go to phone Settings -> General -> VPN & Device Management and delete the rogue profile immediately",
+      "Rotate all passwords entered while connected to the rogue network",
+      "Use cellular roaming or trusted personal VPN hotspot instead"
+    ],
+    "order": 6
+  },
+  {
+    "category": "qr",
+    "difficulty": "expert",
+    "room": 3,
+    "title": "Crypto ATM Bitcoin Deposit QR Code Swap",
+    "scenario": {
+      "type": "qr_code",
+      "context": "A caller claiming to be from the Federal Trade Commission instructs you: 'Your bank account is compromised. Transfer your savings to a Federal Reserve Protected Bitcoin Locker by scanning this QR code at any cryptocurrency kiosk'.",
+      "qrDestination": "bitcoin:bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh?amount=2.5",
+      "urgencyLevel": "critical"
+    },
+    "options": [
+      { "text": "SAFE — Government-backed protective escrow account", "value": "safe" },
+      { "text": "SUSPICIOUS — Verify directly with local bank branch", "value": "suspicious" },
+      { "text": "MALICIOUS — 100% scam; government agencies never demand cryptocurrency deposits or Bitcoin ATM transfers", "value": "malicious" }
+    ],
+    "correctAnswer": "malicious",
+    "indicators": [
+      { "type": "crypto_coercion", "description": "No government or law enforcement agency uses Bitcoin ATMs or crypto lockers", "points": 25 },
+      { "type": "irreversible_tx", "description": "Cryptocurrency blockchain transactions are mathematically irreversible once confirmed", "points": 20 },
+      { "type": "authority_impersonation", "description": "Impersonates Federal Trade Commission / law enforcement to compel panic", "points": 15 }
+    ],
+    "explanation": "No legitimate government entity, police department, IRS agent, or utility company will ever instruct you to deposit cash into a Bitcoin ATM or scan a crypto QR code. Cryptocurrency transactions are irreversible.",
+    "hints": [
+      "Do federal agencies maintain Bitcoin ATM safety lockers?",
+      "Can cryptocurrency blockchain transfers be refunded if you get scammed?",
+      "Hang up immediately on anyone directing you toward a cryptocurrency kiosk."
+    ],
+    "learningObjective": "Recognize cryptocurrency ATM transfer coercion schemes and understand blockchain irreversibility.",
+    "consequenceChain": [
+      "You fed cash into the Bitcoin ATM and scanned the attacker's wallet QR code",
+      "Bitcoin transferred immediately to attacker's non-custodial wallet",
+      "Transactions were irreversibly confirmed on blockchain with zero recourse"
+    ],
+    "recoverySteps": [
+      "Terminate all communication with the caller immediately",
+      "File a report with the FBI Internet Crime Complaint Center (IC3.gov)",
+      "Contact local police department financial crimes division"
+    ],
+    "order": 7
+  },
+  {
+    "category": "qr",
+    "difficulty": "expert",
+    "room": 3,
+    "title": "Cross-Device QR Login Hijacking (QRLJacking)",
+    "scenario": {
+      "type": "qr_code",
+      "context": "You visit a web page claiming to offer a $100 gift card if you link your Discord/WhatsApp/Telegram account. The page displays a 'Scan QR code in your mobile app to link account and claim reward'.",
+      "qrDestination": "https://discord.com/ra/v1/session_auth_token_secret_link",
+      "urgencyLevel": "medium"
+    },
+    "options": [
+      { "text": "SAFE — The QR code uses official domain (discord.com)", "value": "safe" },
+      { "text": "SUSPICIOUS — Verify whether scanning logs a new desktop session on your personal account", "value": "suspicious" },
+      { "text": "MALICIOUS — QRLJacking attack; scanning grants the attacker's browser full login session access to your account", "value": "malicious" }
+    ],
+    "correctAnswer": "malicious",
+    "indicators": [
+      { "type": "qrljacking", "description": "Attacker proxies the service's official QR login code onto a phishing page", "points": 25 },
+      { "type": "session_transfer", "description": "Scanning authorizes the attacker's remote web browser as a logged-in device", "points": 20 },
+      { "type": "reward_lure", "description": "Gift card incentive tricks user into approving device pairing prompt", "points": 10 }
+    ],
+    "explanation": "QRLJacking (QR Login Hijacking) occurs when an attacker requests a legitimate login QR code from Discord/WhatsApp/Telegram and embeds it onto a fake reward page. When you scan it with your phone, you approve the attacker's computer to log into your account!",
+    "hints": [
+      "What does scanning a QR code inside WhatsApp or Discord settings actually do?",
+      "Does scanning link a new computer to your account?",
+      "Never scan in-app login QR codes displayed on third-party promotional websites."
+    ],
+    "learningObjective": "Understand QRLJacking (QR Login Hijacking) and never scan in-app device pairing codes on untrusted websites.",
+    "consequenceChain": [
+      "You scanned the QR code using your messaging app camera",
+      "Attacker's browser session instantly logged into your account",
+      "Attacker downloaded your private chat history and messaged your contacts asking for emergency money"
+    ],
+    "recoverySteps": [
+      "Open messaging app settings -> Linked Devices -> Log out of ALL unknown sessions immediately",
+      "Enable account PIN / 2FA passcode",
+      "Warn friends that recent messages from your account were sent by a malicious intruder"
+    ],
+    "order": 8
+  }
+]

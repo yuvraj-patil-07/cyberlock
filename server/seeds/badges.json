@@ -1,0 +1,119 @@
+[
+  {
+    "name": "Phish Hunter",
+    "slug": "phish-hunter",
+    "description": "Mastered phishing detection by correctly uncovering deceptive domains and urgency tricks.",
+    "icon": "ShieldAlert",
+    "category": "phishing",
+    "rarity": "common",
+    "criteria": {
+      "type": "room_completion",
+      "threshold": 3,
+      "category": "phishing"
+    }
+  },
+  {
+    "name": "Vault Keeper",
+    "slug": "vault-keeper",
+    "description": "Achieved cryptographic mastery over password entropy, Passkeys, and MFA hardening.",
+    "icon": "Lock",
+    "category": "passwords",
+    "rarity": "common",
+    "criteria": {
+      "type": "room_completion",
+      "threshold": 3,
+      "category": "passwords"
+    }
+  },
+  {
+    "name": "QR Guardian",
+    "slug": "qr-guardian",
+    "description": "Thwarted physical sticker overlays, malicious APK drops, and QRLJacking traps.",
+    "icon": "QrCode",
+    "category": "qrSafety",
+    "rarity": "common",
+    "criteria": {
+      "type": "room_completion",
+      "threshold": 3,
+      "category": "qrSafety"
+    }
+  },
+  {
+    "name": "Scam Breaker",
+    "slug": "scam-breaker",
+    "description": "Exposed high-pressure smishing, task scams, fake bail calls, and pig butchering schemes.",
+    "icon": "MessageSquareWarning",
+    "category": "scamDetection",
+    "rarity": "rare",
+    "criteria": {
+      "type": "room_completion",
+      "threshold": 3,
+      "category": "scamDetection"
+    }
+  },
+  {
+    "name": "Social Engineering Detective",
+    "slug": "social-engineering-detective",
+    "description": "Resisted tailgating, executive authority intimidation, and USB drop baiting.",
+    "icon": "Users",
+    "category": "socialEngineering",
+    "rarity": "rare",
+    "criteria": {
+      "type": "room_completion",
+      "threshold": 3,
+      "category": "socialEngineering"
+    }
+  },
+  {
+    "name": "AI Skeptic",
+    "slug": "ai-skeptic",
+    "description": "Spotted deepfake voice cloning, prompt injection payloads, and AI hallucination attacks.",
+    "icon": "Bot",
+    "category": "aiThreats",
+    "rarity": "epic",
+    "criteria": {
+      "type": "room_completion",
+      "threshold": 3,
+      "category": "aiThreats"
+    }
+  },
+  {
+    "name": "Cyber Sentinel",
+    "slug": "cyber-sentinel",
+    "description": "Successfully solved the Final Cyber Lock multi-vector threat investigation and escaped CYBERLOCK.",
+    "icon": "Award",
+    "category": "final",
+    "rarity": "legendary",
+    "criteria": {
+      "type": "final_escape",
+      "threshold": 1,
+      "category": "final"
+    }
+  },
+  {
+    "name": "Perfect Escape",
+    "slug": "perfect-escape",
+    "description": "Completed an escape mission with 100% Trust Score intact and zero lives lost.",
+    "icon": "Sparkles",
+    "category": "perfection",
+    "rarity": "legendary",
+    "criteria": {
+      "type": "trust_score",
+      "threshold": 100,
+      "category": "trust"
+    }
+  },
+  {
+    "name": "Most Improved",
+    "slug": "most-improved",
+    "description": "Increased your overall Cyber Score by +25% or more through adaptive AI coaching.",
+    "icon": "TrendingUp",
+    "category": "improvement",
+    "rarity": "epic",
+    "criteria": {
+      "type": "improvement",
+      "threshold": 25,
+      "category": "improvement"
+    }
+  }
+]

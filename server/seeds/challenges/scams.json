@@ -1,0 +1,452 @@
+[
+  {
+    "category": "scam",
+    "difficulty": "beginner",
+    "room": 4,
+    "title": "Bank Security Department SMS Alert",
+    "scenario": {
+      "type": "chat",
+      "sender": "Chase-Fraud-Alert",
+      "senderAddress": "+1 (844) 555-0182",
+      "subject": "Suspicious Card Activity",
+      "timestamp": "Today at 02:41 PM",
+      "body": "CHASE FRAUD ALERT: Did you authorize a $948.50 charge at WALMART ONLINE on 09/10? Reply NO to stop this payment or call our fraud hotline immediately at 1-844-555-0182.",
+      "urgencyLevel": "critical",
+      "context": "Simulated SMS smishing leading to telephone boiler room."
+    },
+    "options": [
+      { "text": "SAFE — Reply NO or call the number right away to stop the charge", "value": "safe" },
+      { "text": "SUSPICIOUS — Call the verified phone number printed on the back of your physical credit card", "value": "suspicious" },
+      { "text": "SCAM — Smishing lure designed to connect you directly to a fraudulent call center agent", "value": "scam" }
+    ],
+    "correctAnswer": "scam",
+    "indicators": [
+      { "type": "smishing_number", "description": "Toll-free number in SMS belongs to scammers, not Chase Bank", "points": 20 },
+      { "type": "panic_prompt", "description": "High charge ($948.50) to trigger immediate impulsive phone call", "points": 15 },
+      { "type": "out_of_band", "description": "Lacks official bank shortcode; sends direct unverified phone number", "points": 15 }
+    ],
+    "explanation": "Bank impersonation via SMS (Smishing) provides fake 1-800 phone numbers. When victims call, a convincing scammer posing as a fraud agent asks for full debit card numbers, PINs, and one-time passcodes under the pretense of 'reversing' the charge.",
+    "hints": [
+      "Where is the only 100% safe place to find your bank's real telephone number?",
+      "Why should you never call phone numbers sent inside unsolicited text messages?",
+      "Legitimate banks never ask for your PIN or online password over the phone."
+    ],
+    "learningObjective": "Never call phone numbers sent via SMS; always use the number printed on your physical card.",
+    "consequenceChain": [
+      "You called the 1-844 number and spoke with a fake fraud agent",
+      "Agent asked you to 'read back the 6-digit verification code sent to your phone'",
+      "Agent used the code to authorize an instant Zelle wire transfer draining $2,000"
+    ],
+    "recoverySteps": [
+      "Call legitimate bank fraud hotline using number on back of card",
+      "Request immediate freeze on online banking and associated debit cards",
+      "File police report for grand theft / wire fraud"
+    ],
+    "order": 1
+  },
+  {
+    "category": "scam",
+    "difficulty": "beginner",
+    "room": 4,
+    "title": "WhatsApp Remote App Tester High-Pay Job",
+    "scenario": {
+      "type": "chat",
+      "sender": "Elena - Global Talent Recruitment",
+      "senderAddress": "+44 7700 900123",
+      "subject": "Remote Part-Time Opportunity",
+      "timestamp": "Today at 10:15 AM",
+      "body": "Hello! I am Elena from Adecco HR Recruitment. We found your resume on LinkedIn! We have an urgent remote job: rate 30 mobile apps daily for 30-45 minutes and earn $300-$800/day paid directly in USDT or PayPal. No experience required! Reply YES to begin your onboarding training.",
+      "urgencyLevel": "low",
+      "context": "Classic task scam (task-based optimization scam) requiring upfront deposit to unlock earnings."
+    },
+    "options": [
+      { "text": "SAFE — Great flexible side hustle", "value": "safe" },
+      { "text": "SUSPICIOUS — Verify job listing on official Adecco career website", "value": "suspicious" },
+      { "text": "SCAM — Task Scam requiring victims to deposit their own money into fake crypto platforms to complete tasks", "value": "scam" }
+    ],
+    "correctAnswer": "scam",
+    "indicators": [
+      { "type": "task_scam", "description": "Unrealistic compensation ($300-800/day for 30 mins) for low-skill tasks", "points": 20 },
+      { "type": "crypto_payout", "description": "Compensation promised in cryptocurrency / USDT", "points": 15 },
+      { "type": "unsolicited_chat", "description": "Recruiter contacts via unsolicited WhatsApp/Telegram with foreign country code", "points": 15 }
+    ],
+    "explanation": "Task Scams trick victims into performing simple tasks on a fake website. Initially, small 'profits' can be withdrawn to build trust. Then, the platform freezes your funds and demands thousands of dollars in 'recharge deposits' to unlock your balance.",
+    "hints": [
+      "Is $800 for 30 minutes of app rating realistic in the real economy?",
+      "Do legitimate corporate recruiters reach out cold on WhatsApp using international numbers?",
+      "Why do task scams require victims to deposit money before they can withdraw earnings?"
+    ],
+    "learningObjective": "Recognize Task Scams and unrealistic remote employment offers delivered over chat apps.",
+    "consequenceChain": [
+      "You completed rating tasks and deposited $500 'workbench recharge'",
+      "Platform showed fake balance of $1,800 but blocked withdrawals",
+      "Support demanded $1,500 'tax clearance fee' to unlock the funds"
+    ],
+    "recoverySteps": [
+      "Cease all contact and do NOT send any additional deposit funds",
+      "Report phone number and WhatsApp profile to WhatsApp Anti-Fraud",
+      "Beware of 'recovery scammers' claiming they can hack back stolen funds"
+    ],
+    "order": 2
+  },
+  {
+    "category": "scam",
+    "difficulty": "intermediate",
+    "room": 4,
+    "title": "Friend/Family Emergency Bail Text",
+    "scenario": {
+      "type": "chat",
+      "sender": "Unknown Number",
+      "senderAddress": "+1 (555) 019-3321",
+      "subject": "Emergency!",
+      "timestamp": "Today at 11:50 PM",
+      "body": "Hey, it's Alex! My phone dropped in the pool and broke so I'm texting from a stranger's phone. I'm in huge trouble in Mexico, my rental car got impounded and the police need $650 for the release fee or they'll detain me overnight. Please Zelle $650 to alex.bail.transit@fastmail.com right now, I'll pay you back the second I get home tomorrow! Don't tell mom, she'll panic!",
+      "urgencyLevel": "critical",
+      "context": "Family emergency impersonation scam leveraging secrecy and late-night panic."
+    },
+    "options": [
+      { "text": "SAFE — Send the money immediately to save your friend from jail", "value": "safe" },
+      { "text": "SUSPICIOUS — Call Alex's original phone number, call mutual friends/family, or ask a personal question only Alex knows", "value": "suspicious" },
+      { "text": "SCAM — Emergency impersonation scam using panic, isolation, and secrecy to prevent verification", "value": "scam" }
+    ],
+    "correctAnswer": "scam",
+    "indicators": [
+      { "type": "secrecy_coercion", "description": "'Don't tell mom' isolate victim from third-party rational check", "points": 20 },
+      { "type": "broken_phone_pretext", "description": "'Broke my phone' excuse explains why stranger's number is texting", "points": 15 },
+      { "type": "instant_wire", "description": "Demands instant irreversible payment via Zelle / gift card / wire", "points": 15 }
+    ],
+    "explanation": "Emergency impersonation scams exploit love, empathy, and urgency. Scammers deliberately tell you 'don't tell anyone' to isolate you from people who would point out the scam. Always verify out-of-band with a secret question only your real friend knows.",
+    "hints": [
+      "Why is the sender urgently demanding you NOT tell other family members?",
+      "What happens if you call your friend's regular phone number directly?",
+      "Ask a question that only the real friend could answer (e.g. 'What is my dog's middle name?')."
+    ],
+    "learningObjective": "Overcome emotional manipulation in family emergency scams through out-of-band verification.",
+    "consequenceChain": [
+      "You transferred $650 via Zelle in late-night panic",
+      "Next morning you spoke with the real Alex, who was asleep in his own bed at home",
+      "Zelle transfer was final and non-refundable"
+    ],
+    "recoverySteps": [
+      "Contact Zelle / your bank to file fraud report",
+      "Establish a family 'safe word / code phrase' for genuine emergencies",
+      "Block the scammer's phone number"
+    ],
+    "order": 3
+  },
+  {
+    "category": "scam",
+    "difficulty": "intermediate",
+    "room": 4,
+    "title": "Crypto 'Pig Butchering' (Sha Zhu Pan) Relationship",
+    "scenario": {
+      "type": "chat",
+      "sender": "Chloe (Met on Dating App 2 weeks ago)",
+      "senderAddress": "+1 (310) 555-8812",
+      "subject": "Our Future Together",
+      "timestamp": "Yesterday at 09:30 PM",
+      "body": "Good morning dear! My uncle is a chief financial analyst in Singapore and shared private insider signals on ETH liquidity mining node contracts today. Look at my screenshot — I made $14,200 just this morning! We can buy our dream house together sooner if you open a VIP node on global-defi-liquidity.vip. I will guide you step by step!",
+      "urgencyLevel": "medium",
+      "context": "Sha Zhu Pan (Pig Butchering) romance-financial investment scam."
+    },
+    "options": [
+      { "text": "SAFE — She is sharing valuable insider family investment advice out of love", "value": "safe" },
+      { "text": "SUSPICIOUS — Consult an independent certified financial planner", "value": "suspicious" },
+      { "text": "SCAM — Pig Butchering romance-investment scam routing deposits to an offshore criminal syndicate", "value": "scam" }
+    ],
+    "correctAnswer": "scam",
+    "indicators": [
+      { "type": "pig_butchering", "description": "Romance grooming followed by introduction of high-yield crypto platform", "points": 25 },
+      { "type": "fake_exchange", "description": "Custom fake trading platform controlled entirely by scammers", "points": 20 },
+      { "type": "unrealistic_gains", "description": "Guaranteed 200%+ returns on insider crypto arbitrage", "points": 15 }
+    ],
+    "explanation": "Pig Butchering (Sha Zhu Pan) scams build romantic or friendly trust over weeks before steering victims to fake cryptocurrency investment platforms. The platform manipulates charts to show fake profits, but victims can never withdraw their real money.",
+    "hints": [
+      "Why did an online romantic acquaintance suddenly pivot to cryptocurrency investments?",
+      "Who controls the website 'global-defi-liquidity.vip'?",
+      "If someone had guaranteed insider market secrets, why would they share them with casual online contacts?"
+    ],
+    "learningObjective": "Identify Pig Butchering romance-investment grooming and recognize fraudulent trading platforms.",
+    "consequenceChain": [
+      "You invested $5,000 into the liquidity platform and saw balance climb to $28,000",
+      "Attempted withdrawal was blocked pending a $6,000 'anti-money laundering tax'",
+      "Romance partner disappeared and blocked you across all social media"
+    ],
+    "recoverySteps": [
+      "Accept that the money sent to the crypto addresses is gone and refuse all further demands",
+      "File detailed report with FBI IC3 and local law enforcement",
+      "Seek emotional support from trusted friends and counseling services"
+    ],
+    "order": 4
+  },
+  {
+    "category": "scam",
+    "difficulty": "intermediate",
+    "room": 4,
+    "title": "Immediate Electric Utility Disconnection Threat",
+    "scenario": {
+      "type": "chat",
+      "sender": "Metro-Power-Dispatch",
+      "senderAddress": "+1 (800) 555-4921",
+      "subject": "URGENT DISCONNECTION NOTICE",
+      "timestamp": "Today at 04:15 PM",
+      "body": "FINAL NOTICE: Your electricity service at this address is scheduled for remote disconnection within 45 MINUTES due to past due balance of $187.20. Technicians are en route. To cancel shutoff order immediately, call dispatch at 1-800-555-4921 and pay balance via GreenDot MoneyPak / barcode cashier.",
+      "urgencyLevel": "critical",
+      "context": "Utility disconnection scam targeting homes and small businesses during peak hours."
+    },
+    "options": [
+      { "text": "SAFE — Rush to store to purchase prepaid card and prevent power outage", "value": "safe" },
+      { "text": "SUSPICIOUS — Check utility account balance on the official power company website/app", "value": "suspicious" },
+      { "text": "SCAM — Utility shutoff scam demanding untraceable prepaid vouchers/cards under extreme urgency", "value": "scam" }
+    ],
+    "correctAnswer": "scam",
+    "indicators": [
+      { "type": "prepaid_voucher", "description": "Demands payment via prepaid cash cards (MoneyPak, vanilla reload, gift cards)", "points": 25 },
+      { "type": "extreme_urgency", "description": "45-minute cutoff deadline to prevent victim from checking bills", "points": 15 },
+      { "type": "utility_regulation", "description": "Regulated utilities are legally required to send written postal notices weeks before disconnection", "points": 15 }
+    ],
+    "explanation": "Regulated utilities never demand payment via prepaid vouchers, gift cards, or cryptocurrency. They are legally mandated to send multiple written delinquency notices by postal mail over several weeks before shutting off power.",
+    "hints": [
+      "Do legitimate power companies demand GreenDot MoneyPak cards or retail gift cards?",
+      "Can utilities shut off electricity with only 45 minutes of SMS notice?",
+      "Check your balance directly on your power company's official billing portal."
+    ],
+    "learningObjective": "Recognize utility disconnection scams and remember that gift cards/MoneyPaks are never acceptable utility payment methods.",
+    "consequenceChain": [
+      "You bought $187.20 MoneyPak card and read numbers over phone to fake technician",
+      "Scammer cashed out voucher within seconds",
+      "Your legitimate utility bill remained unchanged and power was never in danger"
+    ],
+    "recoverySteps": [
+      "Contact the power company on official billing statement number to confirm account status",
+      "Report scam telephone number to state public utility commission",
+      "File consumer fraud complaint with Federal Trade Commission (FTC)"
+    ],
+    "order": 5
+  },
+  {
+    "category": "scam",
+    "difficulty": "advanced",
+    "room": 4,
+    "title": "Apartment Rental Security Deposit Wire",
+    "scenario": {
+      "type": "chat",
+      "sender": "Dr. Howard Evans (Landlord)",
+      "senderAddress": "howard.evans.rentals@doctor-mission-uk.org",
+      "subject": "Luxury Downtown 2-Bed Apartment - Application Approved",
+      "timestamp": "Yesterday at 03:20 PM",
+      "body": "Congratulations! Your rental application for the downtown penthouse ($1,200/mo, all utilities included) is approved! I am currently in London on a Doctors Without Borders mission, so I cannot show the unit in person. If you wire the $1,200 first month + $1,200 deposit via Western Union today, my local courier will FedEx the front door keys to you tomorrow morning.",
+      "urgencyLevel": "medium",
+      "context": "Simulated fake rental listing using stolen real estate photos and remote landlord story."
+    },
+    "options": [
+      { "text": "SAFE — Wire the deposit immediately to lock down this below-market rent", "value": "safe" },
+      { "text": "SUSPICIOUS — Tour the physical apartment in person with a licensed agent before paying anything", "value": "suspicious" },
+      { "text": "SCAM — Classic phantom rental scam where photos are stolen from Zillow and keys never arrive", "value": "scam" }
+    ],
+    "correctAnswer": "scam",
+    "indicators": [
+      { "type": "remote_landlord", "description": "'Missionary/Doctor overseas' story excuses inability to show the physical apartment", "points": 20 },
+      { "type": "unrealistic_rent", "description": "Luxury downtown penthouse offered at 50% below real market rate", "points": 15 },
+      { "type": "wire_transfer", "description": "Demands wire transfer (Western Union / Zelle) prior to in-person walkthrough or lease signing", "points": 20 }
+    ],
+    "explanation": "Phantom rental scams steal high-end photos from real estate sites (Zillow/Redfin) and list them at bargain prices. The 'landlord is overseas' excuse explains why they can't meet in person. Never send deposits for properties you have not walked through in person.",
+    "hints": [
+      "Why is a luxury downtown penthouse priced at half the market average?",
+      "Why is the landlord claiming to be out of the country on a charitable mission?",
+      "Never transfer funds before inspecting an apartment in person and verifying property ownership."
+    ],
+    "learningObjective": "Prevent real estate rental fraud and reject deposit payments without in-person property inspection.",
+    "consequenceChain": [
+      "You wired $2,400 via Western Union to the overseas address",
+      "You arrived at the apartment address with your moving truck",
+      "The real resident opened the door in confusion; the listing was completely fraudulent"
+    ],
+    "recoverySteps": [
+      "Contact Western Union fraud department immediately to attempt wire intercept",
+      "File police report for grand larceny",
+      "Report fake listing to the rental website hosting the fraudulent advertisement"
+    ],
+    "order": 6
+  },
+  {
+    "category": "scam",
+    "difficulty": "advanced",
+    "room": 4,
+    "title": "Wrong Number 'Accidental' Friendship Grooming",
+    "scenario": {
+      "type": "chat",
+      "sender": "Unknown Number",
+      "senderAddress": "+1 (626) 555-0144",
+      "subject": "Golf tournament dinner",
+      "timestamp": "Today at 01:05 PM",
+      "body": "Hi David, is our tee time still confirmed for 9 AM tomorrow with Michael at Pebble Beach? Let me know so I can reserve the caddie.",
+      "urgencyLevel": "low",
+      "context": "Wrong Number / Wrong Contact social engineering probe to initiate rapport."
+    },
+    "options": [
+      { "text": "Reply: 'Sorry, wrong number, I am not David' and continue chatting if they say 'Oh excuse me, you seem very polite!'", "value": "reply_chat" },
+      { "text": "Ignore / Block the number — Scammers send deliberate wrong number texts to find active numbers and initiate Pig Butchering grooming", "value": "block" },
+      { "text": "Forward your own personal contact information", "value": "forward_info" }
+    ],
+    "correctAnswer": "block",
+    "indicators": [
+      { "type": "wrong_number_lure", "description": "Deliberate wrong-number message crafted to sound wealthy and polite", "points": 20 },
+      { "type": "grooming_funnel", "description": "First stage of social engineering grooming funnel (Pig Butchering / Crypto lure)", "points": 20 },
+      { "type": "active_number_probe", "description": "Any response confirms telephone number is active to spam databases", "points": 10 }
+    ],
+    "explanation": "These 'accidental' texts are completely deliberate. If you reply 'wrong number', the scammer responds with flattering messages like 'Oh, so sorry for disturbing you! You seem like such a kind person, let's be friends!' to begin weeks-long financial grooming.",
+    "hints": [
+      "Why are thousands of people receiving nearly identical 'wrong number' messages about golf, dinner, or pet grooming?",
+      "What happens when you reply to an unknown mass-smishing sender?",
+      "The safest action for unsolicited stranger messages is to delete and block."
+    ],
+    "learningObjective": "Recognize deliberate 'wrong number' chat lures designed to start social grooming funnels.",
+    "consequenceChain": [
+      "You politely replied 'wrong number' and chatted for 3 weeks",
+      "Stranger built rapport and introduced an offshore precious metals investment platform",
+      "You invested life savings which was stolen by organized scam syndicate"
+    ],
+    "recoverySteps": [
+      "Block and report number as spam on your mobile operating system",
+      "Do not engage with strangers who attempt to continue conversations after wrong number mistakes",
+      "Enable carrier spam call & text filtering"
+    ],
+    "order": 7
+  },
+  {
+    "category": "scam",
+    "difficulty": "expert",
+    "room": 4,
+    "title": "SIM Swap 2FA Hijack Warning Probe",
+    "scenario": {
+      "type": "chat",
+      "sender": "Mobile Carrier Support",
+      "senderAddress": "22000",
+      "subject": "Carrier Account Update",
+      "timestamp": "Today at 03:45 PM",
+      "body": "CARRIER NOTIFICATION: A request to transfer your phone number to a new eSIM device was initiated at 3:44 PM. If this was NOT you, reply 'CANCEL' within 10 minutes or call customer care.",
+      "urgencyLevel": "critical",
+      "context": "Real carrier warning message during active SIM swap attack in progress."
+    },
+    "options": [
+      { "text": "Ignore it — Assume it's just another spam text", "value": "ignore" },
+      { "text": "IMMEDIATE EMERGENCY ACTION — Call carrier official fraud hotline immediately from another phone or store to block the active SIM swap", "value": "emergency_carrier" },
+      { "text": "Reply 'CANCEL' and go back to work", "value": "reply_cancel" }
+    ],
+    "correctAnswer": "emergency_carrier",
+    "indicators": [
+      { "type": "sim_swap_in_progress", "description": "Attacker is actively socially engineering your mobile carrier to seize your phone number", "points": 25 },
+      { "type": "carrier_shortcode", "description": "Legitimate shortcode notification warning of imminent cellular disconnect", "points": 20 },
+      { "type": "time_critical", "description": "Victim has minutes before cellular service drops and 2FA SMS goes to attacker", "points": 15 }
+    ],
+    "explanation": "Unlike fake scam texts, this message is a REAL warning from your legitimate mobile carrier that an attacker is actively transferring your number to their device (SIM Swap). You have minutes to call carrier fraud support before your phone loses service and your bank accounts are accessed.",
+    "hints": [
+      "Is this message sent from an official carrier shortcode (e.g. 22000)?",
+      "What happens if an attacker successfully ports your phone number to their eSIM?",
+      "Why must you immediately contact your carrier to place a fraud lock on your account?"
+    ],
+    "learningObjective": "Distinguish between fake phishing texts and real carrier security alerts during active SIM swap attacks.",
+    "consequenceChain": [
+      "You ignored the warning thinking it was spam",
+      "Phone display changed to 'No Service / SOS Only'",
+      "Attacker used intercepted SMS OTPs to reset passwords on your email, cryptocurrency, and bank accounts"
+    ],
+    "recoverySteps": [
+      "Immediately call carrier from a landline or walk into an official carrier retail store with photo ID",
+      "Request immediate port freeze and reverse the unauthorized eSIM swap",
+      "Set a mandatory Verbal Port-Out PIN Passcode on your cellular account"
+    ],
+    "order": 8
+  },
+  {
+    "category": "scam",
+    "difficulty": "expert",
+    "room": 4,
+    "title": "Fake Tech Support 'Windows Defender Alert' Lockup",
+    "scenario": {
+      "type": "browser_popup",
+      "sender": "Microsoft Security Alert System",
+      "senderAddress": "support.windows-firewall-lock-system.live",
+      "subject": "CRITICAL: Trojan.Spyware.Banker.88 Detected",
+      "timestamp": "Just now",
+      "body": "YOUR COMPUTER HAS BEEN BLOCKED DUE TO VIRUS INFECTION.\n\nError Code: #0x80070002\nDo NOT restart or turn off your computer. Your registry keys, passwords, and banking data are being transmitted to a foreign server.\n\nCall Microsoft Certified Engineers immediately at 1-888-555-0199 for instant remote unlock.",
+      "urgencyLevel": "critical",
+      "context": "Full-screen browser lockup scam with audio siren and fake helpline."
+    },
+    "options": [
+      { "text": "SAFE — Call 1-888-555-0199 to have Microsoft technicians clean the computer remotely", "value": "safe" },
+      { "text": "SUSPICIOUS — Unplug the power cable immediately", "value": "suspicious" },
+      { "text": "SCAM — Browser lockup JavaScript fullscreen trick; press Escape, force-quit browser in Task Manager, and never call the number", "value": "scam" }
+    ],
+    "correctAnswer": "scam",
+    "indicators": [
+      { "type": "browser_fullscreen", "description": "Uses JavaScript requestFullScreen() to fake operating system lockup", "points": 20 },
+      { "type": "fake_msft_support", "description": "Microsoft never displays phone numbers on error screens or asks users to call engineers", "points": 20 },
+      { "type": "remote_access_trap", "description": "Designed to bait victims into allowing remote desktop control (AnyDesk/TeamViewer)", "points": 15 }
+    ],
+    "explanation": "Tech support popups use JavaScript fullscreen tricks, looping audio alarms, and cursor lock to make you think Windows is frozen. Microsoft never includes toll-free telephone numbers in operating system alerts. Simply close the browser tab using Task Manager (Ctrl+Shift+Esc).",
+    "hints": [
+      "Does Microsoft or Apple ever put customer support phone numbers on error screens?",
+      "How can you close a locked browser window using Task Manager (Ctrl+Shift+Esc)?",
+      "Never grant remote desktop control to someone you contacted from an internet popup."
+    ],
+    "learningObjective": "Escape full-screen browser lockup traps without calling fraudulent tech support phone numbers.",
+    "consequenceChain": [
+      "You called the 1-888 number and let the technician connect via UltraViewer",
+      "Scammer opened Syskey / command prompt, typed 'TREE', and claimed your computer was ruined",
+      "Demanded $499 in Apple gift cards for a '5-year security license'"
+    ],
+    "recoverySteps": [
+      "Force close browser with Task Manager (Ctrl+Shift+Esc)",
+      "Clear browser cookies and cache",
+      "Install reputable ad blocker extension (e.g. uBlock Origin)"
+    ],
+    "order": 9
+  },
+  {
+    "category": "scam",
+    "difficulty": "beginner",
+    "room": 4,
+    "title": "Unclaimed Postal Lottery Winning Check",
+    "scenario": {
+      "type": "chat",
+      "sender": "National Sweepstakes Claims Bureau",
+      "senderAddress": "+1 (702) 555-0177",
+      "subject": "Winner Selected!",
+      "timestamp": "Today at 08:00 AM",
+      "body": "CONGRATULATIONS! Your mobile phone number was drawn as the 2nd Prize Winner in the North American Consumer Sweepstakes ($250,000.00 cash). A cashier's check of $4,500 is being mailed to cover your initial state gaming taxes. Deposit this check and wire back $3,800 to our disbursement officer to release your $250,000 grand prize!",
+      "urgencyLevel": "high",
+      "context": "Counterfeit check / advance-fee sweepstakes scam."
+    },
+    "options": [
+      { "text": "SAFE — Deposit the $4,500 cashier check at your bank and wire the $3,800 tax", "value": "safe" },
+      { "text": "SUSPICIOUS — Wait 3 days for the check to clear before wiring money", "value": "suspicious" },
+      { "text": "SCAM — Counterfeit check scam; the check will bounce after 1-2 weeks and you will be held legally liable for the $3,800 wired money", "value": "scam" }
+    ],
+    "correctAnswer": "scam",
+    "indicators": [
+      { "type": "counterfeit_check", "description": "Fake cashier's check appears to clear initially under federal funds availability rules, then bounces days later", "points": 25 },
+      { "type": "advance_fee", "description": "Legitimate lotteries deduct taxes directly from winnings; they never ask winners to wire taxes back", "points": 20 },
+      { "type": "lottery_rule", "description": "You cannot win a sweepstakes or lottery that you never bought a ticket for", "points": 15 }
+    ],
+    "explanation": "Federal banking regulations require banks to make check funds available within 1-2 business days, but true verification of an out-of-state cashier's check takes weeks. When the counterfeit check inevitably bounces, the bank claws back the full $4,500 from your account, and any money you wired to the scammer is gone forever.",
+    "hints": [
+      "Can you win a lottery contest that you never entered?",
+      "Why does a check appearing as 'available funds' in your banking app not mean it has truly cleared?",
+      "Legitimate lotteries never require winners to wire money to receive payouts."
+    ],
+    "learningObjective": "Understand counterfeit check clearing mechanics and avoid advance-fee lottery scams.",
+    "consequenceChain": [
+      "You deposited the fake check and wired $3,800 to the claims officer",
+      "10 days later the bank identified the check as counterfeit and deducted $4,500 from your account",
+      "Your bank account was left severely overdrawn and flagged for check fraud"
+    ],
+    "recoverySteps": [
+      "Contact bank branch manager to explain you were the victim of counterfeit check fraud",
+      "File report with US Postal Inspection Service (USPIS)",
+      "Never wire money from deposited checks from strangers"
+    ],
+    "order": 10
+  }
+]
