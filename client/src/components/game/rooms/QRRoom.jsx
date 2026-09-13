@@ -1,112 +1,107 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import Button from '../../common/Button';
-import PropTypes from 'prop-types';
-import { QrCode, Scan, Smartphone, ExternalLink, AlertTriangle, ShieldCheck, Check } from 'lucide-react';
+import { QrCode, Scan, ExternalLink, ShieldCheck, HelpCircle, AlertTriangle } from 'lucide-react';
+import useGameStore from '../../../store/gameStore';
 
-const QRRoom = ({ challenge, onAnswer, onEvidenceSelect }) => {
-  const [selectedOption, setSelectedOption] = useState(null);
+const QRRoom = ({ onComplete }) => {
+  const { addXP, addCoins, loseHeart } = useGameStore();
+  const [feedback, setFeedback] = useState(null);
 
-  const scenario = challenge?.scenario || {};
-  const qrDestination = scenario.qrDestination || "https://city-parking-meter-quickpay.online/pay?meterId=4920";
-  const contextText = scenario.context || "Inspect the physical QR code and evaluate its destination before proceeding.";
+  const qrDestination = "https://city-parking-meter-quickpay.online/pay?meterId=4920";
+  const isMalicious = true;
 
-  const options = challenge?.options || [
-    { text: "SAFE — Standard QR code", value: "safe" },
-    { text: "SUSPICIOUS — Verify destination domain", value: "suspicious" },
-    { text: "MALICIOUS — Dangerous redirect / APK dropper", value: "malicious" }
-  ];
+  const handleAnswer = (type) => {
+    if (type === 'phishing') {
+      const points = 50;
+      addXP(points);
+      addCoins(10);
+      setFeedback({ type: 'success', text: `CORRECT! +${points} XP` });
+      setTimeout(() => onComplete && onComplete(points), 1500);
+    } else {
+      loseHeart();
+      setFeedback({ type: 'error', text: 'WRONG! The domain is suspicious.' });
+      setTimeout(() => setFeedback(null), 1500);
+    }
+  };
 
   return (
-    <div className="flex flex-col h-full bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden text-slate-800">
+    <div className="flex flex-col h-full bg-[#1e293b] rounded-3xl border-4 border-purple-500/50 shadow-2xl overflow-hidden relative font-pixel text-white">
+      
+      {/* Background */}
+      <div className="absolute inset-0 pointer-events-none opacity-20"
+           style={{
+             backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, #000 2px, #000 4px)'
+           }}
+      />
+
+      {feedback && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1.5 }}
+          exit={{ opacity: 0 }}
+          className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 font-pixel text-3xl tracking-wider text-center ${
+            feedback.type === 'success' ? 'text-green-400 drop-shadow-[4px_4px_0_#000]' : 'text-red-500 drop-shadow-[4px_4px_0_#000]'
+          }`}
+        >
+          {feedback.text}
+        </motion.div>
+      )}
+
       {/* Top Bar */}
-      <div className="bg-slate-100/90 border-b border-slate-200 px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex gap-1.5">
-            <div className="w-3 h-3 rounded-full bg-red-400" />
-            <div className="w-3 h-3 rounded-full bg-amber-400" />
-            <div className="w-3 h-3 rounded-full bg-emerald-400" />
-          </div>
-          <span className="text-xs font-mono font-bold text-indigo-800 tracking-wider">CYBERLOCK // OPTICAL_QR_SCANNER</span>
+      <div className="flex justify-between items-center p-4 bg-purple-900/30 border-b-4 border-purple-900">
+        <div className="flex items-center gap-2">
+          <Scan className="w-6 h-6 text-purple-400 animate-pulse" />
+          <span className="text-purple-400 drop-shadow-[2px_2px_0_#000]">QR_SCANNER_V1</span>
         </div>
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-indigo-100 text-indigo-800 border border-indigo-200">
-          <Scan size={12} className="text-indigo-700" /> CAMERA_FEED_ACTIVE
-        </span>
+        <div className="text-yellow-400 drop-shadow-[2px_2px_0_#000]">
+          ANALYZE THE CODE
+        </div>
       </div>
 
-      <div className="flex-grow p-6 overflow-y-auto custom-scrollbar space-y-6">
-        <div className="text-center max-w-xl mx-auto">
-          <h2 className="text-xl font-black text-slate-900 mb-2">{challenge?.title || 'QR Trap Challenge'}</h2>
-          <p className="text-sm text-slate-700 bg-slate-50 p-4 rounded-2xl border border-slate-200 leading-relaxed shadow-sm">
-            {contextText}
-          </p>
-        </div>
-
-        {/* Simulated Camera Viewfinder with QR Target */}
-        <div className="max-w-md mx-auto relative p-6 bg-slate-50 rounded-2xl border border-indigo-200 shadow-inner flex flex-col items-center">
-          {/* Viewfinder Corners */}
-          <div className="w-48 h-48 relative border-2 border-indigo-300 rounded-2xl flex items-center justify-center p-4 bg-white overflow-hidden shadow-sm">
+      <div className="flex-1 flex flex-col items-center justify-center p-6 gap-8 z-10 relative">
+        
+        <div className="pixel-panel-stone p-6 flex flex-col items-center">
+          
+          <div className="w-64 h-64 border-4 border-purple-500 bg-white relative p-4 flex items-center justify-center overflow-hidden">
             <motion.div
-              className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-indigo-500 to-transparent"
+              className="absolute left-0 right-0 h-1 bg-red-500/50 shadow-[0_0_10px_red]"
               animate={{ top: ['0%', '100%', '0%'] }}
-              transition={{ repeat: Infinity, duration: 2.5, ease: 'linear' }}
+              transition={{ repeat: Infinity, duration: 2, ease: 'linear' }}
             />
-            <QrCode size={120} className="text-indigo-600 opacity-90" />
+            <QrCode className="w-full h-full text-black" />
           </div>
 
-          {/* Destination URL Display Box */}
-          <div 
-            onClick={() => onEvidenceSelect?.('domain', `QR Destination Decoded: ${qrDestination}`)}
-            className="w-full mt-4 p-3.5 bg-white border border-indigo-200 hover:border-indigo-400 rounded-xl cursor-pointer transition-all group shadow-sm"
+          <div className="mt-6 p-4 border-4 border-black bg-blue-900 text-center w-full">
+            <p className="text-blue-300 text-xs mb-2">DECODED URL:</p>
+            <p className="text-white text-sm break-all">{qrDestination}</p>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex gap-4 w-full max-w-2xl justify-center">
+          <button 
+            onClick={() => handleAnswer('safe')}
+            className="pixel-btn pixel-btn-success flex-1 py-4 text-sm"
           >
-            <div className="flex items-center justify-between text-[11px] font-mono text-slate-500 mb-1">
-              <span className="font-bold">DECODED DESTINATION:</span>
-              <span className="text-indigo-600 font-semibold group-hover:underline">Click to Inspect</span>
-            </div>
-            <div className="flex items-center gap-2 overflow-hidden">
-              <ExternalLink size={14} className="text-indigo-600 shrink-0" />
-              <span className="font-mono text-xs text-indigo-900 font-bold truncate">{qrDestination}</span>
-            </div>
-          </div>
+            <ShieldCheck className="w-6 h-6 mr-2" /> SAFE
+          </button>
+          <button 
+            onClick={() => handleAnswer('suspicious')}
+            className="pixel-btn pixel-btn-secondary flex-1 py-4 text-sm"
+          >
+            <HelpCircle className="w-6 h-6 mr-2" /> SUSPICIOUS
+          </button>
+          <button 
+            onClick={() => handleAnswer('phishing')}
+            className="pixel-btn pixel-btn-danger flex-1 py-4 text-sm"
+          >
+            <AlertTriangle className="w-6 h-6 mr-2" /> MALICIOUS
+          </button>
         </div>
 
-        {/* Options */}
-        <div className="max-w-xl mx-auto pt-2">
-          <p className="text-xs font-mono font-bold text-slate-500 uppercase tracking-wider mb-3">Classify this QR Code:</p>
-          <div className="space-y-3">
-            {options.map((opt, idx) => (
-              <button
-                key={idx}
-                onClick={() => {
-                  setSelectedOption(opt.value);
-                  onAnswer(opt.value);
-                }}
-                className={`w-full p-4 rounded-xl border text-left text-sm transition-all flex items-start gap-3.5 ${
-                  selectedOption === opt.value
-                    ? 'bg-indigo-50 border-indigo-500 text-indigo-950 font-semibold shadow-md ring-1 ring-indigo-500'
-                    : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-slate-400'
-                }`}
-              >
-                <div className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 mt-0.5 ${
-                  selectedOption === opt.value ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-slate-400 bg-white'
-                }`}>
-                  {selectedOption === opt.value && <Check size={12} strokeWidth={3} />}
-                </div>
-                <span className="leading-relaxed">{opt.text}</span>
-              </button>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   );
 };
 
-QRRoom.propTypes = {
-  challenge: PropTypes.object,
-  onAnswer: PropTypes.func.isRequired,
-  onEvidenceSelect: PropTypes.func
-};
-
 export default QRRoom;
-

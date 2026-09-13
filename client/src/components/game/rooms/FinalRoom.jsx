@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, ShieldAlert, Swords, Heart, Zap } from 'lucide-react';
+import { Shield, ShieldAlert, Zap } from 'lucide-react';
 import useGameStore from '../../../store/gameStore';
 
 const BOSS_PHASES = [
@@ -53,7 +53,6 @@ const FinalRoom = ({ onComplete }) => {
     setIsAttacking(true);
 
     if (option.isCorrect) {
-      // Player attacks Boss
       setFeedback({ type: 'success', text: `COUNTER-ATTACK! -${option.damage} HP` });
       setBossHealth(prev => Math.max(0, prev - option.damage));
       
@@ -65,12 +64,10 @@ const FinalRoom = ({ onComplete }) => {
         }
       }, 2000);
     } else {
-      // Boss attacks Player
       setFeedback({ type: 'error', text: `CRITICAL HIT! -${option.penalty} HP` });
       setPlayerHealth(prev => Math.max(0, prev - option.penalty));
       loseHeart();
       
-      // Boss heals slightly on wrong answers
       setBossHealth(prev => Math.min(100, prev + 10));
 
       setTimeout(() => {
@@ -103,11 +100,11 @@ const FinalRoom = ({ onComplete }) => {
 
   if (isGameOver) {
     return (
-      <div className="flex flex-col items-center justify-center h-full text-white bg-slate-900 rounded-3xl border-4 border-slate-700">
-        <h2 className={`text-5xl font-black mb-4 ${bossHealth <= 0 ? 'text-green-400 drop-shadow-[0_0_20px_rgba(74,222,128,0.5)]' : 'text-red-500 drop-shadow-[0_0_20px_rgba(239,68,68,0.5)]'}`}>
+      <div className="flex flex-col items-center justify-center h-full font-pixel text-white bg-slate-900 rounded-3xl border-4 border-red-900">
+        <h2 className={`text-5xl mb-4 ${bossHealth <= 0 ? 'text-green-400 drop-shadow-[4px_4px_0_#000]' : 'text-red-500 drop-shadow-[4px_4px_0_#000]'}`}>
           {bossHealth <= 0 ? 'VICTORY!' : 'DEFEAT!'}
         </h2>
-        <p className="text-xl text-gray-300">
+        <p className="text-xl text-gray-300 drop-shadow-[2px_2px_0_#000]">
           {bossHealth <= 0 ? 'The Malware King has been vanquished.' : 'The Kingdom has fallen.'}
         </p>
       </div>
@@ -115,9 +112,8 @@ const FinalRoom = ({ onComplete }) => {
   }
 
   return (
-    <div className="flex flex-col h-full bg-slate-900 rounded-3xl border-4 border-red-900/50 shadow-2xl overflow-hidden relative">
+    <div className="flex flex-col h-full bg-[#3f000f] relative overflow-hidden font-pixel">
       
-      {/* Floating Combat Feedback */}
       <AnimatePresence>
         {feedback && (
           <motion.div
@@ -125,8 +121,8 @@ const FinalRoom = ({ onComplete }) => {
             animate={{ opacity: 1, scale: 1.5, y: 0 }}
             exit={{ opacity: 0, scale: 2 }}
             transition={{ type: 'spring', bounce: 0.5 }}
-            className={`absolute z-50 top-1/3 left-1/2 transform -translate-x-1/2 font-black text-4xl tracking-wider uppercase text-center ${
-              feedback.type === 'success' ? 'text-blue-400 drop-shadow-[0_0_20px_#60a5fa]' : 'text-red-500 drop-shadow-[0_0_20px_#ef4444]'
+            className={`absolute z-50 top-1/3 left-1/2 transform -translate-x-1/2 text-4xl text-center ${
+              feedback.type === 'success' ? 'text-blue-400 drop-shadow-[4px_4px_0_#000]' : 'text-red-500 drop-shadow-[4px_4px_0_#000]'
             }`}
           >
             {feedback.text}
@@ -135,24 +131,24 @@ const FinalRoom = ({ onComplete }) => {
       </AnimatePresence>
 
       {/* Top HUD for Boss Battle */}
-      <div className="flex justify-between items-start p-6 bg-red-950/40 border-b border-red-900/50">
+      <div className="flex justify-between items-center p-6 pixel-panel-stone m-4 z-10">
         
         {/* Player Health */}
         <div className="flex flex-col gap-2 w-1/3">
           <div className="flex items-center gap-2">
             <Shield className="w-6 h-6 text-blue-400" />
-            <span className="text-blue-400 font-bold uppercase tracking-widest">You (Lv {player.level})</span>
+            <span className="text-blue-400 text-sm">You (Lv {player.level})</span>
           </div>
-          <div className="w-full h-4 bg-slate-900 rounded-full border border-slate-700 overflow-hidden">
+          <div className="pixel-bar-container h-6">
             <motion.div 
-              className="h-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]"
+              className="h-full bg-blue-500 shadow-[inset_0px_4px_0px_0px_#93c5fd]"
               animate={{ width: `${playerHealth}%` }}
               transition={{ type: 'tween' }}
             />
           </div>
         </div>
 
-        <div className="text-center font-black text-3xl text-red-600 drop-shadow-[0_0_10px_rgba(220,38,38,0.8)] animate-pulse">
+        <div className="text-center text-4xl text-red-600 drop-shadow-[4px_4px_0_#000] animate-pulse">
           VS
         </div>
 
@@ -160,30 +156,29 @@ const FinalRoom = ({ onComplete }) => {
         <div className="flex flex-col gap-2 w-1/3 items-end">
           <div className="flex items-center gap-2 flex-row-reverse">
             <ShieldAlert className="w-6 h-6 text-red-500" />
-            <span className="text-red-500 font-bold uppercase tracking-widest">Malware King</span>
+            <span className="text-red-500 text-sm">Malware King</span>
           </div>
-          <div className="w-full h-6 bg-slate-900 rounded-full border border-red-900 overflow-hidden flex justify-end">
+          <div className="pixel-bar-container h-6 flex justify-end">
             <motion.div 
-              className="h-full bg-red-600 shadow-[0_0_15px_rgba(220,38,38,0.8)]"
+              className="h-full bg-red-600 shadow-[inset_0px_4px_0px_0px_#fca5a5]"
               animate={{ width: `${bossHealth}%` }}
               transition={{ type: 'tween' }}
             />
           </div>
         </div>
-
       </div>
 
       {/* Combat Arena */}
-      <div className="flex-1 relative bg-gradient-to-b from-red-950/20 to-slate-900 flex flex-col items-center justify-center p-8">
+      <div className="flex-1 relative flex flex-col items-center justify-center p-8 z-10">
         
         {/* The Boss Avatar */}
         <motion.div 
-          animate={isAttacking && feedback?.type === 'success' ? { x: [-20, 20, -20, 20, 0], filter: 'brightness(2) drop-shadow(0 0 30px red)' } : { y: [-10, 10, -10] }}
+          animate={isAttacking && feedback?.type === 'success' ? { x: [-20, 20, -20, 20, 0], filter: 'brightness(2)' } : { y: [-10, 10, -10] }}
           transition={isAttacking && feedback?.type === 'success' ? { duration: 0.5 } : { repeat: Infinity, duration: 4, ease: 'easeInOut' }}
           className="relative mb-8"
         >
-          <div className="w-48 h-48 bg-red-950 rounded-full flex items-center justify-center border-4 border-red-600 shadow-[0_0_50px_rgba(220,38,38,0.4)] relative z-10">
-            <span className="text-8xl filter drop-shadow-2xl">💀</span>
+          <div className="w-48 h-48 bg-red-950 flex items-center justify-center border-4 border-red-600 relative z-10 shadow-[8px_8px_0_rgba(0,0,0,0.5)]">
+            <span className="text-[120px] drop-shadow-[4px_4px_0_#000]">💀</span>
           </div>
           <div className="absolute inset-0 bg-red-600 blur-3xl opacity-20 animate-pulse z-0" />
         </motion.div>
@@ -196,12 +191,12 @@ const FinalRoom = ({ onComplete }) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="text-center max-w-2xl bg-black/60 backdrop-blur-sm border border-red-500/30 p-6 rounded-2xl mb-8"
+              className="text-center max-w-2xl pixel-panel-parchment p-6 mb-8 shadow-[8px_8px_0_rgba(0,0,0,0.5)]"
             >
-              <h3 className="text-red-400 font-bold uppercase tracking-widest mb-2 flex items-center justify-center gap-2">
+              <h3 className="text-red-600 text-lg mb-4 flex items-center justify-center gap-2">
                 <Zap className="w-5 h-5" /> Phase {currentPhase + 1}: {phase.name}
               </h3>
-              <p className="text-white text-xl font-medium leading-relaxed">
+              <p className="text-[#451a03] text-xl leading-relaxed">
                 "{phase.attackText}"
               </p>
             </motion.div>
@@ -219,12 +214,12 @@ const FinalRoom = ({ onComplete }) => {
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ delay: index * 0.1 }}
                 onClick={() => handleChoice(option)}
-                className="w-full text-left p-4 bg-slate-800 border-2 border-slate-700 hover:border-blue-500 hover:bg-slate-700 rounded-xl transition-all group flex items-center gap-4"
+                className="w-full text-left p-4 pixel-panel-blue text-sm hover:brightness-110 active:scale-95 transition-all flex items-center gap-4"
               >
-                <div className="w-10 h-10 rounded-full bg-slate-900 border border-slate-600 flex items-center justify-center group-hover:border-blue-400 transition-colors">
-                  <Swords className="w-5 h-5 text-gray-400 group-hover:text-blue-400" />
+                <div className="w-10 h-10 border-4 border-black bg-blue-700 flex items-center justify-center text-xl pb-1">
+                  ⚔️
                 </div>
-                <span className="text-white font-medium text-lg">{option.text}</span>
+                <span className="text-white drop-shadow-[2px_2px_0_#000]">{option.text}</span>
               </motion.button>
             ))}
           </AnimatePresence>

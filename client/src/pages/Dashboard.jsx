@@ -1,88 +1,55 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import useGameStore from '../store/gameStore';
 import { useAuth } from '../hooks/useAuth';
 
-// Floating Island Component
-const FloatingIsland = ({ id, name, x, y, status, onClick, emoji, color }) => {
+const MapNode = ({ id, x, y, name, status, onClick, isBoss, active }) => {
   const isLocked = status === 'locked';
   const isCompleted = status === 'completed';
-  const isActive = status === 'active';
-
+  
   return (
-    <motion.div 
-      className="absolute flex flex-col items-center justify-center cursor-pointer group"
-      style={{ left: `${x}%`, top: `${y}%`, transform: 'translate(-50%, -50%)' }}
-      initial={{ y: 0 }}
-      animate={{ y: [-10, 10, -10] }}
-      transition={{ 
-        repeat: Infinity, 
-        duration: 4 + Math.random() * 2, 
-        ease: "easeInOut" 
-      }}
-      onClick={() => !isLocked && onClick(id)}
+    <div 
+      className="absolute flex flex-col items-center justify-center transform -translate-x-1/2 -translate-y-1/2 z-10"
+      style={{ left: `${x}%`, top: `${y}%` }}
     >
-      {/* Island base shadow */}
-      <div 
-        className="absolute -bottom-8 w-32 h-10 rounded-[100%] blur-md bg-black/50 transition-opacity duration-500" 
-        style={{ opacity: isLocked ? 0.3 : 0.6 }}
-      />
-      
-      {/* Island visual */}
-      <motion.div 
-        whileHover={!isLocked ? { scale: 1.1 } : {}}
-        whileTap={!isLocked ? { scale: 0.95 } : {}}
-        className={`relative w-40 h-40 rounded-full border-4 flex flex-col items-center justify-center shadow-2xl transition-all duration-300 ${
-          isLocked ? 'bg-gray-800 border-gray-600 grayscale opacity-80' : 
-          isActive ? `bg-gray-900 border-[${color}] shadow-[0_0_30px_${color}50]` : 
-          `bg-gray-800 border-green-500`
-        }`}
+      {/* Name tag */}
+      <div className={`mb-2 font-pixel text-[10px] px-2 py-1 ${isLocked ? 'text-gray-500 bg-gray-800' : 'text-white bg-black'} border-2 ${isLocked ? 'border-gray-600' : 'border-white'}`}>
+        {name}
+      </div>
+
+      {/* Node button */}
+      <button 
+        onClick={() => !isLocked && onClick(id)}
+        className={`w-16 h-16 border-4 relative transition-transform ${!isLocked && 'hover:scale-110 cursor-pointer active:scale-95'} ${
+          isLocked ? 'bg-gray-700 border-gray-900 grayscale' :
+          isBoss ? 'bg-red-600 border-red-900' :
+          'bg-blue-500 border-blue-900'
+        } ${isCompleted && !isBoss ? 'bg-green-500 border-green-900' : ''}`}
         style={{
-          borderColor: isLocked ? '#4b5563' : isActive ? color : '#22c55e',
-          boxShadow: isActive ? `0 0 40px ${color}80, inset 0 0 20px ${color}40` : 
-                     isCompleted ? '0 0 20px #22c55e80' : 'none'
+          boxShadow: !isLocked ? 'inset 4px 4px 0px 0px rgba(255,255,255,0.3), 4px 4px 0px 0px rgba(0,0,0,0.5)' : 'none'
         }}
       >
-        {/* Terrain/Surface (simple representation) */}
-        <div className="absolute inset-2 rounded-full overflow-hidden opacity-50">
-           <div className="w-full h-1/2 bg-green-900/30 rounded-b-[100%]" />
+        <div className="absolute inset-0 flex items-center justify-center text-3xl drop-shadow-[2px_2px_0_#000]">
+          {isLocked ? '🔒' : isBoss ? '💀' : isCompleted ? '✅' : '⚔️'}
         </div>
+      </button>
 
-        <span className="text-5xl z-10 filter drop-shadow-lg mb-2">
-          {isLocked ? '🔒' : emoji}
-        </span>
-        
-        {isActive && (
-          <motion.div 
-            className="absolute -top-2 right-4 text-2xl"
-            animate={{ y: [0, -10, 0] }}
-            transition={{ repeat: Infinity, duration: 1.5 }}
-          >
-            ⚔️
-          </motion.div>
-        )}
-      </motion.div>
-
-      {/* Name Tag */}
-      <motion.div 
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className={`mt-4 px-4 py-1 rounded-full text-sm font-bold tracking-widest uppercase border ${
-          isLocked ? 'bg-gray-800/80 border-gray-600 text-gray-400' :
-          `bg-black/80 border-[${color}] text-white`
-        } backdrop-blur-sm`}
-        style={{ borderColor: isLocked ? '#4b5563' : color }}
-      >
-        {name}
-      </motion.div>
-    </motion.div>
+      {/* Player marker if active */}
+      {active && (
+        <motion.div 
+          animate={{ y: [0, -10, 0] }}
+          transition={{ repeat: Infinity, duration: 1 }}
+          className="absolute -top-12 text-4xl drop-shadow-[2px_2px_0_#000] z-20"
+        >
+          👦
+        </motion.div>
+      )}
+    </div>
   );
 };
 
-// Bridge Component
-const Bridge = ({ start, end, isRepaired }) => {
-  // Simple straight line bridge for now
+const DottedPath = ({ start, end, isUnlocked }) => {
   const dx = end.x - start.x;
   const dy = end.y - start.y;
   const length = Math.sqrt(dx * dx + dy * dy);
@@ -95,29 +62,17 @@ const Bridge = ({ start, end, isRepaired }) => {
         left: `${start.x}%`,
         top: `${start.y}%`,
         width: `${length}%`,
-        height: '2px',
+        height: '4px',
         transform: `rotate(${angle}deg)`,
-        zIndex: -1
+        zIndex: 0
       }}
     >
-      {/* Broken state */}
-      {!isRepaired && (
-        <div className="w-full flex justify-around">
-          {[...Array(5)].map((_, i) => (
-            <div key={i} className="w-4 h-2 bg-yellow-900/40 rounded-sm transform rotate-45" />
-          ))}
-        </div>
-      )}
-
-      {/* Repaired state (Animated line) */}
-      {isRepaired && (
-        <motion.div 
-          initial={{ width: 0 }}
-          animate={{ width: '100%' }}
-          transition={{ duration: 2, ease: "easeInOut" }}
-          className="h-full bg-gradient-to-r from-yellow-700 via-yellow-500 to-yellow-700 rounded-full shadow-[0_0_15px_rgba(234,179,8,0.5)]"
-        />
-      )}
+      <div 
+        className="w-full h-full"
+        style={{
+          backgroundImage: `repeating-linear-gradient(90deg, ${isUnlocked ? '#facc15' : '#4b5563'} 0, ${isUnlocked ? '#facc15' : '#4b5563'} 8px, transparent 8px, transparent 16px)`
+        }}
+      />
     </div>
   );
 };
@@ -125,84 +80,75 @@ const Bridge = ({ start, end, isRepaired }) => {
 export default function Dashboard() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { world, addXP, unlockIsland } = useGameStore();
-
+  
+  // Use user.completedRooms length or default to 0. 
   const completedCount = user?.completedRooms?.length || 0;
 
-  // Define the islands and their positions in the 2D space
-  const islands = [
-    { id: 1, name: 'Phishing Forest',  emoji: '🎣', x: 20, y: 30, color: '#ef4444' },
-    { id: 2, name: 'Password Fortress', emoji: '🏰', x: 50, y: 20, color: '#eab308' },
-    { id: 3, name: 'QR Temple',        emoji: '⛩️', x: 80, y: 40, color: '#a855f7' },
-    { id: 4, name: 'Scam Village',     emoji: '🛖', x: 70, y: 75, color: '#f97316' },
-    { id: 5, name: 'Final Cyber Castle',emoji: '💀', x: 30, y: 80, color: '#3b82f6' },
+  const nodes = [
+    { id: 1, name: 'Phishing',   x: 20, y: 80, isBoss: false },
+    { id: 2, name: 'Passwords',  x: 40, y: 50, isBoss: false },
+    { id: 3, name: 'Scam',       x: 70, y: 70, isBoss: false },
+    { id: 4, name: 'QR Code',    x: 80, y: 30, isBoss: false },
+    { id: 5, name: 'Boss',       x: 50, y: 15, isBoss: true  },
   ];
 
-  // Determine status based on completed rooms (for now mock it based on id)
-  const getIslandStatus = (id) => {
+  const getStatus = (id) => {
     if (id <= completedCount) return 'completed';
     if (id === completedCount + 1) return 'active';
     return 'locked';
   };
 
-  const handleIslandClick = (id) => {
-    // Transition effect before navigating
+  const handleNodeClick = (id) => {
     navigate(`/play/${id}`);
   };
 
   return (
-    <div className="w-full h-full relative overflow-hidden bg-gradient-to-br from-[#0a0d1a] to-[#1a233a]">
-      {/* Background Environment Elements */}
-      <div className="absolute inset-0 z-[-2]">
-        {/* Grid/Stars/Clouds */}
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 animate-pulse" />
-        
-        {/* Floating background clouds */}
-        {[...Array(5)].map((_, i) => (
-          <motion.div 
-            key={`cloud-${i}`}
-            className="absolute rounded-full bg-blue-900/20 blur-3xl"
-            style={{
-              width: Math.random() * 400 + 200,
-              height: Math.random() * 200 + 100,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              x: [0, 100, 0],
-              opacity: [0.2, 0.4, 0.2]
-            }}
-            transition={{ duration: 20 + i * 5, repeat: Infinity, ease: "linear" }}
-          />
-        ))}
-      </div>
+    <div className="w-full h-full relative pixel-panel-wood overflow-hidden">
+      
+      {/* Background Terrain */}
+      <div className="absolute inset-0 bg-[#22c55e] opacity-80"
+           style={{
+             backgroundImage: 'linear-gradient(#16a34a 2px, transparent 2px), linear-gradient(90deg, #16a34a 2px, transparent 2px)',
+             backgroundSize: '32px 32px'
+           }}
+      />
 
-      {/* Render Bridges connecting sequential islands */}
-      {islands.map((island, index) => {
-        if (index === islands.length - 1) return null;
-        const nextIsland = islands[index + 1];
-        const isRepaired = getIslandStatus(nextIsland.id) !== 'locked';
-        
+      {/* Decorative environment elements */}
+      <div className="absolute top-10 left-10 text-6xl drop-shadow-[4px_4px_0_#000]">🌲</div>
+      <div className="absolute top-32 left-20 text-6xl drop-shadow-[4px_4px_0_#000]">🌲</div>
+      <div className="absolute bottom-20 right-20 text-6xl drop-shadow-[4px_4px_0_#000]">🌲</div>
+      <div className="absolute top-40 right-10 text-6xl drop-shadow-[4px_4px_0_#000]">🗻</div>
+      <div className="absolute top-10 right-40 text-6xl drop-shadow-[4px_4px_0_#000]">☁️</div>
+
+      {/* Paths */}
+      {nodes.map((node, i) => {
+        if (i === nodes.length - 1) return null;
+        const nextNode = nodes[i + 1];
+        const isUnlocked = getStatus(nextNode.id) !== 'locked';
         return (
-          <Bridge 
-            key={`bridge-${island.id}-${nextIsland.id}`}
-            start={{ x: island.x, y: island.y }}
-            end={{ x: nextIsland.x, y: nextIsland.y }}
-            isRepaired={isRepaired}
+          <DottedPath 
+            key={`path-${node.id}`} 
+            start={node} 
+            end={nextNode} 
+            isUnlocked={isUnlocked} 
           />
         );
       })}
 
-      {/* Render Islands */}
-      {islands.map((island) => (
-        <FloatingIsland 
-          key={island.id}
-          {...island}
-          status={getIslandStatus(island.id)}
-          onClick={handleIslandClick}
-        />
-      ))}
-      
+      {/* Nodes */}
+      {nodes.map((node) => {
+        const status = getStatus(node.id);
+        return (
+          <MapNode 
+            key={node.id} 
+            {...node} 
+            status={status} 
+            active={status === 'active' || (status === 'completed' && completedCount === nodes.length && node.id === nodes.length)}
+            onClick={handleNodeClick} 
+          />
+        );
+      })}
+
     </div>
   );
 }

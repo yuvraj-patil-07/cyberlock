@@ -1,28 +1,38 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AlertTriangle } from 'lucide-react';
 
 export default function NotFound() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-cyber-950 flex flex-col items-center justify-center p-6 text-center relative overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-red-900/20 via-cyber-950 to-cyber-950 pointer-events-none" />
+    <div className="min-h-screen bg-[#1e293b] font-pixel text-white flex flex-col items-center justify-center p-6 text-center relative overflow-hidden">
+      {/* Background pattern */}
+      <div className="absolute inset-0 pointer-events-none opacity-20"
+           style={{
+             backgroundImage: 'repeating-linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000), repeating-linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000)',
+             backgroundPosition: '0 0, 20px 20px',
+             backgroundSize: '40px 40px'
+           }}
+      />
       
-      <AlertTriangle className="w-24 h-24 text-red-500 mb-6 animate-pulse" />
+      <div className="text-[120px] drop-shadow-[4px_4px_0_#000] mb-4 animate-bounce">
+        🚧
+      </div>
       
-      <h1 className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500 mb-4 tracking-tighter">
+      <h1 className="text-6xl text-red-500 mb-6 drop-shadow-[4px_4px_0_#000]">
         404
       </h1>
       
-      <h2 className="text-2xl font-bold text-slate-200 mb-4">ACCESS DENIED</h2>
-      <p className="text-slate-400 mb-8 max-w-md">
-        The sector you are trying to access does not exist or has been quarantined by security protocols.
-      </p>
-      
-      <button onClick={() => navigate('/dashboard')} className="btn-ghost border-red-500/50 text-red-400 hover:bg-red-500/10 hover:border-red-500">
-        RETURN TO SECURE SECTOR
-      </button>
+      <div className="pixel-panel-stone p-8 max-w-md shadow-[8px_8px_0_rgba(0,0,0,0.5)]">
+        <h2 className="text-2xl text-yellow-400 mb-4 drop-shadow-[2px_2px_0_#000]">DEAD END</h2>
+        <p className="text-sm text-gray-300 leading-relaxed mb-8">
+          You've wandered off the map! This area of the kingdom does not exist or has been destroyed by malware.
+        </p>
+        
+        <button onClick={() => navigate('/dashboard')} className="pixel-btn pixel-btn-primary w-full py-4">
+          RETURN TO VILLAGE
+        </button>
+      </div>
     </div>
   );
 }

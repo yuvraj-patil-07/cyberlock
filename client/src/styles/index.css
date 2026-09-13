@@ -1,754 +1,219 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=MedievalSharp&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* ═══════════════════════════════════════════════════
-   CYBERLOCK — FANTASY RPG DESIGN TOKENS
+   CYBER QUEST — PIXEL ART RPG DESIGN TOKENS
 ═══════════════════════════════════════════════════ */
 @layer base {
-  :root {
-    /* World Colors */
-    --sky-deep:    #0a0d1a;
-    --sky-mid:     #111827;
-    --island-earth:#2d4a1e;
-    --island-stone:#3d3d5c;
-    --castle-dark: #1a1a2e;
-
-    /* Accent Colors */
-    --cyan-glow:   #00d4ff;
-    --gold-glow:   #ffd700;
-    --purple-glow: #9b59b6;
-    --green-glow:  #00ff88;
-    --red-danger:  #ff4757;
-    --amber-warm:  #f59e0b;
-
-    /* UI Chrome */
-    --panel-bg:    #1e2540;
-    --panel-border:#2a3558;
-    --panel-light: #242b4d;
-
-    /* Text */
-    --text-gold:   #e8c96a;
-    --text-light:  #c8d6e5;
-    --text-dim:    #8892a4;
-
-    /* Shadows */
-    --shadow-fantasy: 0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
-    --shadow-glow-cyan: 0 0 20px rgba(0,212,255,0.4), 0 0 60px rgba(0,212,255,0.15);
-    --shadow-glow-gold: 0 0 20px rgba(255,215,0,0.5), 0 0 60px rgba(255,215,0,0.2);
-    --shadow-glow-red:  0 0 20px rgba(255,71,87,0.5);
-  }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
   body {
-    font-family: 'Rajdhani', 'system-ui', sans-serif;
-    background: var(--sky-deep);
-    color: var(--text-light);
-    -webkit-font-smoothing: antialiased;
+    background-color: #1e1e2e;
+    color: #f8fafc;
+    /* Use a readable pixel font for body, chunky for headings */
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    -webkit-font-smoothing: none;
     -moz-osx-font-smoothing: grayscale;
-    selection-color: #00d4ff;
+    image-rendering: pixelated;
     overflow-x: hidden;
   }
 
-  * {
-    box-sizing: border-box;
+  h1, h2, h3, h4, h5, h6, .font-pixel {
+    font-family: 'Press Start 2P', cursive;
+    text-transform: uppercase;
   }
 
-  h1, h2, h3, .font-fantasy {
-    font-family: 'Cinzel', serif;
+  /* Scrollbar retro styling */
+  ::-webkit-scrollbar { width: 12px; height: 12px; }
+  ::-webkit-scrollbar-track { background: #1e1e2e; border-left: 2px solid #0f172a; }
+  ::-webkit-scrollbar-thumb {
+    background: #475569;
+    border: 2px solid #1e1e2e;
+    border-radius: 0;
   }
-
-  ::selection {
-    background: rgba(0, 212, 255, 0.25);
-    color: #fff;
-  }
+  ::-webkit-scrollbar-thumb:hover { background: #64748b; }
 }
 
-/* ═══════════════════════════════════════════════════
-   FANTASY COMPONENT CLASSES
-═══════════════════════════════════════════════════ */
 @layer components {
 
-  /* ── World Background ── */
-  .world-bg {
-    background: linear-gradient(180deg, #0a0d1a 0%, #111827 40%, #1a1a2e 100%);
-    min-height: 100vh;
+  /* ── PIXEL BORDERS & PANELS ── */
+  /* We use box-shadow to create rigid 2px/4px pixel borders without images */
+
+  .pixel-panel-wood {
+    background-color: #8b5a2b;
+    border: 4px solid #332111;
+    box-shadow: 
+      inset -4px -4px 0px 0px #5c3a21, 
+      inset 4px 4px 0px 0px #c29255,
+      4px 4px 0px 0px rgba(0,0,0,0.5);
+    color: #fff8eb;
     position: relative;
-    overflow: hidden;
   }
 
-  /* ── Fantasy Panel (stone/dark glass) ── */
-  .fantasy-panel {
-    background: linear-gradient(135deg, #1e2540 0%, #242b4d 100%);
-    border: 1px solid #2a3558;
-    box-shadow: var(--shadow-fantasy);
-    border-radius: 16px;
-    position: relative;
-    overflow: hidden;
+  .pixel-panel-stone {
+    background-color: #64748b;
+    border: 4px solid #1e293b;
+    box-shadow: 
+      inset -4px -4px 0px 0px #475569, 
+      inset 4px 4px 0px 0px #94a3b8,
+      4px 4px 0px 0px rgba(0,0,0,0.5);
+    color: #f8fafc;
   }
 
-  .fantasy-panel::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-    pointer-events: none;
+  .pixel-panel-blue {
+    background-color: #3b82f6;
+    border: 4px solid #172554;
+    box-shadow: 
+      inset -4px -4px 0px 0px #1e3a8a, 
+      inset 4px 4px 0px 0px #60a5fa,
+      4px 4px 0px 0px rgba(0,0,0,0.5);
+    color: #ffffff;
   }
 
-  /* ── HUD Panel (top bar chrome) ── */
-  .hud-panel {
-    background: linear-gradient(180deg, #151b30 0%, #1a2140 100%);
-    border-bottom: 1px solid #2a3558;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.04) inset;
-    backdrop-filter: blur(12px);
+  .pixel-panel-parchment {
+    background-color: #fde68a;
+    border: 4px solid #78350f;
+    box-shadow: 
+      inset -4px -4px 0px 0px #d97706, 
+      inset 4px 4px 0px 0px #fef3c7,
+      4px 4px 0px 0px rgba(0,0,0,0.5);
+    color: #451a03;
   }
 
-  /* ── Rune Stone Badge ── */
-  .rune-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 12px;
-    background: linear-gradient(135deg, #1a2140, #242b4d);
-    border: 1px solid rgba(0,212,255,0.3);
-    border-radius: 999px;
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 700;
-    font-size: 11px;
-    letter-spacing: 0.1em;
+  /* ── PIXEL BUTTONS ── */
+
+  .pixel-btn {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
     text-transform: uppercase;
-    color: var(--cyan-glow);
-    box-shadow: 0 0 10px rgba(0,212,255,0.15), inset 0 1px 0 rgba(255,255,255,0.05);
-  }
-
-  .rune-badge-gold {
-    border-color: rgba(255,215,0,0.4);
-    color: var(--gold-glow);
-    box-shadow: 0 0 10px rgba(255,215,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
-  }
-
-  .rune-badge-purple {
-    border-color: rgba(155,89,182,0.4);
-    color: #c39bd3;
-    box-shadow: 0 0 10px rgba(155,89,182,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
-  }
-
-  .rune-badge-danger {
-    border-color: rgba(255,71,87,0.4);
-    color: #ff6b7a;
-    box-shadow: 0 0 10px rgba(255,71,87,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
-  }
-
-  /* ── World Button ── */
-  .world-btn {
+    padding: 12px 16px;
+    border: 4px solid #000;
+    position: relative;
+    cursor: pointer;
+    text-align: center;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 12px 28px;
-    font-family: 'Cinzel', serif;
-    font-weight: 700;
-    font-size: 13px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    border-radius: 10px;
-    transition: all 0.25s ease;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
+    transition: transform 0.1s;
   }
 
-  .world-btn::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 50%);
-    pointer-events: none;
+  .pixel-btn:active {
+    transform: translate(2px, 2px);
   }
 
-  .world-btn-primary {
-    background: linear-gradient(180deg, #1a8fbf 0%, #0e6a9f 50%, #0a5580 100%);
+  .pixel-btn-primary {
+    background-color: #f59e0b; /* Gold */
+    box-shadow: 
+      inset -4px -4px 0px 0px #b45309, 
+      inset 4px 4px 0px 0px #fcd34d;
+    color: #000;
+  }
+  .pixel-btn-primary:active {
+    box-shadow: 
+      inset 4px 4px 0px 0px #b45309, 
+      inset -4px -4px 0px 0px #fcd34d;
+  }
+
+  .pixel-btn-secondary {
+    background-color: #64748b;
+    box-shadow: 
+      inset -4px -4px 0px 0px #334155, 
+      inset 4px 4px 0px 0px #94a3b8;
     color: #fff;
-    border: 1px solid rgba(0,212,255,0.4);
-    box-shadow: 0 4px 15px rgba(0,150,220,0.4), 0 1px 0 rgba(255,255,255,0.15) inset;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  }
+  .pixel-btn-secondary:active {
+    box-shadow: 
+      inset 4px 4px 0px 0px #334155, 
+      inset -4px -4px 0px 0px #94a3b8;
   }
 
-  .world-btn-primary:hover {
-    background: linear-gradient(180deg, #1fa8e0 0%, #1580be 50%, #0e6a9f 100%);
-    box-shadow: 0 6px 25px rgba(0,150,220,0.6), 0 1px 0 rgba(255,255,255,0.2) inset;
-    transform: translateY(-2px);
+  .pixel-btn-success {
+    background-color: #4ade80;
+    box-shadow: 
+      inset -4px -4px 0px 0px #166534, 
+      inset 4px 4px 0px 0px #86efac;
+    color: #064e3b;
+  }
+  .pixel-btn-success:active {
+    box-shadow: 
+      inset 4px 4px 0px 0px #166534, 
+      inset -4px -4px 0px 0px #86efac;
   }
 
-  .world-btn-gold {
-    background: linear-gradient(180deg, #c8922a 0%, #a6751d 50%, #7d5713 100%);
-    color: #fff9e6;
-    border: 1px solid rgba(255,215,0,0.4);
-    box-shadow: 0 4px 15px rgba(200,150,0,0.4), 0 1px 0 rgba(255,255,255,0.2) inset;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-  }
-
-  .world-btn-gold:hover {
-    box-shadow: 0 6px 25px rgba(255,200,0,0.5), var(--shadow-glow-gold);
-    transform: translateY(-2px);
-  }
-
-  .world-btn-ghost {
-    background: rgba(255,255,255,0.04);
-    color: var(--text-light);
-    border: 1px solid rgba(255,255,255,0.12);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  }
-
-  .world-btn-ghost:hover {
-    background: rgba(255,255,255,0.08);
-    border-color: rgba(0,212,255,0.3);
+  .pixel-btn-danger {
+    background-color: #ef4444;
+    box-shadow: 
+      inset -4px -4px 0px 0px #991b1b, 
+      inset 4px 4px 0px 0px #fca5a5;
     color: #fff;
-    transform: translateY(-1px);
+  }
+  .pixel-btn-danger:active {
+    box-shadow: 
+      inset 4px 4px 0px 0px #991b1b, 
+      inset -4px -4px 0px 0px #fca5a5;
   }
 
-  .world-btn-danger {
-    background: linear-gradient(180deg, #c0392b 0%, #962d22 100%);
-    color: #fff;
-    border: 1px solid rgba(255,71,87,0.4);
-    box-shadow: 0 4px 15px rgba(255,71,87,0.3);
-  }
-
-  /* ── Stat Pill ── */
-  .stat-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 999px;
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 700;
-    font-size: 14px;
-    transition: all 0.2s;
-  }
-
-  .stat-pill:hover {
-    background: rgba(255,255,255,0.08);
-  }
-
-  /* ── Quest Card ── */
-  .quest-card {
-    background: linear-gradient(135deg, #1e2540 0%, #242b4d 100%);
-    border: 1px solid #2a3558;
-    border-radius: 14px;
-    padding: 20px;
+  /* ── PROGRESS BARS ── */
+  .pixel-bar-container {
+    background-color: #1e293b;
+    border: 3px solid #000;
+    padding: 2px;
     position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow-fantasy);
+    height: 24px;
+    width: 100%;
   }
 
-  .quest-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent 0%, var(--cyan-glow) 50%, transparent 100%);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  .quest-card:hover::before {
-    opacity: 1;
-  }
-
-  .quest-card:hover {
-    border-color: rgba(0,212,255,0.3);
-    transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.6), 0 0 20px rgba(0,212,255,0.1);
-  }
-
-  /* ── Chest Glow ── */
-  .chest-glow {
-    filter: drop-shadow(0 0 12px rgba(255,215,0,0.6)) drop-shadow(0 0 30px rgba(255,215,0,0.3));
-  }
-
-  /* ── Island Zone Card ── */
-  .island-zone {
-    position: relative;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    cursor: pointer;
-  }
-
-  .island-zone:hover {
-    transform: scale(1.04) translateY(-6px);
-  }
-
-  .island-zone-locked {
-    filter: grayscale(0.8) brightness(0.6);
-    cursor: not-allowed;
-  }
-
-  .island-zone-locked:hover {
-    transform: none;
-  }
-
-  .island-zone-cleared {
-    filter: brightness(1.1);
-  }
-
-  .island-zone-cleared::after {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    border-radius: inherit;
-    background: transparent;
-    border: 2px solid rgba(0,255,136,0.5);
-    box-shadow: 0 0 20px rgba(0,255,136,0.3);
-    animation: pulse-border 2s ease-in-out infinite;
-    pointer-events: none;
-    border-radius: 20px;
-  }
-
-  /* ── Parchment Scroll ── */
-  .parchment {
-    background: linear-gradient(135deg, #2a2010 0%, #3a2d18 50%, #2a2010 100%);
-    border: 2px solid #5a4020;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5), inset 0 0 40px rgba(0,0,0,0.3);
-    position: relative;
-  }
-
-  .parchment::before,
-  .parchment::after {
-    content: '';
-    position: absolute;
-    left: -4px; right: -4px;
-    height: 20px;
-    background: linear-gradient(90deg, #6b4c20, #8a6030, #c8902a, #8a6030, #6b4c20);
-    border-radius: 4px;
-  }
-
-  .parchment::before { top: -6px; }
-  .parchment::after  { bottom: -6px; }
-
-  /* ── XP Bar ── */
-  .xp-bar-track {
-    height: 8px;
-    background: rgba(255,255,255,0.06);
-    border-radius: 999px;
-    overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.08);
-    position: relative;
-  }
-
-  .xp-bar-fill {
+  .pixel-bar-fill-xp {
+    background-color: #3b82f6;
     height: 100%;
-    border-radius: 999px;
-    background: linear-gradient(90deg, #00a0c8, #00d4ff, #40e8ff);
-    box-shadow: 0 0 10px rgba(0,212,255,0.7);
-    position: relative;
-    transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: inset 0px 4px 0px 0px #93c5fd;
+    transition: width 0.3s steps(10);
+  }
+  .pixel-bar-fill-health {
+    background-color: #ef4444;
+    height: 100%;
+    box-shadow: inset 0px 4px 0px 0px #fca5a5;
+  }
+  .pixel-bar-fill-success {
+    background-color: #4ade80;
+    height: 100%;
+    box-shadow: inset 0px 4px 0px 0px #86efac;
   }
 
-  .xp-bar-fill::after {
-    content: '';
-    position: absolute;
-    top: 1px; left: 10px; right: 10px;
-    height: 2px;
-    background: rgba(255,255,255,0.4);
-    border-radius: 999px;
+  /* ── STATUS TAGS / BADGES ── */
+  .pixel-tag {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 8px;
+    padding: 6px 8px;
+    border: 2px solid #000;
+    text-transform: uppercase;
+    display: inline-flex;
   }
+  .pixel-tag-safe { background: #4ade80; color: #064e3b; }
+  .pixel-tag-suspicious { background: #facc15; color: #713f12; }
+  .pixel-tag-phishing { background: #ef4444; color: #fff; }
 
-  /* ── Heart ── */
-  .heart-icon {
-    color: #ff4757;
-    filter: drop-shadow(0 0 6px rgba(255,71,87,0.8));
-    animation: heart-beat 1.5s ease-in-out infinite;
-  }
-
-  /* ── Fog of War ── */
-  .fog-of-war {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at center, rgba(10,13,26,0.3) 0%, rgba(10,13,26,0.85) 100%);
-    border-radius: inherit;
-    pointer-events: none;
-  }
-
-  /* ── Stone Input ── */
-  .stone-input {
-    width: 100%;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 10px;
-    padding: 14px 14px 14px 48px;
-    color: var(--text-light);
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 16px;
-    font-weight: 500;
-    transition: all 0.25s;
+  /* ── INPUT FIELDS ── */
+  .pixel-input {
+    font-family: 'VT323', monospace;
+    font-size: 24px;
+    background-color: #fff8eb;
+    border: 4px solid #000;
+    padding: 8px 12px;
+    color: #451a03;
     outline: none;
+    box-shadow: inset 4px 4px 0px 0px rgba(0,0,0,0.1);
   }
-
-  .stone-input::placeholder {
-    color: var(--text-dim);
-    opacity: 0.7;
+  .pixel-input:focus {
+    border-color: #3b82f6;
   }
-
-  .stone-input:focus {
-    border-color: rgba(0,212,255,0.4);
-    background: rgba(0,212,255,0.05);
-    box-shadow: 0 0 0 3px rgba(0,212,255,0.1), var(--shadow-glow-cyan);
-  }
-
-  /* ── Tower / Zone Icon Containers ── */
-  .zone-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    transition: all 0.3s;
-  }
-
-  /* ── Particle Burst ── */
-  .particle {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    pointer-events: none;
-    animation: particle-burst 0.8s ease-out forwards;
-  }
-
-  /* ── Leaderboard Pedestal ── */
-  .pedestal {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-  }
-
-  .pedestal-block {
-    border-radius: 8px 8px 4px 4px;
-    border: 1px solid rgba(255,255,255,0.1);
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-  }
-
-  .pedestal-block::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  }
-
-  /* ── NPC Speech Bubble ── */
-  .speech-bubble {
-    position: relative;
-    background: linear-gradient(135deg, #1e2540, #2a3558);
-    border: 1px solid rgba(155,89,182,0.4);
-    border-radius: 16px;
-    padding: 14px 18px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4), 0 0 15px rgba(155,89,182,0.2);
-  }
-
-  .speech-bubble::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 24px;
-    width: 0; height: 0;
-    border-left: 10px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 10px solid #2a3558;
-  }
-
-  /* ── Victory Scroll ── */
-  .victory-scroll {
-    background: linear-gradient(180deg, #2a2010 0%, #3a2d18 100%);
-    border: 3px solid #c8922a;
-    border-radius: 12px;
-    box-shadow: 0 0 40px rgba(255,215,0,0.3), 0 8px 40px rgba(0,0,0,0.8);
-  }
-
-  /* ── LEGACY COMPAT (keep working for any existing usage) ── */
-  .btn-primary  { @apply world-btn world-btn-primary; }
-  .btn-ghost    { @apply world-btn world-btn-ghost; }
-  .btn-danger   { @apply world-btn world-btn-danger; }
-  .glass-panel  { @apply fantasy-panel; }
-  .glass-card   { @apply fantasy-panel; }
-}
-
-/* ═══════════════════════════════════════════════════
-   KEYFRAME ANIMATIONS
-═══════════════════════════════════════════════════ */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-12px); }
-}
-
-@keyframes float-slow {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50%       { transform: translateY(-8px) rotate(1deg); }
-}
-
-@keyframes heart-beat {
-  0%, 100% { transform: scale(1); }
-  14%       { transform: scale(1.3); }
-  28%       { transform: scale(1); }
-  42%       { transform: scale(1.15); }
-  56%       { transform: scale(1); }
-}
-
-@keyframes castle-glow {
-  0%, 100% { filter: drop-shadow(0 0 8px rgba(0,212,255,0.4)); }
-  50%       { filter: drop-shadow(0 0 20px rgba(0,212,255,0.8)) drop-shadow(0 0 40px rgba(0,212,255,0.3)); }
-}
-
-@keyframes shimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-@keyframes particle-burst {
-  0%   { opacity: 1; transform: translate(0,0) scale(1); }
-  100% { opacity: 0; transform: translate(var(--tx, 0), var(--ty, -60px)) scale(0); }
-}
-
-@keyframes pulse-border {
-  0%, 100% { opacity: 0.5; box-shadow: 0 0 10px rgba(0,255,136,0.2); }
-  50%       { opacity: 1;   box-shadow: 0 0 25px rgba(0,255,136,0.5); }
-}
-
-@keyframes bridge-sway {
-  0%, 100% { transform: rotate(-0.5deg); }
-  50%       { transform: rotate(0.5deg); }
-}
-
-@keyframes drift {
-  0%   { transform: translateX(0) translateY(0); }
-  25%  { transform: translateX(10px) translateY(-5px); }
-  50%  { transform: translateX(-5px) translateY(-10px); }
-  75%  { transform: translateX(-10px) translateY(-2px); }
-  100% { transform: translateX(0) translateY(0); }
-}
-
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-@keyframes xp-fill {
-  from { width: 0%; }
-}
-
-@keyframes badge-drop {
-  0%   { transform: translateY(-40px) scale(0.5) rotate(-10deg); opacity: 0; }
-  60%  { transform: translateY(8px) scale(1.1) rotate(3deg); opacity: 1; }
-  80%  { transform: translateY(-4px) scale(0.95); }
-  100% { transform: translateY(0) scale(1) rotate(0deg); }
-}
-
-@keyframes coin-rain {
-  0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(80px) rotate(360deg); opacity: 0; }
-}
-
-@keyframes gate-open {
-  from { transform: scaleY(0); transform-origin: top; }
-  to   { transform: scaleY(1); }
-}
-
-@keyframes torch-flicker {
-  0%, 100% { opacity: 1; transform: scaleY(1); }
-  25%  { opacity: 0.85; transform: scaleY(0.95) scaleX(1.05); }
-  50%  { opacity: 0.95; transform: scaleY(1.02) scaleX(0.98); }
-  75%  { opacity: 0.9; transform: scaleY(0.97); }
-}
-
-@keyframes star-twinkle {
-  0%, 100% { opacity: 0.3; transform: scale(0.8); }
-  50%  { opacity: 1; transform: scale(1.2); }
-}
-
-@keyframes typewriter-cursor {
-  0%, 100% { opacity: 1; }
-  50%  { opacity: 0; }
-}
-
-@keyframes scale-in {
-  from { transform: scale(0.7); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
-}
-
-@keyframes slide-up-fade {
-  from { transform: translateY(30px); opacity: 0; }
-  to   { transform: translateY(0); opacity: 1; }
-}
-
-/* ═══════════════════════════════════════════════════
-   ANIMATION UTILITIES
-═══════════════════════════════════════════════════ */
-.animate-float       { animation: float 3s ease-in-out infinite; }
-.animate-float-slow  { animation: float-slow 5s ease-in-out infinite; }
-.animate-castle-glow { animation: castle-glow 3s ease-in-out infinite; }
-.animate-shimmer     {
-  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%);
-  background-size: 200% auto;
-  animation: shimmer 2s linear infinite;
-}
-.animate-drift       { animation: drift 8s ease-in-out infinite; }
-.animate-spin-slow   { animation: spin-slow 20s linear infinite; }
-.animate-badge-drop  { animation: badge-drop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-.animate-scale-in    { animation: scale-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-.animate-slide-up    { animation: slide-up-fade 0.5s ease-out forwards; }
-.animate-torch       { animation: torch-flicker 0.3s ease-in-out infinite alternate; }
-.animate-twinkle     { animation: star-twinkle 2s ease-in-out infinite; }
-
-/* ═══════════════════════════════════════════════════
-   SCROLLBAR
-═══════════════════════════════════════════════════ */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: #0d1117; }
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #2a3558, #1e2540);
-  border-radius: 3px;
-  border: 1px solid #0d1117;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #3a4a72, #2a3558);
-}
-
-/* ═══════════════════════════════════════════════════
-   STARS BACKGROUND HELPER
-═══════════════════════════════════════════════════ */
-.stars-bg {
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.8) 0%, transparent 100%),
-    radial-gradient(1px 1px at 60% 15%, rgba(255,255,255,0.6) 0%, transparent 100%),
-    radial-gradient(1px 1px at 80% 70%, rgba(255,255,255,0.5) 0%, transparent 100%),
-    radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,0.7) 0%, transparent 100%),
-    radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.5) 0%, transparent 100%),
-    radial-gradient(1px 1px at 90% 40%, rgba(255,255,255,0.6) 0%, transparent 100%),
-    radial-gradient(1px 1px at 30% 50%, rgba(255,255,255,0.4) 0%, transparent 100%),
-    radial-gradient(1px 1px at 70% 85%, rgba(255,255,255,0.6) 0%, transparent 100%),
-    radial-gradient(1px 1px at 50% 20%, rgba(255,255,255,0.7) 0%, transparent 100%);
-  pointer-events: none;
-}
-
-/* ═══════════════════════════════════════════════════
-   STONE INPUT FIELD
-═══════════════════════════════════════════════════ */
-.stone-input {
-  width: 100%;
-  padding: 12px 16px 12px 44px;
-  background: rgba(10, 13, 26, 0.7);
-  border: 1px solid rgba(0, 212, 255, 0.2);
-  border-radius: 10px;
-  color: #c8d6e5;
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-  outline: none;
-}
-
-.stone-input::placeholder {
-  color: #4a5568;
-  font-weight: 500;
-}
-
-.stone-input:focus {
-  border-color: rgba(0, 212, 255, 0.5);
-  background: rgba(10, 13, 26, 0.9);
-  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.08), 0 0 15px rgba(0, 212, 255, 0.15);
-}
-
-/* ═══════════════════════════════════════════════════
-   SPEECH BUBBLE (NPC dialog)
-═══════════════════════════════════════════════════ */
-.speech-bubble {
-  background: linear-gradient(135deg, #1e2540, #242b4d);
-  border: 1px solid rgba(155, 89, 182, 0.3);
-  border-radius: 14px;
-  padding: 12px 14px;
-  position: relative;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-}
-
-.speech-bubble::before {
-  content: '';
-  position: absolute;
-  left: -8px;
-  bottom: 12px;
-  width: 0;
-  height: 0;
-  border-top: 8px solid transparent;
-  border-bottom: 8px solid transparent;
-  border-right: 8px solid rgba(155,89,182,0.3);
-}
-
-/* ═══════════════════════════════════════════════════
-   VICTORY SCROLL (parchment-like)
-═══════════════════════════════════════════════════ */
-.victory-scroll {
-  background: linear-gradient(135deg, #1e2540 0%, #1a1d35 50%, #1e2540 100%);
-  border: 1px solid rgba(255, 215, 0, 0.3);
-  box-shadow:
-    0 0 40px rgba(255,215,0,0.15),
-    0 8px 40px rgba(0,0,0,0.7),
-    inset 0 1px 0 rgba(255,255,255,0.08);
-}
-
-/* ═══════════════════════════════════════════════════
-   PARTICLE BURST (game events)
-═══════════════════════════════════════════════════ */
-@keyframes particle-burst {
-  0% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0);
-    opacity: 0;
-  }
-}
-
-/* ═══════════════════════════════════════════════════
-   STARS BG FIXED VARIANT
-═══════════════════════════════════════════════════ */
-.stars-bg-fixed {
-  position: fixed;
-  inset: 0;
-  background-image:
-    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.8) 0%, transparent 100%),
-    radial-gradient(1px 1px at 60% 15%, rgba(255,255,255,0.6) 0%, transparent 100%),
-    radial-gradient(1px 1px at 80% 70%, rgba(255,255,255,0.5) 0%, transparent 100%),
-    radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,0.7) 0%, transparent 100%),
-    radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.5) 0%, transparent 100%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ═══════════════════════════════════════════════════
-   GLOW STATES
-═══════════════════════════════════════════════════ */
-.zone-active-glow {
-  box-shadow:
-    0 0 20px rgba(0,212,255,0.3),
-    0 0 50px rgba(0,212,255,0.1);
-  animation: pulse-border 2s ease-in-out infinite;
+  
+  /* ── LEGACY REPLACEMENTS ── */
+  .btn-primary { @apply pixel-btn pixel-btn-primary; }
+  .btn-danger { @apply pixel-btn pixel-btn-danger; }
+  .btn-ghost { @apply pixel-btn pixel-btn-secondary; }
+  .glass-panel { @apply pixel-panel-blue; }
 }
