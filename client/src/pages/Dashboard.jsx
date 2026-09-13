@@ -15,14 +15,14 @@ const ZONES = [
   { id: 'final',       name: 'CYBER CORE',      emoji: '👑', x: 50,  y: 17,  route: '/play/final' },
 ];
 
-/* Sidebar nav items with exact positions matching the image */
+/* Sidebar nav items */
 const SIDEBAR_ITEMS = [
-  { label: 'WORLD',       icon: '🗺️', route: '/dashboard',   y: 27 },
-  { label: 'QUESTS',      icon: '📜', route: '/rooms',       y: 36 },
-  { label: 'INVENTORY',   icon: '🧰', route: null,           y: 45 },
-  { label: 'BADGES',      icon: '⭐', route: null,           y: 54 },
-  { label: 'LEADERBOARD', icon: '🏆', route: '/leaderboard', y: 63 },
-  { label: 'PROFILE',     icon: '🧑‍💻', route: '/cyber-dna',   y: 72 },
+  { label: 'WORLD',       icon: '🗺️', route: '/dashboard' },
+  { label: 'QUESTS',      icon: '📜', route: '/rooms' },
+  { label: 'INVENTORY',   icon: '🧰', route: null },
+  { label: 'BADGES',      icon: '⭐', route: null },
+  { label: 'LEADERBOARD', icon: '🏆', route: '/leaderboard' },
+  { label: 'PROFILE',     icon: '🧑‍💻', route: '/cyber-dna' },
 ];
 
 export default function Dashboard() {
@@ -48,211 +48,220 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="w-screen h-screen bg-[#0f172a] flex items-center justify-center overflow-hidden">
-      {/* 
-        Fixed 16:9 Aspect Ratio Container
-        This guarantees our CSS overlays will perfectly match the background image 
-        regardless of the window size, completely eliminating layout shifting.
-      */}
-      <div 
-        className="relative w-full shadow-2xl overflow-hidden" 
-        style={{ 
-          aspectRatio: '1536 / 1024',
-          maxHeight: '100vh',
-          maxWidth: '150vh', /* Maintain ratio bounded by height */
-          fontFamily: "'Nunito', 'Inter', sans-serif"
-        }}
-      >
-        {/* ═══ THE EXACT IMAGE AS FULL BACKGROUND ═══ */}
+    <div className="relative w-screen h-screen overflow-hidden bg-[#0f172a]" style={{ fontFamily: "'Nunito', 'Inter', sans-serif" }}>
+      
+      {/* ═══ CLEAN BACKGROUND MAP (NO UI BAKED IN) ═══ */}
+      <div className="absolute inset-0 z-0">
         <img
-          src="/assets/world-map-bg.png"
+          src="/assets/clean-map.png"
           alt="Cyber Quest World Map"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="w-full h-full object-cover"
           draggable={false}
         />
+      </div>
 
-        {/* ═══ TOP HUD OVERLAY ═══ */}
-        {/* We cover the baked-in HUD with an exact matching solid color panel to render dynamic text */}
-        <div className="absolute top-0 left-0 right-0 h-[8.5%] bg-[#15213d] border-b-[3px] border-[#0a1020] z-30 flex items-center justify-between px-[2%]">
-          {/* Logo Section */}
-          <div className="flex items-center gap-2 h-full py-[1%]">
-            <div className="bg-[#1e3a8a] border-2 border-[#3b82f6] rounded px-2 py-1 flex items-center gap-2 shadow-[inset_0_2px_4px_rgba(255,255,255,0.2)]">
-              <span className="text-[1.2vw]">🛡️</span>
-            </div>
-            <span className="text-white font-black italic tracking-wider text-[1.4vw]" style={{ textShadow: '2px 2px 0 #000' }}>CYBER QUEST</span>
+      {/* ═══ TOP HUD ═══ */}
+      <div className="absolute top-0 left-0 right-0 h-16 bg-[#15213d] border-b-[3px] border-[#0a1020] z-30 flex items-center justify-between px-6 shadow-xl min-w-[800px]">
+        {/* Logo Section */}
+        <div className="flex items-center gap-3">
+          <div className="bg-[#1e3a8a] border-2 border-[#3b82f6] rounded px-2 py-1 flex items-center shadow-[inset_0_2px_4px_rgba(255,255,255,0.2)]">
+            <span className="text-xl">🛡️</span>
           </div>
+          <span className="text-white font-black italic tracking-wider text-xl" style={{ textShadow: '2px 2px 0 #000' }}>CYBER QUEST</span>
+        </div>
 
-          {/* Player Profile Section */}
-          <div className="flex items-center bg-[#c8d4e4] rounded-full h-[65%] pr-4 pl-1 border-[3px] border-[#8ba3c0] shadow-[0_4px_0_#0a1020]">
-            <div className="bg-[#15213d] rounded-full w-[2.2vw] h-[2.2vw] flex items-center justify-center border-[3px] border-[#1e3a8a] overflow-hidden mr-3">
-              <span className="text-[1vw]">🧑‍💻</span>
+        {/* Player Profile Section */}
+        <div className="flex items-center bg-[#c8d4e4] rounded-full h-10 pr-4 pl-1 border-2 border-[#8ba3c0] shadow-[0_4px_0_#0a1020]">
+          <div className="bg-[#15213d] rounded-full w-8 h-8 flex items-center justify-center border-2 border-[#1e3a8a] overflow-hidden mr-3">
+            <span className="text-sm">🧑‍💻</span>
+          </div>
+          <div className="flex flex-col justify-center">
+            <div className="flex items-baseline gap-2">
+              <span className="text-[#1a2942] font-extrabold text-xs leading-none uppercase">{user?.username || 'YUVI'}</span>
+              <span className="text-[#3b4c6b] font-bold text-[9px] leading-none">LV. {user?.level || 2}</span>
             </div>
-            <div className="flex flex-col justify-center">
-              <div className="flex items-baseline gap-2">
-                <span className="text-[#1a2942] font-extrabold text-[0.8vw] leading-none">{user?.username || 'Yuvraj'}</span>
-                <span className="text-[#3b4c6b] font-bold text-[0.6vw] leading-none">Lv. {user?.level || 4}</span>
+            <div className="w-28 h-2 bg-[#a2b5cc] rounded-full mt-1 border border-[#8ba3c0] overflow-hidden relative shadow-[inset_0_1px_3px_rgba(0,0,0,0.3)]">
+              <div className="absolute top-0 left-0 h-full bg-[#40aa66] rounded-full shadow-[inset_0_1px_1px_rgba(255,255,255,0.5)]" style={{ width: '52%' }}></div>
+              <div className="absolute inset-0 flex items-center justify-center text-[7px] font-bold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)]">
+                420 / 800 XP
               </div>
-              <div className="w-[8vw] h-[0.7vw] bg-[#a2b5cc] rounded-full mt-1 border border-[#8ba3c0] overflow-hidden relative shadow-[inset_0_1px_3px_rgba(0,0,0,0.3)]">
-                <div className="absolute top-0 left-0 h-full bg-[#40aa66] rounded-full shadow-[inset_0_1px_1px_rgba(255,255,255,0.5)]" style={{ width: '52%' }}></div>
-                <div className="absolute inset-0 flex items-center justify-center text-[0.5vw] font-bold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)]">
-                  420 / 800 XP
-                </div>
-              </div>
             </div>
-          </div>
-
-          {/* Currencies Section */}
-          <div className="flex items-center gap-[2vw] h-full">
-            <div className="flex items-center gap-1">
-              <span className="text-[1.2vw] drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">❤️</span>
-              <span className="text-[1.2vw] drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">❤️</span>
-              <span className="text-[1.2vw] grayscale opacity-50">❤️</span>
-            </div>
-            <div className="flex items-center gap-2 bg-[#0a1020]/50 rounded-full px-3 py-1 border border-[#ffffff10]">
-              <span className="text-[1vw]">🪙</span>
-              <span className="text-white font-bold text-[0.9vw]">{user?.coins || 120}</span>
-            </div>
-            <div className="flex items-center gap-2 bg-[#0a1020]/50 rounded-full px-3 py-1 border border-[#ffffff10]">
-              <span className="text-[1vw]">💎</span>
-              <span className="text-white font-bold text-[0.9vw]">25</span>
-            </div>
-            <div className="flex items-center gap-2 bg-[#0a1020]/50 rounded-full px-3 py-1 border border-[#ffffff10]">
-              <span className="text-[1vw]">🔑</span>
-              <span className="text-white font-bold text-[0.9vw]">1</span>
-            </div>
-          </div>
-
-          {/* Settings */}
-          <div className="bg-[#2a3852] p-2 rounded-lg border-2 border-[#151c2a] shadow-[0_4px_0_#0a1020] cursor-pointer hover:bg-[#344563] transition-colors">
-            <span className="text-[1.2vw] text-[#8ba3c0]">⚙️</span>
           </div>
         </div>
 
-        {/* ═══ LEFT SIDEBAR OVERLAY ═══ */}
-        <div className="absolute top-[12%] left-[1.5%] w-[13%] bg-[#1d2d4c] rounded-xl border-4 border-[#0a1020] z-20 flex flex-col p-2 shadow-[4px_4px_0_rgba(0,0,0,0.3)]">
-          {SIDEBAR_ITEMS.map((item, idx) => {
-            const isActive = item.label === 'WORLD';
-            return (
-              <button
-                key={item.label}
-                onClick={() => item.route && navigate(item.route)}
-                className={`w-full flex items-center gap-3 px-[1vw] py-[0.8vw] mb-[0.2vw] rounded-lg text-left transition-all ${
-                  isActive 
-                    ? 'bg-[#224271] border-2 border-[#3ab4f2] text-white shadow-[0_0_10px_rgba(58,180,242,0.3)]' 
-                    : 'bg-transparent border-2 border-transparent text-[#8ba3c0] hover:bg-[#253961] hover:text-white'
-                } ${!item.route ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
-              >
-                <span className="text-[1.2vw]">{item.icon}</span>
-                <span className="font-bold text-[0.85vw] tracking-wide">{item.label}</span>
-              </button>
-            );
-          })}
+        {/* Currencies Section */}
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-1">
+            <span className="text-lg drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">❤️</span>
+            <span className="text-lg drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">❤️</span>
+            <span className="text-lg grayscale opacity-50">❤️</span>
+          </div>
+          <div className="flex items-center gap-2 bg-[#0a1020]/50 rounded-full px-3 py-1 border border-[#ffffff10]">
+            <span className="text-base">🪙</span>
+            <span className="text-white font-bold text-sm">{user?.coins || 120}</span>
+          </div>
+          <div className="flex items-center gap-2 bg-[#0a1020]/50 rounded-full px-3 py-1 border border-[#ffffff10]">
+            <span className="text-base">💎</span>
+            <span className="text-white font-bold text-sm">25</span>
+          </div>
+          <div className="flex items-center gap-2 bg-[#0a1020]/50 rounded-full px-3 py-1 border border-[#ffffff10]">
+            <span className="text-base">🔑</span>
+            <span className="text-white font-bold text-sm">1</span>
+          </div>
         </div>
 
-        {/* ═══ RIGHT SIDEBAR OVERLAYS ═══ */}
-        <div className="absolute top-[12%] right-[1.5%] w-[18%] flex flex-col gap-4 z-20">
-          
-          {/* Current Quest */}
-          <div className="bg-[#15213d] rounded-xl border-4 border-[#0a1020] p-[1vw] shadow-[4px_4px_0_rgba(0,0,0,0.3)]">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-[1.2vw]">📜</span>
-              <span className="text-white font-bold text-[0.8vw] tracking-wider">CURRENT QUEST</span>
-            </div>
-            <p className="text-[#c8d4e4] text-[0.8vw] leading-tight mb-3 font-semibold">
-              Identify 5 phishing emails in Phishing Port.
-            </p>
-            <div className="w-full h-[0.8vw] bg-[#0a1020] rounded-full overflow-hidden border border-[#2a3852] mb-1">
-              <div className="h-full bg-[#40aa66] rounded-full shadow-[inset_0_2px_2px_rgba(255,255,255,0.3)]" style={{ width: '40%' }}></div>
-            </div>
-            <div className="text-right text-[#8ba3c0] font-bold text-[0.7vw]">2 / 5</div>
-          </div>
-
-          {/* Daily Missions */}
-          <div className="bg-[#15213d] rounded-xl border-4 border-[#0a1020] p-[1vw] shadow-[4px_4px_0_rgba(0,0,0,0.3)]">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-[1.2vw] text-yellow-400">☀️</span>
-              <span className="text-white font-bold text-[0.8vw] tracking-wider">DAILY MISSIONS</span>
-            </div>
-            
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-[1vw] h-[1vw] rounded bg-[#0a1020] border border-[#2a3852]"></div>
-                  <span className="text-[#c8d4e4] text-[0.75vw] font-semibold">Complete a challenge</span>
-                </div>
-                <span className="text-[#8ba3c0] text-[0.7vw] font-bold">0/1</span>
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-[1vw] h-[1vw] rounded bg-[#0a1020] border border-[#2a3852]"></div>
-                  <span className="text-[#c8d4e4] text-[0.75vw] font-semibold">Earn 100 coins</span>
-                </div>
-                <span className="text-[#8ba3c0] text-[0.7vw] font-bold">20/100</span>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-[1vw] h-[1vw] rounded bg-[#0a1020] border border-[#2a3852]"></div>
-                  <span className="text-[#c8d4e4] text-[0.75vw] font-semibold">Visit the AI Lab</span>
-                </div>
-                <span className="text-[#8ba3c0] text-[0.7vw] font-bold">0/1</span>
-              </div>
-            </div>
-          </div>
-
+        {/* Settings */}
+        <div className="bg-[#2a3852] p-2 rounded-lg border-2 border-[#151c2a] shadow-[0_4px_0_#0a1020] cursor-pointer hover:bg-[#344563] transition-colors">
+          <span className="text-lg text-[#8ba3c0]">⚙️</span>
         </div>
+      </div>
 
-        {/* ═══ CLICKABLE ZONE HOTSPOTS & LABEL OVERLAYS ═══ */}
+      {/* ═══ MAP CONTAINER ═══ 
+          This forces the map nodes to stay correctly proportioned to the background image's center
+          without letterboxing. */}
+      <div className="absolute inset-0 z-10">
         {ZONES.map((zone) => {
           const stars = getZoneStars(zone.id);
           return (
             <div
               key={zone.id}
-              className="absolute flex flex-col items-center justify-center z-10 group"
+              className="absolute flex flex-col items-center justify-center group"
               style={{
                 left: `${zone.x}%`,
                 top: `${zone.y}%`,
                 transform: 'translate(-50%, -50%)',
               }}
             >
-              {/* Overlaid Label to hide baked-in one completely and allow dynamic stars */}
               <button
                 onClick={() => navigate(zone.route)}
-                className="bg-[#15213d] border-[3px] border-[#0a1020] rounded-xl px-3 py-1.5 flex flex-col items-center shadow-[0_6px_0_#0a1020] group-hover:-translate-y-1 group-hover:shadow-[0_10px_0_#0a1020] transition-all cursor-pointer relative"
-                style={{ minWidth: '9vw' }}
+                className="bg-[#15213d] border-[3px] border-[#0a1020] rounded-xl px-4 py-2 flex flex-col items-center shadow-[0_6px_0_#0a1020] group-hover:-translate-y-1 group-hover:shadow-[0_10px_0_#0a1020] transition-all cursor-pointer relative min-w-[140px]"
               >
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="bg-[#0a1020] rounded text-[1vw] p-0.5">{zone.emoji}</div>
-                  <span className="text-white font-extrabold text-[0.75vw] tracking-wider whitespace-nowrap">{zone.name}</span>
+                  <div className="bg-[#0a1020] rounded text-base p-1">{zone.emoji}</div>
+                  <span className="text-white font-extrabold text-[10px] tracking-wider whitespace-nowrap">{zone.name}</span>
                 </div>
-                
-                {/* Dynamic Stars */}
                 <div className="flex gap-1">
                   {[1, 2, 3].map(s => (
-                    <span key={s} className={`text-[0.8vw] drop-shadow-[0_2px_0_#000] ${s <= stars ? 'text-yellow-400' : 'text-[#3b4c6b] grayscale opacity-50'}`}>
+                    <span key={s} className={`text-sm drop-shadow-[0_2px_0_#000] ${s <= stars ? 'text-yellow-400' : 'text-[#3b4c6b] grayscale opacity-50'}`}>
                       ⭐
                     </span>
                   ))}
                 </div>
-                
-                {/* Highlight Effect */}
                 <div className="absolute inset-0 rounded-lg border-2 border-white/10 opacity-0 group-hover:opacity-100 pointer-events-none"></div>
               </button>
             </div>
           );
         })}
+      </div>
 
-        {/* ═══ CONTINUE BUTTON OVERLAY ═══ */}
-        <button
-          onClick={() => navigate('/rooms')}
-          className="absolute right-[1.5%] bottom-[3%] w-[13%] h-[7%] bg-[#e6a629] rounded-xl border-[4px] border-[#0a1020] z-20 flex items-center justify-center gap-2 shadow-[0_6px_0_#8b6015] hover:-translate-y-1 hover:shadow-[0_8px_0_#8b6015] active:translate-y-[4px] active:shadow-[0_0_0_#8b6015] transition-all"
-        >
-          <span className="text-[1.5vw] drop-shadow-[0_2px_0_rgba(0,0,0,0.3)]">⚔️</span>
-          <span className="text-[#1a1306] font-black text-[1.2vw] tracking-wider drop-shadow-[0_1px_0_rgba(255,255,255,0.3)]">CONTINUE {'>'}</span>
-        </button>
+      {/* ═══ LEFT SIDEBAR ═══ */}
+      <div className="absolute top-24 left-6 w-[220px] bg-[#1d2d4c] rounded-xl border-[3px] border-[#0a1020] z-20 flex flex-col p-2 shadow-2xl">
+        {SIDEBAR_ITEMS.map((item) => {
+          const isActive = item.label === 'WORLD';
+          return (
+            <button
+              key={item.label}
+              onClick={() => item.route && navigate(item.route)}
+              className={`w-full flex items-center gap-4 px-4 py-3 mb-2 rounded-lg text-left transition-all ${
+                isActive 
+                  ? 'bg-[#224271] border-2 border-[#3ab4f2] text-white shadow-[0_0_15px_rgba(58,180,242,0.4)]' 
+                  : 'bg-transparent border-2 border-transparent text-[#8ba3c0] hover:bg-[#253961] hover:text-white'
+              } ${!item.route ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+            >
+              <span className="text-xl">{item.icon}</span>
+              <span className="font-bold text-xs tracking-wider">{item.label}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* ═══ RIGHT SIDEBARS ═══ */}
+      <div className="absolute top-24 right-6 w-[280px] flex flex-col gap-6 z-20">
+        
+        {/* Current Quest */}
+        <div className="bg-[#15213d] rounded-xl border-[3px] border-[#0a1020] p-5 shadow-2xl relative">
+          {/* Top highlight line */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-white/5 rounded-t-lg"></div>
+          
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-xl">📜</span>
+            <span className="text-white font-extrabold text-[11px] tracking-wider">CURRENT QUEST</span>
+          </div>
+          <p className="text-[#c8d4e4] text-[11px] leading-relaxed mb-4 font-bold uppercase">
+            IDENTIFY 5 PHISHING EMAILS IN PHISHING PORT.
+          </p>
+          <div className="w-full h-3 bg-[#0a1020] rounded-full overflow-hidden border border-[#2a3852] mb-2 shadow-inner">
+            <div className="h-full bg-[#40aa66] rounded-full shadow-[inset_0_2px_2px_rgba(255,255,255,0.3)] relative" style={{ width: '40%' }}>
+              <div className="absolute top-0 right-0 bottom-0 w-4 bg-white/20 skew-x-[-20deg]"></div>
+            </div>
+          </div>
+          <div className="text-right text-[#8ba3c0] font-bold text-[10px]">2/5</div>
+        </div>
+
+        {/* Daily Missions */}
+        <div className="bg-[#15213d] rounded-xl border-[3px] border-[#0a1020] p-5 shadow-2xl relative">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-white/5 rounded-t-lg"></div>
+
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-xl text-yellow-400">☀️</span>
+            <span className="text-white font-extrabold text-[11px] tracking-wider">DAILY MISSIONS</span>
+          </div>
+          
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-4 h-4 rounded bg-[#0a1020] border border-[#2a3852] shadow-inner"></div>
+                <span className="text-[#c8d4e4] text-[10px] font-bold uppercase tracking-wide">COMPLETE A CHALLENGE</span>
+              </div>
+              <span className="text-[#8ba3c0] text-[9px] font-bold">0/1</span>
+            </div>
+            
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-4 h-4 rounded bg-[#0a1020] border border-[#2a3852] shadow-inner"></div>
+                <span className="text-[#c8d4e4] text-[10px] font-bold uppercase tracking-wide">EARN 100 COINS</span>
+              </div>
+              <span className="text-[#8ba3c0] text-[9px] font-bold">20/100</span>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-4 h-4 rounded bg-[#0a1020] border border-[#2a3852] shadow-inner"></div>
+                <span className="text-[#c8d4e4] text-[10px] font-bold uppercase tracking-wide">VISIT THE AI LAB</span>
+              </div>
+              <span className="text-[#8ba3c0] text-[9px] font-bold">0/1</span>
+            </div>
+          </div>
+        </div>
 
       </div>
+
+      {/* ═══ BOTTOM COMPASS ═══ */}
+      <div className="absolute bottom-8 left-8 z-20 opacity-90 drop-shadow-2xl">
+        <div className="relative w-24 h-24 rounded-full bg-[#15213d] border-[3px] border-[#0a1020] shadow-[0_4px_0_#0a1020] flex items-center justify-center">
+          <div className="absolute inset-2 border border-[#2a3852] rounded-full"></div>
+          <span className="absolute top-2 text-[#c8d4e4] font-bold text-xs">N</span>
+          <span className="absolute bottom-2 text-[#c8d4e4] font-bold text-xs">S</span>
+          <span className="absolute left-3 text-[#c8d4e4] font-bold text-xs">W</span>
+          <span className="absolute right-3 text-[#c8d4e4] font-bold text-xs">E</span>
+          <div className="w-6 h-12 relative">
+            <div className="absolute top-0 w-0 h-0 border-l-[6px] border-r-[6px] border-b-[24px] border-l-transparent border-r-transparent border-b-red-500"></div>
+            <div className="absolute bottom-0 w-0 h-0 border-l-[6px] border-r-[6px] border-t-[24px] border-l-transparent border-r-transparent border-t-white"></div>
+          </div>
+        </div>
+      </div>
+
+      {/* ═══ CONTINUE BUTTON ═══ */}
+      <button
+        onClick={() => navigate('/rooms')}
+        className="absolute right-8 bottom-8 w-[240px] h-16 bg-[#e6a629] rounded-xl border-[3px] border-[#0a1020] z-20 flex items-center justify-center gap-3 shadow-[0_8px_0_#8b6015] hover:mt-1 hover:mb-[-4px] hover:shadow-[0_4px_0_#8b6015] active:mt-2 active:mb-[-8px] active:shadow-[0_0_0_#8b6015] transition-all group"
+      >
+        <span className="text-3xl drop-shadow-[0_2px_0_rgba(0,0,0,0.3)] group-hover:scale-110 transition-transform">⚔️</span>
+        <span className="text-[#1a1306] font-black text-xl tracking-widest drop-shadow-[0_1px_0_rgba(255,255,255,0.4)] uppercase">
+          CONTINUE {'>'}
+        </span>
+      </button>
+
     </div>
   );
 }
