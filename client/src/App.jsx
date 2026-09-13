@@ -15,6 +15,7 @@ const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 const FinalScreen = lazy(() => import('./pages/FinalScreen'));
 const DemoMode = lazy(() => import('./pages/DemoMode'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const GameEngineLayout = lazy(() => import('./components/layout/GameEngineLayout'));
 
 const ProtectedRoute = ({ children, requireAdmin = false }) => {
   const { isAuthenticated, user, loading } = useAuth();
@@ -70,10 +71,10 @@ function App() {
           <Route path="/demo" element={<DemoMode />} />
 
           {/* Protected Routes */}
-          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-          <Route path="/rooms"     element={<ProtectedRoute><RoomSelect /></ProtectedRoute>} />
-          <Route path="/play/:roomId" element={<ProtectedRoute><GameRoom /></ProtectedRoute>} />
-          <Route path="/cyber-dna"   element={<ProtectedRoute><CyberDNA /></ProtectedRoute>} />
+          <Route path="/dashboard" element={<ProtectedRoute><GameEngineLayout><Dashboard /></GameEngineLayout></ProtectedRoute>} />
+          <Route path="/rooms"     element={<ProtectedRoute><GameEngineLayout><RoomSelect /></GameEngineLayout></ProtectedRoute>} />
+          <Route path="/play/:roomId" element={<ProtectedRoute><GameEngineLayout><GameRoom /></GameEngineLayout></ProtectedRoute>} />
+          <Route path="/cyber-dna"   element={<ProtectedRoute><GameEngineLayout><CyberDNA /></GameEngineLayout></ProtectedRoute>} />
           <Route path="/leaderboard" element={<ProtectedRoute><LeaderboardPage /></ProtectedRoute>} />
           <Route path="/final"       element={<ProtectedRoute><FinalScreen /></ProtectedRoute>} />
 
