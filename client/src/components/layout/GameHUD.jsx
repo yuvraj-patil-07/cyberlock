@@ -1,8 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Shield, Map as MapIcon, ScrollText, Backpack, Award, Trophy, User, Key } from 'lucide-react';
 import useGameStore from '../../store/gameStore';
 
 const GameHUD = () => {
+  const navigate = useNavigate();
   const { player } = useGameStore();
 
   return (
@@ -22,27 +24,27 @@ const GameHUD = () => {
 
         {/* NAVIGATION BOX */}
         <div className="pixel-panel-blue p-4 flex flex-col gap-3 flex-1 overflow-y-auto">
-          <button className="pixel-panel-stone w-full flex items-center gap-3 p-3 hover:brightness-110 active:translate-y-1 transition-all">
+          <button onClick={() => navigate('/dashboard')} className="pixel-panel-stone w-full flex items-center gap-3 p-3 hover:brightness-110 active:translate-y-1 transition-all">
             <MapIcon className="w-6 h-6 text-blue-300" />
             <span className="font-pixel text-sm mt-1">WORLD</span>
           </button>
-          <button className="pixel-panel-wood w-full flex items-center gap-3 p-3 hover:brightness-110 active:translate-y-1 transition-all">
+          <button onClick={() => navigate('/rooms')} className="pixel-panel-wood w-full flex items-center gap-3 p-3 hover:brightness-110 active:translate-y-1 transition-all">
             <ScrollText className="w-6 h-6 text-yellow-200" />
             <span className="font-pixel text-sm mt-1">QUESTS</span>
           </button>
-          <button className="pixel-panel-wood w-full flex items-center gap-3 p-3 hover:brightness-110 active:translate-y-1 transition-all">
+          <button className="pixel-panel-wood w-full flex items-center gap-3 p-3 hover:brightness-110 active:translate-y-1 transition-all opacity-50 cursor-not-allowed">
             <Backpack className="w-6 h-6 text-orange-300" />
             <span className="font-pixel text-sm mt-1">INVENTORY</span>
           </button>
-          <button className="pixel-panel-wood w-full flex items-center gap-3 p-3 hover:brightness-110 active:translate-y-1 transition-all">
+          <button className="pixel-panel-wood w-full flex items-center gap-3 p-3 hover:brightness-110 active:translate-y-1 transition-all opacity-50 cursor-not-allowed">
             <Award className="w-6 h-6 text-yellow-400" />
             <span className="font-pixel text-sm mt-1">BADGES</span>
           </button>
-          <button className="pixel-panel-wood w-full flex items-center gap-3 p-3 hover:brightness-110 active:translate-y-1 transition-all">
+          <button onClick={() => navigate('/leaderboard')} className="pixel-panel-wood w-full flex items-center gap-3 p-3 hover:brightness-110 active:translate-y-1 transition-all">
             <Trophy className="w-6 h-6 text-yellow-500" />
             <span className="font-pixel text-sm mt-1">LEADERBOARD</span>
           </button>
-          <button className="pixel-panel-wood w-full flex items-center gap-3 p-3 hover:brightness-110 active:translate-y-1 transition-all mt-auto">
+          <button onClick={() => navigate('/cyber-dna')} className="pixel-panel-wood w-full flex items-center gap-3 p-3 hover:brightness-110 active:translate-y-1 transition-all mt-auto">
             <User className="w-6 h-6 text-blue-300" />
             <span className="font-pixel text-sm mt-1">PROFILE</span>
           </button>

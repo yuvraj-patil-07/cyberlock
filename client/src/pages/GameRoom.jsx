@@ -318,70 +318,6 @@ export default function GameRoom() {
   return (
     <div className="min-h-screen flex flex-col" style={{ background: 'linear-gradient(180deg, #0a0d1a 0%, #111827 100%)' }}>
 
-      {/* ════ GAME HUD BAR ════ */}
-      <div className="hud-panel sticky top-0 z-40 px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
-
-        {/* Left: Back + Zone name */}
-        <div className="flex items-center gap-3 min-w-0">
-          <button onClick={() => navigate('/rooms')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-bold tracking-wider transition-all hover:scale-105"
-            style={{ borderColor: 'rgba(255,255,255,0.12)', color: '#8892a4', background: 'rgba(255,255,255,0.04)' }}>
-            <ArrowLeft size={12} /> MAP
-          </button>
-          <div className="flex items-center gap-2 min-w-0">
-            <span className="text-lg flex-shrink-0">{zoneTheme.emoji}</span>
-            <span className="font-fantasy text-sm font-bold text-white truncate">{zoneTheme.name}</span>
-          </div>
-        </div>
-
-        {/* Center: Challenge progress */}
-        <div className="hidden sm:flex items-center gap-3">
-          <div className="text-xs font-bold tracking-wider" style={{ color: '#8892a4' }}>
-            MISSION {currentIndex + 1}/{challenges.length || 1}
-          </div>
-          <div className="w-24 xp-bar-track">
-            <div className="xp-bar-fill" style={{ width: `${((currentIndex + 1) / Math.max(challenges.length, 1)) * 100}%` }}/>
-          </div>
-        </div>
-
-        {/* Right: HUD metrics */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          {/* Lives */}
-          <div className="hidden sm:flex items-center gap-1">
-            {[...Array(Math.max(0, user?.lives ?? 5))].map((_, i) => (
-              <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="#ff4757" style={{ filter: 'drop-shadow(0 0 4px #ff4757)' }}>
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-              </svg>
-            ))}
-          </div>
-
-          {/* Trust score */}
-          <div className="rune-badge text-[10px]">
-            <span>🛡</span>
-            <span>{user?.trustScore ?? 100}%</span>
-          </div>
-
-          {/* XP earned */}
-          <div className="rune-badge rune-badge-gold text-[10px]">
-            <span>⚡</span>
-            <span>+{roomScore}</span>
-          </div>
-
-          {/* Hint button */}
-          <button onClick={handleRequestHint}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold tracking-wider transition-all hover:scale-105"
-            style={{ background: 'rgba(155,89,182,0.15)', border: '1px solid rgba(155,89,182,0.3)', color: '#c39bd3' }}>
-            🔮 <span className="hidden md:inline">HINT</span>
-          </button>
-
-          {/* Mute */}
-          <button onClick={() => { const m = sounds.toggleMute(); setIsMuted(m); }}
-            className="p-2 rounded-lg border border-white/10 text-gray-400 hover:text-white transition-all">
-            {isMuted ? <VolumeX size={12}/> : <Volume2 size={12}/>}
-          </button>
-        </div>
-      </div>
-
       {/* ════ MAIN GAME AREA ════ */}
       <div className="flex-1 p-4 md:p-5 grid grid-cols-1 lg:grid-cols-12 gap-5 max-w-7xl mx-auto w-full">
 
@@ -389,7 +325,7 @@ export default function GameRoom() {
         <div className="lg:col-span-8 flex flex-col gap-4">
 
           {/* Zone Scene Header */}
-          <div className="fantasy-panel rounded-xl px-5 py-3 flex items-center gap-3"
+          <div className="pixel-panel-stone px-5 py-3 flex items-center gap-3"
                style={{ borderColor: zoneTheme.border, background: zoneTheme.bg }}>
             <span className="text-2xl">{zoneTheme.emoji}</span>
             <div>
@@ -404,7 +340,7 @@ export default function GameRoom() {
           </div>
 
           {/* Game content area */}
-          <div className="fantasy-panel rounded-xl overflow-hidden flex-1 min-h-96 relative">
+          <div className="pixel-panel-wood flex-1 min-h-[400px] relative p-0 overflow-hidden">
             <ParticleBurst trigger={particleTrigger} color={zoneTheme.color}/>
 
             {/* Investigating: Room content */}
@@ -481,12 +417,12 @@ export default function GameRoom() {
                 </motion.div>
 
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
-                            className="flex flex-wrap gap-3 justify-center">
-                  <button onClick={() => navigate('/rooms')} className="world-btn world-btn-gold px-6 py-2.5">
-                    🗺 Next Zone
+                            className="flex flex-wrap gap-4 justify-center">
+                  <button onClick={() => navigate('/rooms')} className="pixel-btn pixel-btn-primary px-8">
+                    🗺 NEXT ZONE
                   </button>
-                  <button onClick={() => navigate('/cyber-dna')} className="world-btn world-btn-ghost px-5 py-2.5">
-                    🧬 Cyber DNA
+                  <button onClick={() => navigate('/cyber-dna')} className="pixel-btn pixel-btn-secondary px-8">
+                    🧬 CYBER DNA
                   </button>
                 </motion.div>
               </motion.div>
@@ -498,7 +434,7 @@ export default function GameRoom() {
         <div className="lg:col-span-4 flex flex-col gap-4">
 
           {/* NPC Wizard Coach */}
-          <div className="fantasy-panel rounded-xl p-4"
+          <div className="pixel-panel-stone p-4"
                style={{ borderColor: 'rgba(155,89,182,0.25)', background: 'rgba(155,89,182,0.05)' }}>
             <WizardCoach message={currentChallenge?.learningObjective} isThinking={loading}/>
             <div className="mt-3 pt-3 border-t border-white/5 flex justify-between items-center">
@@ -508,7 +444,7 @@ export default function GameRoom() {
           </div>
 
           {/* Evidence Board */}
-          <div className="fantasy-panel rounded-xl p-4 flex-1"
+          <div className="pixel-panel-parchment p-4 flex-1"
                style={{ borderColor: `${zoneTheme.border}`, background: `${zoneTheme.bg}` }}>
             <div className="flex items-center gap-2 mb-3">
               <span className="text-base">🔍</span>
@@ -548,8 +484,8 @@ export default function GameRoom() {
                style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}>
             <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.9, opacity: 0 }} className="max-w-md w-full">
-              <div className="mb-3 text-center">
-                <span className="rune-badge mx-auto">⚔ MAKE YOUR VERDICT</span>
+              <div className="mb-4 text-center">
+                <span className="pixel-tag bg-blue-600 text-white shadow-[4px_4px_0_rgba(0,0,0,0.5)]">⚔ MAKE YOUR VERDICT</span>
               </div>
               <ReasoningPrompt category={roomConfig.category} onConfirmReasoning={handleConfirmReasoning}/>
             </motion.div>
@@ -564,7 +500,7 @@ export default function GameRoom() {
                style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}>
             <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.9, opacity: 0 }}
-                        className="max-w-md w-full fantasy-panel rounded-2xl p-6"
+                        className="max-w-md w-full pixel-panel-stone p-6"
                         style={{ borderColor: 'rgba(155,89,182,0.4)' }}>
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-2xl animate-float">🔮</span>
@@ -577,8 +513,8 @@ export default function GameRoom() {
                    style={{ background: 'rgba(155,89,182,0.08)', border: '1px solid rgba(155,89,182,0.25)' }}>
                 <p className="text-sm text-white leading-relaxed">"{hintText}"</p>
               </div>
-              <button onClick={() => setShowHintModal(false)} className="world-btn world-btn-primary w-full py-2.5 text-xs">
-                ✓ Understood
+              <button onClick={() => setShowHintModal(false)} className="pixel-btn pixel-btn-primary w-full py-4 text-xs mt-4">
+                ✓ UNDERSTOOD
               </button>
             </motion.div>
           </div>
