@@ -3,233 +3,101 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
 import { gameService } from '../services/gameService';
-import Navbar from '../components/layout/Navbar';
 
-/* ── Skill Orb Ring ── */
-const SkillRing = ({ label, score, color, delay, icon }) => {
-  return (
-    <motion.div initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay, type: 'spring', bounce: 0.4 }}
-                className="flex flex-col items-center gap-2 group cursor-default">
-      <div className={`w-16 h-16 border-4 border-black flex items-center justify-center text-2xl relative ${color}`}>
-        {icon}
-        <div className="absolute -bottom-2 -right-2 bg-black text-white text-[10px] px-1 font-pixel border border-white">
-          {score}
-        </div>
-      </div>
-      <span className="text-[10px] font-pixel tracking-wider text-center max-w-[72px] leading-tight text-white drop-shadow-[1px_1px_0_#000]">
-        {label}
-      </span>
-    </motion.div>
-  );
-};
-
-/* ── Stat Pillar ── */
-const StatPillar = ({ icon, label, value, sub, bgClass, delay }) => (
-  <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay }}
-              className={`${bgClass} p-5 text-center flex flex-col items-center justify-center shadow-[4px_4px_0_rgba(0,0,0,0.5)]`}>
-    <div className="text-4xl mb-2 drop-shadow-[2px_2px_0_#000]">{icon}</div>
-    <div className="font-pixel text-xl mb-1 text-white drop-shadow-[2px_2px_0_#000]">{value}</div>
-    <div className="text-[10px] font-pixel text-yellow-300 drop-shadow-[1px_1px_0_#000]">{label}</div>
-    {sub && <div className="text-[8px] font-pixel text-white/80 mt-1">{sub}</div>}
-  </motion.div>
-);
-
-const SKILL_META = [
-  { key:'phishing',           label:'PHISHING',      color:'bg-red-500', icon:'🎣' },
-  { key:'passwords',          label:'PASSWORDS',     color:'bg-yellow-500', icon:'🔒' },
-  { key:'qrSafety',           label:'QR SAFETY',     color:'bg-purple-500', icon:'📱' },
-  { key:'scamDetection',      label:'SCAMS',         color:'bg-orange-500', icon:'💰' },
-  { key:'socialEngineering',  label:'SOCIAL ENG',    color:'bg-pink-500', icon:'👥' },
-  { key:'aiThreats',          label:'AI THREATS',    color:'bg-blue-500', icon:'🤖' },
-  { key:'digitalPrivacy',     label:'PRIVACY',       color:'bg-green-500', icon:'🛡' },
+const SKILLS = [
+  { key: 'awareness',        label: 'Awareness',        color: '#4a90d0' },
+  { key: 'reaction',         label: 'Reaction',         color: '#e05040' },
+  { key: 'security',         label: 'Security',         color: '#50c878' },
+  { key: 'criticalThinking', label: 'Critical Thinking', color: '#f0a030' },
+  { key: 'digitalEtiquette', label: 'Digital Etiquette', color: '#9b59b6' },
 ];
 
-const RISK_STYLES = {
-  low:      { bg:'pixel-panel-blue', label:'LOW RISK',      emoji:'✅' },
-  medium:   { bg:'pixel-panel-wood', label:'MEDIUM RISK',   emoji:'⚠️' },
-  high:     { bg:'pixel-panel-stone', label:'HIGH RISK',     emoji:'🚨' },
-  critical: { bg:'bg-red-900 border-4 border-red-950', label:'CRITICAL', emoji:'💀' },
-};
-
 export default function CyberDNA() {
-  const { user } = useAuth();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [dna, setDna] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchDNA = async () => {
-      try {
-        setLoading(true);
-        const res = await gameService.getCyberDNA();
-        setDna(res.data);
-      } catch {
-        setDna({
-          categories: SKILL_META.map(s => ({ key:s.key, label:s.label, score: user?.skillProfile?.[s.key] || 60, color:s.color })),
-          overallScore: user?.cyberScore || 70,
-          riskLevel: 'medium',
-          strongestSkill:    { label:'PASSWORD HYGIENE', score:85 },
-          weakestSkill:      { label:'AI THREATS', score:50 },
-          mostImprovedSkill: { label:'PHISHING DEFENSE', score:75 },
-          improvementPct: 34, firstScore:46, currentScore:70
-        });
-      } finally { setLoading(false); }
-    };
-    fetchDNA();
-  }, [user]);
+    gameService.getCyberDNA()
+      .then(res => { setDna(res.data); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, []);
 
-  const categories  = dna?.categories || [];
-  const riskLevel   = (dna?.riskLevel || 'medium').toLowerCase();
-  const riskStyle   = RISK_STYLES[riskLevel] || RISK_STYLES.medium;
-  const overallScore = dna?.overallScore || 50;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <div className="text-center">
+          <span className="text-4xl cq-pulse">🛡️</span>
+          <p className="mt-2 font-pixel text-[10px]" style={{ color: '#6a5a4a' }}>Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-[#1e293b] font-pixel text-white relative">
-      <div className="absolute inset-0 pointer-events-none opacity-30"
-           style={{
-             backgroundImage: 'repeating-linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000), repeating-linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000)',
-             backgroundPosition: '0 0, 20px 20px',
-             backgroundSize: '40px 40px'
-           }}
-      />
-      <Navbar />
-
-      <div className="max-w-5xl mx-auto px-4 py-8 pt-24 space-y-8 relative z-10">
-
-        {/* ── ORACLE CHAMBER HEADER ── */}
-        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
-                    className="text-center">
-          <div className="pixel-tag bg-purple-700 text-white mx-auto mb-4 inline-block">🔮 THE ORACLE CHAMBER</div>
-          <h1 className="text-4xl md:text-5xl text-yellow-400 mb-2 drop-shadow-[4px_4px_0_#000]">
-            HERO STATS
-          </h1>
-          <p className="text-sm max-w-xl mx-auto text-gray-300 drop-shadow-[2px_2px_0_#000]">
-            Analyze your attributes, strengths, and weaknesses.
-          </p>
-        </motion.div>
-
-        {/* ── TOP 3 STAT PILLARS ── */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <StatPillar icon={riskStyle.emoji} label="THREAT LEVEL" value={riskStyle.label}
-                      bgClass={riskStyle.bg} delay={0}/>
-
-          {/* Overall score */}
-          <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }}
-                      className="pixel-panel-stone p-6 text-center flex flex-col items-center justify-center shadow-[8px_8px_0_rgba(0,0,0,0.5)] border-yellow-500">
-            <div className="text-5xl text-yellow-400 drop-shadow-[4px_4px_0_#000] mb-2">{overallScore}</div>
-            <div className="text-sm text-yellow-500 drop-shadow-[2px_2px_0_#000]">OVERALL POWER</div>
-            <div className="mt-2 text-[10px] text-green-400">
-              ↑ +{dna?.improvementPct || 0}% XP GAIN
-            </div>
-          </motion.div>
-
-          <StatPillar icon="⚡" label="EVOLUTION" value={`${dna?.firstScore||50} → ${dna?.currentScore||70}`}
-                      sub="Total Progress" bgClass="pixel-panel-blue" delay={0.2}/>
-        </div>
-
-        {/* ── SKILL ORBS ORACLE RING ── */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
-                    className="pixel-panel-parchment p-6 shadow-[8px_8px_0_rgba(0,0,0,0.5)]">
-          <div className="flex justify-between items-center mb-8 border-b-4 border-[#854d0e] pb-4">
-            <h2 className="text-xl text-[#78350f]">✨ ATTRIBUTE MASTERY</h2>
-            <span className="text-[10px] text-[#78350f]">LVL 0 → 100</span>
+    <div className="p-6 h-full overflow-auto">
+      <div className="max-w-lg mx-auto">
+        <div className="cq-panel-dark">
+          {/* Title */}
+          <div className="flex items-center gap-3 mb-6">
+            <span className="text-3xl">🧬</span>
+            <h1 className="font-pixel text-sm text-white" style={{ textShadow: '2px 2px 0 #000' }}>
+              Cyber DNA
+            </h1>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-8 mb-8">
-            {SKILL_META.map((s, i) => {
-              const cat = categories.find(c => c.key === s.key);
-              return (
-                <SkillRing key={s.key} label={s.label} score={cat?.score || 50}
-                           color={s.color} icon={s.icon} delay={i * 0.08}/>
-              );
-            })}
-          </div>
+          {/* Skill bars */}
+          <div className="flex flex-col gap-4">
+            {SKILLS.map((skill, i) => {
+              const level = dna?.skills?.[skill.key]?.level || (i + 1);
+              const pct = Math.min(100, (level / 5) * 100);
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {SKILL_META.map((s, i) => {
-              const cat = categories.find(c => c.key === s.key);
-              const score = cat?.score || 50;
               return (
-                <div key={s.key} className="flex items-center gap-3 bg-white/50 p-2 border-2 border-[#854d0e]">
-                  <span className="text-xl">{s.icon}</span>
+                <motion.div
+                  key={skill.key}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.08 }}
+                  className="flex items-center gap-3"
+                >
+                  {/* Skill icon */}
+                  <div className="w-8 h-8 flex items-center justify-center text-lg"
+                       style={{ background: skill.color, border: '2px solid #000' }}>
+                    🛡️
+                  </div>
+
+                  {/* Skill name + bar */}
                   <div className="flex-1">
-                    <div className="flex justify-between text-[10px] mb-1 text-[#78350f]">
-                      <span>{s.label}</span>
-                      <span>{score}%</span>
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="font-pixel text-[8px] text-gray-300">{skill.label}</span>
+                      <span className="font-pixel text-[8px] text-gray-400">Lv. {level}</span>
                     </div>
-                    <div className="pixel-bar-container h-3 bg-gray-300">
-                      <motion.div className="h-full bg-yellow-500 shadow-[inset_0px_2px_0px_0px_#fef08a]"
-                        initial={{ width: 0 }} animate={{ width: `${score}%` }}
-                        transition={{ duration: 1.2, delay: i * 0.1 }}/>
+                    <div className="cq-bar" style={{ height: '14px' }}>
+                      <div className="cq-bar-fill"
+                           style={{ width: `${pct}%`, background: skill.color, transition: `width 0.5s ease ${i * 0.1}s` }}>
+                        <div style={{
+                          position: 'absolute', top: 0, left: 0, right: 0, height: '40%',
+                          background: 'rgba(255,255,255,0.25)'
+                        }} />
+                      </div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>
-        </motion.div>
 
-        {/* ── GUARDIAN STATUES ── */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
-                      className="pixel-panel-stone p-5 border-green-500 shadow-[8px_8px_0_rgba(0,255,136,0.3)]">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-4xl drop-shadow-[2px_2px_0_#000]">🗿</span>
-              <div>
-                <div className="text-[10px] text-green-400">STRONGEST</div>
-                <div className="text-sm text-white">IRON SHIELD</div>
-              </div>
+          {/* Overall score */}
+          <div className="mt-6 pt-4 border-t-2 border-gray-700">
+            <div className="flex justify-between items-center">
+              <span className="font-pixel text-[9px] text-gray-400">Overall Score</span>
+              <span className="font-pixel text-lg" style={{ color: '#ffc060', textShadow: '2px 2px 0 #000' }}>
+                {dna?.overallScore || user?.cyberScore || 0}
+              </span>
             </div>
-            <p className="text-lg text-yellow-400 mb-2 drop-shadow-[2px_2px_0_#000]">{dna?.strongestSkill?.label || 'PASSWORD HYGIENE'}</p>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
-                      className="pixel-panel-stone p-5 border-red-500 shadow-[8px_8px_0_rgba(255,71,87,0.3)]">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-4xl drop-shadow-[2px_2px_0_#000]">💀</span>
-              <div>
-                <div className="text-[10px] text-red-400">WEAKNESS</div>
-                <div className="text-sm text-white">CRACKED ARMOR</div>
-              </div>
-            </div>
-            <p className="text-lg text-yellow-400 mb-2 drop-shadow-[2px_2px_0_#000]">{dna?.weakestSkill?.label || 'AI THREATS'}</p>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
-                      className="pixel-panel-stone p-5 border-purple-500 shadow-[8px_8px_0_rgba(155,89,182,0.3)]">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-4xl drop-shadow-[2px_2px_0_#000]">⭐</span>
-              <div>
-                <div className="text-[10px] text-purple-400">MOST IMPROVED</div>
-                <div className="text-sm text-white">RISING STAR</div>
-              </div>
-            </div>
-            <p className="text-lg text-yellow-400 mb-2 drop-shadow-[2px_2px_0_#000]">{dna?.mostImprovedSkill?.label || 'PHISHING DEFENSE'}</p>
-          </motion.div>
+          </div>
         </div>
-
-        {/* ── ORACLE DIRECTIVE ── */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
-                    className="pixel-panel-wood p-6 flex flex-col md:flex-row items-center gap-6 shadow-[8px_8px_0_rgba(0,0,0,0.5)]">
-          <span className="text-5xl drop-shadow-[4px_4px_0_#000] flex-shrink-0">📜</span>
-          <div className="flex-1 text-center md:text-left">
-            <div className="text-xs text-yellow-400 mb-2">
-              QUEST DIRECTIVE
-            </div>
-            <h3 className="text-xl text-white mb-2 drop-shadow-[2px_2px_0_#000]">
-              TRAIN: {dna?.weakestSkill?.label || 'AI THREATS'}
-            </h3>
-            <p className="text-xs text-gray-300">
-              Complete quests in this zone to level up your weak points!
-            </p>
-          </div>
-          <div className="flex flex-col gap-3 w-full md:w-auto">
-            <button onClick={() => navigate('/dashboard')} className="pixel-btn pixel-btn-primary px-8">
-              START QUEST
-            </button>
-          </div>
-        </motion.div>
       </div>
     </div>
   );

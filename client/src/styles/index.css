@@ -5,189 +5,545 @@
 @tailwind utilities;
 
 /* ═══════════════════════════════════════════════════
-   CYBER QUEST — PIXEL ART RPG DESIGN TOKENS
+   CYBER QUEST — 100% PIXEL ART DESIGN SYSTEM
+   Matching the exact mockup color palette & style
 ═══════════════════════════════════════════════════ */
+
+:root {
+  /* Exact colors from the mockup */
+  --bg-warm: #f5e6c8;          /* Warm parchment background */
+  --bg-dark: #1a1a2e;          /* Dark navy for panels */
+  --panel-dark: #2a2a4a;       /* Dark panel interior */
+  --panel-dark-border: #1a1a2e;
+  --panel-wood-bg: #8b6539;    /* Warm brown wooden panel */
+  --panel-wood-light: #c29255; /* Wood highlight */
+  --panel-wood-dark: #5c3a21;  /* Wood shadow */
+  --panel-stone-bg: #5a6a7a;   /* Grey stone panel */
+  --panel-stone-light: #8a9aaa;
+  --panel-stone-dark: #3a4a5a;
+  --btn-primary: #f0a030;      /* Yellow/Gold button */
+  --btn-primary-dark: #c07820;
+  --btn-primary-light: #ffc060;
+  --btn-danger: #e05040;       /* Red button */
+  --btn-danger-dark: #a03020;
+  --btn-success: #50b060;      /* Green button */
+  --btn-success-dark: #308040;
+  --btn-secondary: #6a7a8a;    /* Grey button */
+  --btn-secondary-dark: #4a5a6a;
+  --text-light: #fff8eb;
+  --text-dark: #2a1a0a;
+  --accent-blue: #4a90d0;
+  --accent-cyan: #40c8e0;
+  --xp-green: #50c878;
+  --health-red: #e05040;
+  --coin-gold: #ffd700;
+  --gem-emerald: #50d890;
+}
+
 @layer base {
+  * {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+  }
+
   body {
-    background-color: #1e1e2e;
-    color: #f8fafc;
-    /* Use a readable pixel font for body, chunky for headings */
+    background-color: var(--bg-warm);
+    color: var(--text-dark);
     font-family: 'VT323', monospace;
     font-size: 20px;
     -webkit-font-smoothing: none;
     -moz-osx-font-smoothing: grayscale;
-    image-rendering: pixelated;
     overflow-x: hidden;
+    margin: 0;
   }
 
   h1, h2, h3, h4, h5, h6, .font-pixel {
     font-family: 'Press Start 2P', cursive;
     text-transform: uppercase;
+    line-height: 1.6;
   }
 
-  /* Scrollbar retro styling */
-  ::-webkit-scrollbar { width: 12px; height: 12px; }
-  ::-webkit-scrollbar-track { background: #1e1e2e; border-left: 2px solid #0f172a; }
+  /* Pixel-art scrollbar */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--bg-warm); }
   ::-webkit-scrollbar-thumb {
-    background: #475569;
-    border: 2px solid #1e1e2e;
-    border-radius: 0;
+    background: var(--panel-wood-bg);
+    border: 2px solid var(--panel-wood-dark);
   }
-  ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--panel-wood-light); }
 }
 
 @layer components {
 
-  /* ── PIXEL BORDERS & PANELS ── */
-  /* We use box-shadow to create rigid 2px/4px pixel borders without images */
-
-  .pixel-panel-wood {
-    border: 16px solid transparent;
-    border-image: url('/assets/panel_wood.png') 16 stretch;
-    background-color: transparent;
-    box-shadow: none;
-    image-rendering: pixelated;
-    color: #fff8eb;
-    position: relative;
+  /* ═══════════════════════════════════════════
+     1. DARK PANELS (Navy HUD / Sidebar / Cards)
+     Matching the dark navy panels in the mockup
+  ═══════════════════════════════════════════ */
+  .cq-panel-dark {
+    background-color: var(--panel-dark);
+    border: 4px solid #000;
+    box-shadow:
+      inset -3px -3px 0 rgba(0,0,0,0.4),
+      inset 3px 3px 0 rgba(255,255,255,0.08),
+      6px 6px 0 rgba(0,0,0,0.3);
+    color: var(--text-light);
+    padding: 12px;
   }
 
-  .pixel-panel-stone {
-    border: 16px solid transparent;
-    border-image: url('/assets/panel_stone.png') 16 stretch;
-    background-color: transparent;
-    box-shadow: none;
-    image-rendering: pixelated;
-    color: #f8fafc;
+  /* ═══════════════════════════════════════════
+     2. WOODEN PANEL (Brown frame for content)
+  ═══════════════════════════════════════════ */
+  .cq-panel-wood {
+    background: linear-gradient(180deg, #a07040 0%, #8b6539 30%, #7a5530 100%);
+    border: 5px solid #3a2010;
+    box-shadow:
+      inset -4px -4px 0 #5c3a21,
+      inset 4px 4px 0 #c29255,
+      6px 6px 0 rgba(0,0,0,0.3);
+    color: var(--text-light);
+    padding: 16px;
   }
 
-  .pixel-panel-blue {
-    border: 16px solid transparent;
-    border-image: url('/assets/panel_stone.png') 16 stretch;
-    background-color: rgba(30, 60, 90, 0.5); /* fallback */
-    box-shadow: none;
-    image-rendering: pixelated;
-    color: #ffffff;
+  /* ═══════════════════════════════════════════
+     3. STONE PANEL (Grey frame)
+  ═══════════════════════════════════════════ */
+  .cq-panel-stone {
+    background: linear-gradient(180deg, #7a8a9a 0%, #5a6a7a 100%);
+    border: 5px solid #2a3a4a;
+    box-shadow:
+      inset -4px -4px 0 #3a4a5a,
+      inset 4px 4px 0 #8a9aaa,
+      6px 6px 0 rgba(0,0,0,0.3);
+    color: var(--text-light);
+    padding: 16px;
   }
 
-  .pixel-panel-parchment {
-    border: 16px solid transparent;
-    border-image: url('/assets/panel_wood.png') 16 stretch;
-    background-color: transparent;
-    box-shadow: none;
-    image-rendering: pixelated;
-    color: #451a03;
+  /* ═══════════════════════════════════════════
+     4. PARCHMENT PANEL (Warm beige for inputs)
+  ═══════════════════════════════════════════ */
+  .cq-panel-parchment {
+    background: linear-gradient(180deg, #fff8eb 0%, #f5e6c8 100%);
+    border: 4px solid #8b6539;
+    box-shadow:
+      inset -3px -3px 0 #d4c4a8,
+      inset 3px 3px 0 #fffdf5,
+      5px 5px 0 rgba(0,0,0,0.2);
+    color: var(--text-dark);
+    padding: 16px;
   }
 
-  /* ── PIXEL BUTTONS ── */
-  .pixel-btn {
-    font-family: 'VT323', monospace;
-    font-size: 1.25rem;
+  /* ═══════════════════════════════════════════
+     5. BUTTONS — Exact match to mockup
+  ═══════════════════════════════════════════ */
+  .cq-btn {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
     text-transform: uppercase;
-    color: white;
-    text-shadow: 2px 2px 0 #000;
+    padding: 12px 20px;
+    border: 3px solid #000;
     cursor: pointer;
-    transition: transform 0.1s;
-    image-rendering: pixelated;
-    border: 8px solid transparent;
-    padding: 0 16px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 48px;
-    background-color: transparent;
     gap: 8px;
+    transition: transform 0.08s;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+    white-space: nowrap;
+  }
+  .cq-btn:active {
+    transform: translateY(3px);
+    box-shadow: none !important;
   }
 
-  .pixel-btn:active {
-    transform: translateY(2px);
+  /* Primary = Gold/Yellow (like mockup) */
+  .cq-btn-primary {
+    background: linear-gradient(180deg, var(--btn-primary-light) 0%, var(--btn-primary) 40%, var(--btn-primary-dark) 100%);
+    color: #fff;
+    box-shadow:
+      inset -3px -3px 0 var(--btn-primary-dark),
+      inset 3px 3px 0 var(--btn-primary-light),
+      0 4px 0 #000;
   }
 
-  .pixel-btn-primary {
-    border-image: url('/assets/btn_primary.png') 8 stretch;
+  /* Secondary = Grey */
+  .cq-btn-secondary {
+    background: linear-gradient(180deg, #8a9aaa 0%, var(--btn-secondary) 40%, var(--btn-secondary-dark) 100%);
+    color: #fff;
+    box-shadow:
+      inset -3px -3px 0 var(--btn-secondary-dark),
+      inset 3px 3px 0 #8a9aaa,
+      0 4px 0 #000;
   }
 
-  .pixel-btn-secondary {
-    border-image: url('/assets/btn_danger.png') 8 stretch;
+  /* Success = Green */
+  .cq-btn-success {
+    background: linear-gradient(180deg, #70d080 0%, var(--btn-success) 40%, var(--btn-success-dark) 100%);
+    color: #fff;
+    box-shadow:
+      inset -3px -3px 0 var(--btn-success-dark),
+      inset 3px 3px 0 #70d080,
+      0 4px 0 #000;
   }
 
-  .pixel-btn-success {
-    background-color: #4ade80;
-    box-shadow: 
-      inset -4px -4px 0px 0px #166534, 
-      inset 4px 4px 0px 0px #86efac;
-    color: #064e3b;
-  }
-  .pixel-btn-success:active {
-    box-shadow: 
-      inset 4px 4px 0px 0px #166534, 
-      inset -4px -4px 0px 0px #86efac;
+  /* Danger = Red */
+  .cq-btn-danger {
+    background: linear-gradient(180deg, #f07060 0%, var(--btn-danger) 40%, var(--btn-danger-dark) 100%);
+    color: #fff;
+    box-shadow:
+      inset -3px -3px 0 var(--btn-danger-dark),
+      inset 3px 3px 0 #f07060,
+      0 4px 0 #000;
   }
 
-  .pixel-btn-danger {
-    border-image: url('/assets/btn_danger.png') 8 stretch;
-  }
-  .pixel-btn-danger:active {
-    transform: translateY(2px);
-  }
-
-  /* ── PROGRESS BARS ── */
-  .pixel-bar-container {
-    background-color: #1e293b;
-    border: 3px solid #000;
-    padding: 2px;
-    position: relative;
-    height: 24px;
-    width: 100%;
+  /* Disabled */
+  .cq-btn-disabled {
+    background: #555;
+    color: #888;
+    cursor: not-allowed;
+    box-shadow:
+      inset -3px -3px 0 #333,
+      inset 3px 3px 0 #777,
+      0 4px 0 #000;
+    opacity: 0.6;
   }
 
-  .pixel-bar-fill-xp {
-    background-color: #3b82f6;
-    height: 100%;
-    box-shadow: inset 0px 4px 0px 0px #93c5fd;
-    transition: width 0.3s steps(10);
-  }
-  .pixel-bar-fill-health {
-    background-color: #ef4444;
-    height: 100%;
-    box-shadow: inset 0px 4px 0px 0px #fca5a5;
-  }
-  .pixel-bar-fill-success {
-    background-color: #4ade80;
-    height: 100%;
-    box-shadow: inset 0px 4px 0px 0px #86efac;
+  /* ═══════════════════════════════════════════
+     6. TOP HUD BAR (Matching the exact mockup)
+  ═══════════════════════════════════════════ */
+  .cq-hud-bar {
+    background: linear-gradient(180deg, #2a2a4a 0%, #1a1a2e 100%);
+    border-bottom: 4px solid #000;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 60px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    z-index: 100;
   }
 
-  /* ── STATUS TAGS / BADGES ── */
-  .pixel-tag {
+  .cq-hud-stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0,0,0,0.3);
+    border: 2px solid rgba(255,255,255,0.1);
+    padding: 4px 10px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 9px;
+    color: #fff;
+  }
+
+  /* ═══════════════════════════════════════════
+     7. SIDEBAR NAVIGATION
+  ═══════════════════════════════════════════ */
+  .cq-sidebar {
+    background: linear-gradient(180deg, #2a2a4a 0%, #1a1a2e 100%);
+    border-right: 4px solid #000;
+    width: 160px;
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    gap: 4px;
+    box-shadow: 4px 0 8px rgba(0,0,0,0.3);
+  }
+
+  .cq-sidebar-btn {
     font-family: 'Press Start 2P', cursive;
     font-size: 8px;
-    padding: 6px 8px;
-    border: 2px solid #000;
     text-transform: uppercase;
-    display: inline-flex;
+    color: #aab;
+    padding: 10px 12px;
+    border: 2px solid transparent;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.15s;
+    text-align: left;
   }
-  .pixel-tag-safe { background: #4ade80; color: #064e3b; }
-  .pixel-tag-suspicious { background: #facc15; color: #713f12; }
-  .pixel-tag-phishing { background: #ef4444; color: #fff; }
+  .cq-sidebar-btn:hover {
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+  }
+  .cq-sidebar-btn.active {
+    background: var(--accent-blue);
+    color: #fff;
+    border-color: #000;
+    box-shadow:
+      inset -2px -2px 0 rgba(0,0,0,0.3),
+      inset 2px 2px 0 rgba(255,255,255,0.2);
+  }
 
-  /* ── INPUT FIELDS ── */
-  .pixel-input {
+  /* ═══════════════════════════════════════════
+     8. PROGRESS BARS (XP, Health, Skill)
+  ═══════════════════════════════════════════ */
+  .cq-bar {
+    background: #1a1a2e;
+    border: 3px solid #000;
+    height: 20px;
+    padding: 2px;
+    position: relative;
+  }
+  .cq-bar-fill {
+    height: 100%;
+    transition: width 0.4s steps(12);
+    position: relative;
+  }
+  .cq-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: rgba(255,255,255,0.25);
+  }
+  .cq-bar-xp .cq-bar-fill { background: var(--xp-green); }
+  .cq-bar-health .cq-bar-fill { background: var(--health-red); }
+  .cq-bar-skill .cq-bar-fill { background: var(--accent-blue); }
+
+  /* ═══════════════════════════════════════════
+     9. STATUS TAGS
+  ═══════════════════════════════════════════ */
+  .cq-tag {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 7px;
+    padding: 5px 10px;
+    border: 2px solid #000;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    text-transform: uppercase;
+  }
+  .cq-tag-safe       { background: #50c878; color: #fff; }
+  .cq-tag-suspicious { background: #f0a030; color: #fff; }
+  .cq-tag-phishing   { background: #e05040; color: #fff; }
+  .cq-tag-unknown    { background: #6a7a8a; color: #fff; }
+  .cq-tag-new        { background: var(--accent-blue); color: #fff; }
+  .cq-tag-completed  { background: #50c878; color: #fff; }
+
+  /* ═══════════════════════════════════════════
+     10. INPUT FIELDS
+  ═══════════════════════════════════════════ */
+  .cq-input {
     font-family: 'VT323', monospace;
-    font-size: 24px;
-    background-color: #fff8eb;
-    border: 4px solid #000;
+    font-size: 22px;
+    background: #fff8eb;
+    border: 3px solid #8b6539;
     padding: 8px 12px;
-    color: #451a03;
+    color: var(--text-dark);
     outline: none;
-    box-shadow: inset 4px 4px 0px 0px rgba(0,0,0,0.1);
+    box-shadow: inset 3px 3px 0 rgba(0,0,0,0.08);
+    width: 100%;
   }
-  .pixel-input:focus {
-    border-color: #3b82f6;
+  .cq-input:focus {
+    border-color: var(--accent-blue);
+    box-shadow: inset 3px 3px 0 rgba(0,0,0,0.08), 0 0 0 2px rgba(74,144,208,0.3);
   }
-  
-  /* ── LEGACY REPLACEMENTS ── */
-  .btn-primary { @apply pixel-btn pixel-btn-primary; }
-  .btn-danger { @apply pixel-btn pixel-btn-danger; }
-  .btn-ghost { @apply pixel-btn pixel-btn-secondary; }
-  .glass-panel { @apply pixel-panel-blue; }
+  .cq-input::placeholder {
+    color: #b0a090;
+  }
+
+  /* ═══════════════════════════════════════════
+     11. NOTIFICATION TOASTS
+  ═══════════════════════════════════════════ */
+  .cq-toast {
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    padding: 8px 14px;
+    border: 3px solid #000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+  }
+  .cq-toast-success { background: #d0f5d0; color: #1a5a1a; border-color: #2a8a2a; }
+  .cq-toast-info    { background: #d0e8f5; color: #1a4a6a; border-color: #2a6a9a; }
+  .cq-toast-warning { background: #f5e8d0; color: #6a4a1a; border-color: #9a7a2a; }
+  .cq-toast-error   { background: #f5d0d0; color: #6a1a1a; border-color: #9a2a2a; }
+
+  /* ═══════════════════════════════════════════
+     12. TABS
+  ═══════════════════════════════════════════ */
+  .cq-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 3px solid #000;
+  }
+  .cq-tab {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 8px;
+    padding: 8px 16px;
+    border: 3px solid #000;
+    border-bottom: none;
+    background: var(--btn-secondary);
+    color: #ccc;
+    cursor: pointer;
+  }
+  .cq-tab.active {
+    background: var(--accent-blue);
+    color: #fff;
+  }
+
+  /* ═══════════════════════════════════════════
+     13. DIALOG / SPEECH BUBBLES
+  ═══════════════════════════════════════════ */
+  .cq-speech {
+    background: #fff8eb;
+    border: 3px solid #8b6539;
+    padding: 10px 14px;
+    color: var(--text-dark);
+    font-size: 18px;
+    position: relative;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.15);
+  }
+  .cq-speech::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 16px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 12px solid #8b6539;
+  }
+
+  /* ═══════════════════════════════════════════
+     14. MAP NODE LABELS
+  ═══════════════════════════════════════════ */
+  .cq-map-label {
+    background: rgba(26,26,46,0.9);
+    border: 3px solid #000;
+    padding: 6px 14px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 8px;
+    color: #fff;
+    text-transform: uppercase;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .cq-map-label:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 rgba(0,0,0,0.3);
+  }
+
+  /* ═══════════════════════════════════════════
+     15. MODAL / POPUP
+  ═══════════════════════════════════════════ */
+  .cq-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  .cq-modal {
+    background: var(--panel-dark);
+    border: 5px solid #000;
+    box-shadow:
+      inset -4px -4px 0 rgba(0,0,0,0.3),
+      inset 4px 4px 0 rgba(255,255,255,0.05),
+      8px 8px 0 rgba(0,0,0,0.4);
+    padding: 24px;
+    max-width: 400px;
+    width: 90%;
+    color: var(--text-light);
+  }
+
+  /* ═══════════════════════════════════════════
+     16. INVENTORY GRID
+  ═══════════════════════════════════════════ */
+  .cq-inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+  }
+  .cq-inventory-slot {
+    aspect-ratio: 1;
+    background: rgba(0,0,0,0.3);
+    border: 2px solid #444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    position: relative;
+  }
+  .cq-inventory-slot:hover {
+    border-color: var(--accent-blue);
+  }
+  .cq-inventory-slot .slot-count {
+    position: absolute;
+    bottom: 2px;
+    right: 4px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 7px;
+    color: #fff;
+    text-shadow: 1px 1px 0 #000;
+  }
+
+  /* ═══════════════════════════════════════════
+     17. STAR RATINGS
+  ═══════════════════════════════════════════ */
+  .cq-stars {
+    display: flex;
+    gap: 2px;
+  }
+  .cq-star {
+    color: #ffd700;
+    font-size: 16px;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+  }
+  .cq-star.empty {
+    color: #555;
+  }
+
+  /* ═══════════════════════════════════════════
+     18. ANIMATIONS
+  ═══════════════════════════════════════════ */
+  @keyframes cq-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  @keyframes cq-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+  @keyframes cq-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .cq-float { animation: cq-float 3s ease-in-out infinite; }
+  .cq-pulse { animation: cq-pulse 2s ease-in-out infinite; }
+  .cq-bounce { animation: cq-bounce 1.5s ease-in-out infinite; }
+
+  /* ═══════════════════════════════════════════
+     LEGACY COMPATIBILITY
+  ═══════════════════════════════════════════ */
+  .pixel-panel-wood { @apply cq-panel-wood; }
+  .pixel-panel-stone { @apply cq-panel-stone; }
+  .pixel-panel-blue { @apply cq-panel-dark; }
+  .pixel-panel-parchment { @apply cq-panel-parchment; }
+  .pixel-btn { @apply cq-btn; }
+  .pixel-btn-primary { @apply cq-btn-primary; }
+  .pixel-btn-secondary { @apply cq-btn-secondary; }
+  .pixel-btn-danger { @apply cq-btn-danger; }
+  .pixel-btn-success { @apply cq-btn-success; }
+  .pixel-input { @apply cq-input; }
+  .pixel-tag { @apply cq-tag; }
+  .btn-primary { @apply cq-btn cq-btn-primary; }
+  .btn-danger { @apply cq-btn cq-btn-danger; }
+  .btn-ghost { @apply cq-btn cq-btn-secondary; }
+  .glass-panel { @apply cq-panel-dark; }
 }

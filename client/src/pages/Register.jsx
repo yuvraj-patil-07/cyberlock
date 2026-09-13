@@ -1,144 +1,120 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
-import { Lock, Mail, User } from 'lucide-react';
+
+const COMPANIONS = [
+  { id: 'knight', emoji: '🛡️', name: 'Knight' },
+  { id: 'wizard', emoji: '🧙', name: 'Wizard' },
+  { id: 'robot', emoji: '🤖', name: 'Robot' },
+  { id: 'owl', emoji: '🦉', name: 'Owl' },
+];
 
 export default function Register() {
-  const [username, setUsername] = useState('');
-  const [email, setEmail]       = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [localError, setLocalError] = useState('');
-  
-  const { register, loading, error } = useAuth();
   const navigate = useNavigate();
+  const { register } = useAuth();
+  const [form, setForm] = useState({ username: '', email: '', password: '', confirmPassword: '' });
+  const [companion, setCompanion] = useState('knight');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLocalError('');
-    if (password !== confirmPassword) {
-      setLocalError("Passwords don't match!");
+    setError('');
+    if (form.password !== form.confirmPassword) {
+      setError('Passwords do not match!');
       return;
     }
-    const result = await register(username, email, password);
-    if (result.success) navigate('/dashboard');
+    setLoading(true);
+    try {
+      await register(form.username, form.email, form.password);
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Registration failed.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen flex relative overflow-hidden bg-[#5c3a21]">
-      
-      {/* ── BACKGROUND WOODEN WALL PATTERN ── */}
-      <div className="absolute inset-0 pointer-events-none opacity-50" 
-           style={{
-             backgroundImage: 'repeating-linear-gradient(90deg, #4a2f1a 0px, #4a2f1a 40px, #3d2615 40px, #3d2615 42px)',
-             backgroundSize: '42px 100%'
-           }}>
-      </div>
-      
-      {/* ── WALL DECORATIONS ── */}
-      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-16 h-20 bg-yellow-600/30 blur-2xl rounded-full"></div>
-      <div className="absolute top-12 left-1/2 -translate-x-1/2 text-4xl drop-shadow-[2px_2px_0_#000]">🏮</div>
-      <div className="absolute top-16 left-32 text-6xl drop-shadow-[4px_4px_0_#000]">⚔️</div>
+    <div className="min-h-screen flex items-center justify-center p-4"
+         style={{ background: 'linear-gradient(180deg, #3a6090 0%, #2a4060 40%, #1a2a40 100%)' }}>
 
-      {/* ── CENTER FORM CONTAINER ── */}
-      <div className="relative z-10 m-auto w-full max-w-sm pt-20">
-        
-        {/* PARCHMENT PANEL */}
-        <div className="pixel-panel-parchment p-8 flex flex-col items-center">
-          
-          <h2 className="font-pixel text-2xl text-center mb-8 drop-shadow-[2px_2px_0_#d97706]">
-            Create Account
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="w-full max-w-sm"
+      >
+        <div className="cq-panel-wood">
+          <h2 className="font-pixel text-sm text-center text-white mb-5"
+              style={{ textShadow: '2px 2px 0 #000' }}>
+            Create Your Account
           </h2>
 
-          {(error || localError) && (
-            <div className="bg-red-500 text-white p-2 text-sm font-pixel border-2 border-red-900 mb-4 w-full text-center">
-              {error || localError}
-            </div>
-          )}
+          <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+            <input type="text" placeholder="Username"
+                   value={form.username}
+                   onChange={(e) => setForm({ ...form, username: e.target.value })}
+                   className="cq-input w-full" required />
 
-          <form onSubmit={handleSubmit} className="w-full space-y-4">
-            
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <User size={20} className="text-[#78350f]" />
+            <input type="email" placeholder="Email"
+                   value={form.email}
+                   onChange={(e) => setForm({ ...form, email: e.target.value })}
+                   className="cq-input w-full" required />
+
+            <input type="password" placeholder="Password"
+                   value={form.password}
+                   onChange={(e) => setForm({ ...form, password: e.target.value })}
+                   className="cq-input w-full" required />
+
+            <input type="password" placeholder="Confirm Password"
+                   value={form.confirmPassword}
+                   onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
+                   className="cq-input w-full" required />
+
+            {/* Choose Your Companion */}
+            <div className="mt-2">
+              <p className="text-center text-white mb-2"
+                 style={{ fontFamily: "'VT323', monospace", fontSize: '20px' }}>
+                Choose Your Companion
+              </p>
+              <div className="flex justify-center gap-3">
+                {COMPANIONS.map((c) => (
+                  <button key={c.id} type="button"
+                          onClick={() => setCompanion(c.id)}
+                          className={`w-12 h-12 flex items-center justify-center text-2xl border-3 transition-all
+                            ${companion === c.id
+                              ? 'border-[#ffc060] bg-[rgba(240,160,48,0.3)] scale-110'
+                              : 'border-[#5c3a21] bg-[rgba(0,0,0,0.2)] hover:border-[#c29255]'}`}
+                          style={{ border: `3px solid ${companion === c.id ? '#ffc060' : '#5c3a21'}` }}>
+                    {c.emoji}
+                  </button>
+                ))}
               </div>
-              <input 
-                type="text" 
-                value={username} 
-                onChange={e => setUsername(e.target.value)}
-                className="pixel-input w-full pl-10 bg-white" 
-                placeholder="Username" 
-                required 
-              />
             </div>
 
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Mail size={20} className="text-[#78350f]" />
+            {error && (
+              <div className="cq-toast-error cq-toast text-sm">
+                ❌ {error}
               </div>
-              <input 
-                type="email" 
-                value={email} 
-                onChange={e => setEmail(e.target.value)}
-                className="pixel-input w-full pl-10 bg-white" 
-                placeholder="Email Address" 
-                required 
-              />
-            </div>
+            )}
 
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Lock size={20} className="text-[#78350f]" />
-              </div>
-              <input 
-                type="password" 
-                value={password} 
-                onChange={e => setPassword(e.target.value)}
-                className="pixel-input w-full pl-10 bg-white" 
-                placeholder="Password" 
-                required 
-              />
-            </div>
-
-            <div className="relative pb-2">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Lock size={20} className="text-[#78350f]" />
-              </div>
-              <input 
-                type="password" 
-                value={confirmPassword} 
-                onChange={e => setConfirmPassword(e.target.value)}
-                className="pixel-input w-full pl-10 bg-white" 
-                placeholder="Confirm Password" 
-                required 
-              />
-            </div>
-
-            <button 
-              type="submit" 
-              disabled={loading}
-              className="pixel-panel-wood pixel-btn w-full py-4 text-white text-lg mt-2"
-            >
-              {loading ? '...' : 'Sign Up'}
+            <button type="submit" disabled={loading}
+                    className="cq-btn cq-btn-success w-full justify-center mt-2">
+              {loading ? '⏳ Creating...' : '✨ Create Account'}
             </button>
-            
           </form>
 
-          <div className="mt-8 text-center border-t-4 border-[#d97706] pt-4 w-full">
-            <Link to="/login" className="font-pixel text-[10px] text-[#78350f] hover:text-blue-600 transition-colors">
-              Already have an account? Login
+          <p className="text-center mt-4 text-white"
+             style={{ fontFamily: "'VT323', monospace", fontSize: '18px' }}>
+            Already have an account?{' '}
+            <Link to="/login" className="underline" style={{ color: '#ffc060' }}>
+              Login
             </Link>
-          </div>
-
+          </p>
         </div>
-
-      </div>
-
-      {/* ── KNIGHT NPC DECORATION ── */}
-      <div className="absolute bottom-10 right-10 text-[80px] drop-shadow-[4px_4px_0_#000] z-20">
-        🧙‍♂️
-      </div>
-
+      </motion.div>
     </div>
   );
 }

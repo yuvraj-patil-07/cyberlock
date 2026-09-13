@@ -1,154 +1,129 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import useGameStore from '../store/gameStore';
-import { useAuth } from '../hooks/useAuth';
+import { ArrowLeft } from 'lucide-react';
+import { gameService } from '../services/gameService';
 
-const MapNode = ({ id, x, y, name, status, onClick, isBoss, active }) => {
-  const isLocked = status === 'locked';
-  const isCompleted = status === 'completed';
-  
-  return (
-    <div 
-      className="absolute flex flex-col items-center justify-center transform -translate-x-1/2 -translate-y-1/2 z-10"
-      style={{ left: `${x}%`, top: `${y}%` }}
-    >
-      {/* Name tag */}
-      <div className={`mb-2 font-pixel text-[10px] px-2 py-1 ${isLocked ? 'text-gray-500 bg-gray-800' : 'text-white bg-black'} border-2 ${isLocked ? 'border-gray-600' : 'border-white'}`}>
-        {name}
-      </div>
-
-      {/* Node button */}
-      <button 
-        onClick={() => !isLocked && onClick(id)}
-        className={`w-16 h-16 border-4 relative transition-transform ${!isLocked && 'hover:scale-110 cursor-pointer active:scale-95'} ${
-          isLocked ? 'bg-gray-700 border-gray-900 grayscale' :
-          isBoss ? 'bg-red-600 border-red-900' :
-          'bg-blue-500 border-blue-900'
-        } ${isCompleted && !isBoss ? 'bg-green-500 border-green-900' : ''}`}
-        style={{
-          boxShadow: !isLocked ? 'inset 4px 4px 0px 0px rgba(255,255,255,0.3), 4px 4px 0px 0px rgba(0,0,0,0.5)' : 'none'
-        }}
-      >
-        <div className="absolute inset-0 flex items-center justify-center text-3xl drop-shadow-[2px_2px_0_#000]">
-          {isLocked ? '🔒' : isBoss ? '💀' : isCompleted ? '✅' : '⚔️'}
-        </div>
-      </button>
-
-      {/* Player marker if active */}
-      {active && (
-        <motion.div 
-          animate={{ y: [0, -10, 0] }}
-          transition={{ repeat: Infinity, duration: 1 }}
-          className="absolute -top-12 text-4xl drop-shadow-[2px_2px_0_#000] z-20"
-        >
-          👦
-        </motion.div>
-      )}
-    </div>
-  );
-};
-
-const DottedPath = ({ start, end, isUnlocked }) => {
-  const dx = end.x - start.x;
-  const dy = end.y - start.y;
-  const length = Math.sqrt(dx * dx + dy * dy);
-  const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-
-  return (
-    <div 
-      className="absolute top-0 left-0 origin-top-left flex items-center"
-      style={{
-        left: `${start.x}%`,
-        top: `${start.y}%`,
-        width: `${length}%`,
-        height: '4px',
-        transform: `rotate(${angle}deg)`,
-        zIndex: 0
-      }}
-    >
-      <div 
-        className="w-full h-full"
-        style={{
-          backgroundImage: `repeating-linear-gradient(90deg, ${isUnlocked ? '#facc15' : '#4b5563'} 0, ${isUnlocked ? '#facc15' : '#4b5563'} 8px, transparent 8px, transparent 16px)`
-        }}
-      />
-    </div>
-  );
+const ROOM_CONFIG = {
+  phishing:    { name: 'Phishing Port',    emoji: '📧', desc: 'Learn to identify and avoid phishing emails.',     color: '#4a90d0' },
+  passwords:   { name: 'Password Vault',   emoji: '🔐', desc: 'Build strong passwords and defend your vault.',    color: '#50c878' },
+  firewall:    { name: 'Firewall City',    emoji: '🏰', desc: 'Configure firewalls to protect the kingdom.',      color: '#e05040' },
+  'qr-codes':  { name: 'QR Temple',        emoji: '📱', desc: 'Scan wisely — not all QR codes are safe.',         color: '#9b59b6' },
+  'ai-threats': { name: 'AI Lab',          emoji: '🤖', desc: 'Detect AI-generated threats and deepfakes.',       color: '#40c8e0' },
+  scams:       { name: 'Scam Market',      emoji: '🏪', desc: 'Navigate the market and spot the scams.',          color: '#f0a030' },
+  'dark-web':  { name: 'Dark Web Depths',  emoji: '🕳️', desc: 'Explore the dark web safely.',                    color: '#8a4af0' },
 };
 
 export default function RoomSelect() {
   const navigate = useNavigate();
-  const { user } = useAuth();
-  
-  // Use user.completedRooms length or default to 0. 
-  const completedCount = user?.completedRooms?.length || 0;
+  const [searchParams] = useSearchParams();
+  const zone = searchParams.get('zone') || null;
+  const [progress, setProgress] = useState(null);
 
-  const nodes = [
-    { id: 1, name: 'Phishing',   x: 20, y: 80, isBoss: false },
-    { id: 2, name: 'Passwords',  x: 40, y: 50, isBoss: false },
-    { id: 3, name: 'Scam',       x: 70, y: 70, isBoss: false },
-    { id: 4, name: 'QR Code',    x: 80, y: 30, isBoss: false },
-    { id: 5, name: 'Boss',       x: 50, y: 15, isBoss: true  },
-  ];
+  useEffect(() => {
+    gameService.getProgress()
+      .then(res => setProgress(res.data))
+      .catch(() => {});
+  }, []);
 
-  const getStatus = (id) => {
-    if (id <= completedCount) return 'completed';
-    if (id === completedCount + 1) return 'active';
-    return 'locked';
-  };
+  // If a zone is specified, show the room entry/info panel
+  if (zone && ROOM_CONFIG[zone]) {
+    const room = ROOM_CONFIG[zone];
+    return (
+      <div className="h-full flex items-center justify-center p-8"
+           style={{ background: `linear-gradient(180deg, ${room.color}20 0%, #f5e6c8 100%)` }}>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="w-full max-w-sm"
+        >
+          {/* Back button */}
+          <button onClick={() => navigate('/rooms')}
+                  className="cq-btn cq-btn-secondary mb-4 text-[8px]">
+            <ArrowLeft size={14} /> Back
+          </button>
 
-  const handleNodeClick = (id) => {
-    navigate(`/play/${id}`);
-  };
+          <div className="cq-panel-dark">
+            {/* Room icon + stars */}
+            <div className="flex items-center gap-4 mb-4">
+              <div className="text-5xl cq-float">{room.emoji}</div>
+              <div>
+                <h2 className="font-pixel text-sm text-white"
+                    style={{ textShadow: '2px 2px 0 #000' }}>
+                  {room.name}
+                </h2>
+                <div className="cq-stars mt-1">
+                  {[1, 2, 3].map(s => (
+                    <span key={s} className="cq-star empty">⭐</span>
+                  ))}
+                </div>
+              </div>
+            </div>
 
+            {/* Description */}
+            <p className="text-gray-300 mb-4" style={{ fontFamily: "'VT323', monospace", fontSize: '20px' }}>
+              {room.desc}
+            </p>
+
+            {/* Rewards */}
+            <div className="mb-4">
+              <p className="font-pixel text-[8px] text-gray-400 mb-2">Rewards</p>
+              <div className="flex gap-3 items-center">
+                <span className="cq-hud-stat text-[8px]">🪙 +50</span>
+                <span className="cq-hud-stat text-[8px]" style={{ background: '#50c878', borderColor: '#308040' }}>XP +30 XP</span>
+              </div>
+            </div>
+
+            {/* Enter button */}
+            <button onClick={() => navigate(`/game/${zone}`)}
+                    className="cq-btn cq-btn-primary w-full justify-center">
+              ⚔ Enter
+            </button>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
+  // Default: show all rooms in a grid
   return (
-    <div className="w-full h-full relative pixel-panel-wood overflow-hidden">
-      
-      {/* Background Terrain */}
-      <div className="absolute inset-0 bg-[#22c55e] opacity-80"
-           style={{
-             backgroundImage: 'linear-gradient(#16a34a 2px, transparent 2px), linear-gradient(90deg, #16a34a 2px, transparent 2px)',
-             backgroundSize: '32px 32px'
-           }}
-      />
+    <div className="p-6 h-full overflow-auto">
+      <div className="flex items-center gap-3 mb-6">
+        <button onClick={() => navigate('/dashboard')}
+                className="cq-btn cq-btn-secondary text-[8px]">
+          <ArrowLeft size={14} /> Map
+        </button>
+        <h1 className="font-pixel text-sm" style={{ color: '#2a1a0a' }}>Select Zone</h1>
+      </div>
 
-      {/* Decorative environment elements */}
-      <div className="absolute top-10 left-10 text-6xl drop-shadow-[4px_4px_0_#000]">🌲</div>
-      <div className="absolute top-32 left-20 text-6xl drop-shadow-[4px_4px_0_#000]">🌲</div>
-      <div className="absolute bottom-20 right-20 text-6xl drop-shadow-[4px_4px_0_#000]">🌲</div>
-      <div className="absolute top-40 right-10 text-6xl drop-shadow-[4px_4px_0_#000]">🗻</div>
-      <div className="absolute top-10 right-40 text-6xl drop-shadow-[4px_4px_0_#000]">☁️</div>
-
-      {/* Paths */}
-      {nodes.map((node, i) => {
-        if (i === nodes.length - 1) return null;
-        const nextNode = nodes[i + 1];
-        const isUnlocked = getStatus(nextNode.id) !== 'locked';
-        return (
-          <DottedPath 
-            key={`path-${node.id}`} 
-            start={node} 
-            end={nextNode} 
-            isUnlocked={isUnlocked} 
-          />
-        );
-      })}
-
-      {/* Nodes */}
-      {nodes.map((node) => {
-        const status = getStatus(node.id);
-        return (
-          <MapNode 
-            key={node.id} 
-            {...node} 
-            status={status} 
-            active={status === 'active' || (status === 'completed' && completedCount === nodes.length && node.id === nodes.length)}
-            onClick={handleNodeClick} 
-          />
-        );
-      })}
-
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {Object.entries(ROOM_CONFIG).map(([key, room], i) => (
+          <motion.div
+            key={key}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.06 }}
+          >
+            <button
+              onClick={() => navigate(`/rooms?zone=${key}`)}
+              className="cq-panel-dark w-full text-left hover:scale-[1.02] transition-transform"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <span className="text-3xl">{room.emoji}</span>
+                <div>
+                  <div className="font-pixel text-[9px] text-white">{room.name}</div>
+                  <div className="cq-stars mt-1">
+                    {[1, 2, 3].map(s => <span key={s} className="cq-star empty">⭐</span>)}
+                  </div>
+                </div>
+              </div>
+              <p className="text-gray-400 text-sm" style={{ fontFamily: "'VT323', monospace" }}>
+                {room.desc}
+              </p>
+            </button>
+          </motion.div>
+        ))}
+      </div>
     </div>
   );
 }
