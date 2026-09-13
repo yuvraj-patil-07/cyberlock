@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
 import { config } from '../config/env.js';
+import { getCurrentUser } from '../services/authService.js';
 
 export const protect = async (req, res, next) => {
   let token;
@@ -8,12 +8,20 @@ export const protect = async (req, res, next) => {
     try {
       token = req.headers.authorization.split(' ')[1];
       const decoded = jwt.verify(token, config.jwtSecret);
-      req.user = await User.findById(decoded.id).select('-password');
-      if (!req.user) {
+
+      const user = await getCurrentUser(decoded.id);
+      if (!user) {
         return res.status(401).json({ message: 'User not found or session invalid' });
       }
+
+      req.user = {
+        _id: user.id || user._id,
+        id: user.id || user._id,
+        ...user
+      };
       return next();
     } catch (error) {
+      console.warn('Auth protect error:', error.message);
       return res.status(401).json({ message: 'Not authorized, token failed or expired' });
     }
   }
