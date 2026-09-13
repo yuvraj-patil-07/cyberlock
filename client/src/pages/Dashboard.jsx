@@ -53,7 +53,7 @@ export default function Dashboard() {
       {/* ═══ CLEAN BACKGROUND MAP (NO UI BAKED IN) ═══ */}
       <div className="absolute inset-0 z-0">
         <img
-          src="/assets/clean-map.png"
+          src="/assets/clean-map.jpg"
           alt="Cyber Quest World Map"
           className="w-full h-full object-cover"
           draggable={false}
