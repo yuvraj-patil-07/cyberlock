@@ -47,7 +47,7 @@ export default function Dashboard() {
     <div className="relative w-full h-full overflow-hidden">
       {/* ═══ WORLD MAP BACKGROUND ═══ */}
       <div className="absolute inset-0">
-        <img src="/assets/world-map-bg.jpg" alt="World Map"
+        <img src="/assets/world-map-bg.png" alt="World Map"
              className="w-full h-full object-cover"
              style={{ imageRendering: 'pixelated' }} />
       </div>
