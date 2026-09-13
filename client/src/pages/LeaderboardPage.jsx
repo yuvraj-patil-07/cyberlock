@@ -37,8 +37,7 @@ const TrophyPedestal = ({ rank, player, height, isGold }) => {
       </div>
 
       {/* Pedestal block */}
-      <div style={{ width: '100px', height: `${height}px` }}
-           className="relative rounded-t-lg"
+      <div className="relative rounded-t-lg"
            style={{
              width:'100px', height:`${height}px`,
              background: `linear-gradient(180deg, ${colors.primary} 0%, ${colors.primary}88 100%)`,

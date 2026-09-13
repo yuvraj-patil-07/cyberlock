@@ -87,8 +87,7 @@ const WorldMapSVG = ({ completedRooms, onZoneClick, hoveredZone, setHoveredZone 
       {/* ════ ISLANDS ════ */}
 
       {/* ── ISLAND 1: Phishing Tower ── */}
-      <g style={{ animation: 'float-slow 5s ease-in-out 0s infinite' }}
-         onClick={() => isUnlocked(1) && onZoneClick(1)}
+      <g onClick={() => isUnlocked(1) && onZoneClick(1)}
          onMouseEnter={() => setHoveredZone(1)} onMouseLeave={() => setHoveredZone(null)}
          style={{ cursor: isUnlocked(1) ? 'pointer' : 'default', animation: 'float-slow 5s ease-in-out 0s infinite' }}>
         <ellipse cx="130" cy="345" rx="100" ry="28" fill="#2d4a1e" stroke="#3d6028" strokeWidth="1.5"/>
