@@ -28,7 +28,7 @@ const VictoryParticles = () => (
 const StatCrystal = ({ icon, label, value, sub, color, delay }) => (
   <motion.div initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
               transition={{ delay, type: 'spring', bounce: 0.5 }}
-              className="fantasy-panel rounded-xl p-4 text-center relative overflow-hidden"
+              className="pixel-panel-stone p-4 text-center relative overflow-hidden"
               style={{ borderColor: `${color}30` }}>
     <div className="absolute top-0 left-0 right-0 h-0.5"
          style={{ background: `linear-gradient(90deg, transparent, ${color}, transparent)` }}/>
@@ -89,9 +89,9 @@ export default function FinalScreen() {
                style={{ filter: 'drop-shadow(0 0 30px rgba(255,215,0,0.6))' }}>
             👑
           </div>
-          <div className="rune-badge rune-badge-gold mx-auto mb-4">
+          <div className="pixel-tag bg-yellow-600 text-white mx-auto mb-4 inline-block shadow-[4px_4px_0_rgba(0,0,0,0.5)]">
             <span>🏆</span>
-            <span>MASTER CYBER SENTINEL UNLOCKED</span>
+            <span className="mx-2">MASTER CYBER SENTINEL UNLOCKED</span>
             <span>🏆</span>
           </div>
         </motion.div>
@@ -115,7 +115,7 @@ export default function FinalScreen() {
 
         {/* ── VICTORY SCROLL ── */}
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
-                    className="victory-scroll rounded-2xl p-6 relative overflow-hidden">
+                    className="pixel-panel-parchment p-6 relative overflow-hidden">
           {/* Wax seal decoration */}
           <div className="absolute top-3 right-3 w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold"
                style={{ background: 'linear-gradient(135deg, #c8922a, #7d5713)', border: '2px solid #ffd700', boxShadow: '0 0 15px rgba(255,215,0,0.4)' }}>
@@ -142,7 +142,7 @@ export default function FinalScreen() {
         {/* ── SKILL HIGHLIGHTS ── */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.5 }}
                     className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="fantasy-panel rounded-xl p-4 flex items-center gap-3"
+          <div className="pixel-panel-stone p-4 flex items-center gap-3"
                style={{ borderColor: 'rgba(0,255,136,0.3)', background: 'rgba(0,255,136,0.06)' }}>
             <span className="text-3xl animate-float">🗿</span>
             <div>
@@ -151,7 +151,7 @@ export default function FinalScreen() {
               <p className="text-xs" style={{ color: '#8892a4' }}>Your guardian pillar</p>
             </div>
           </div>
-          <div className="fantasy-panel rounded-xl p-4 flex items-center gap-3"
+          <div className="pixel-panel-stone p-4 flex items-center gap-3"
                style={{ borderColor: 'rgba(155,89,182,0.3)', background: 'rgba(155,89,182,0.06)' }}>
             <span className="text-3xl">🎯</span>
             <div>
@@ -162,20 +162,19 @@ export default function FinalScreen() {
           </div>
         </motion.div>
 
-        {/* ── ACTION SCROLLS ── */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.8 }}
-                    className="flex flex-col sm:flex-row gap-3 justify-center pb-8">
-          <button onClick={() => navigate('/cyber-dna')} className="world-btn world-btn-gold px-8 py-3">
-            🧬 Full Cyber DNA
+                    className="flex flex-wrap gap-4 justify-center pb-8">
+          <button onClick={() => navigate('/cyber-dna')} className="pixel-btn pixel-btn-primary px-8">
+            🧬 FULL CYBER DNA
           </button>
-          <button onClick={() => navigate('/rooms')} className="world-btn world-btn-primary px-6 py-3">
-            ⚔ Train Weakness
+          <button onClick={() => navigate('/rooms')} className="pixel-btn pixel-btn-danger px-6">
+            ⚔ TRAIN WEAKNESS
           </button>
-          <button onClick={() => navigate('/leaderboard')} className="world-btn world-btn-ghost px-6 py-3">
-            🏆 Hall of Legends
+          <button onClick={() => navigate('/leaderboard')} className="pixel-btn pixel-btn-secondary px-6">
+            🏆 HALL OF LEGENDS
           </button>
-          <button onClick={() => navigate('/dashboard')} className="world-btn world-btn-ghost px-5 py-3">
-            🏠 Village
+          <button onClick={() => navigate('/dashboard')} className="pixel-btn pixel-btn-secondary px-6">
+            🏠 VILLAGE
           </button>
         </motion.div>
       </motion.div>
