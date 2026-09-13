@@ -316,7 +316,7 @@ export default function GameRoom() {
   );
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: 'linear-gradient(180deg, #0a0d1a 0%, #111827 100%)' }}>
+    <div className="h-full flex flex-col" style={{ background: 'linear-gradient(180deg, #0a0d1a 0%, #111827 100%)' }}>
 
       {/* ════ MAIN GAME AREA ════ */}
       <div className="flex-1 p-4 md:p-5 grid grid-cols-1 lg:grid-cols-12 gap-5 max-w-7xl mx-auto w-full">

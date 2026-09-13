@@ -5,14 +5,14 @@ import { useAuth } from '../hooks/useAuth';
 
 /* Zone definitions with exact % positions mapped to the 1024x576 image */
 const ZONES = [
-  { id: 'phishing',    name: 'PHISHING',   emoji: '💀', x: 28,  y: 25,  route: '/play/phishing' },
-  { id: 'passwords',   name: 'PASSWORDS',  emoji: '🔑', x: 26,  y: 49,  route: '/play/passwords' },
-  { id: 'firewall',    name: 'FIREWALL',   emoji: '🛡️', x: 50,  y: 46,  route: '/play/firewall' },
-  { id: 'qr-codes',    name: 'QR TEMPLE',  emoji: '🔳', x: 37,  y: 69,  route: '/play/qr-codes' },
-  { id: 'ai-threats',  name: 'AI LAB',     emoji: '🤖', x: 72,  y: 25,  route: '/play/ai-threats' },
-  { id: 'scams',       name: 'SCAMS',      emoji: '🎭', x: 73,  y: 49,  route: '/play/scams' },
-  { id: 'dark-web',    name: 'DARK WEB',   emoji: '💀', x: 69,  y: 75,  route: '/play/dark-web' },
-  { id: 'final',       name: 'CYBER CORE', emoji: '👑', x: 50,  y: 18,  route: '/play/final' },
+  { id: 'phishing',           name: 'PHISHING',   emoji: '💀', x: 28,  y: 25,  route: '/play/1' },
+  { id: 'password',           name: 'PASSWORDS',  emoji: '🔑', x: 26,  y: 49,  route: '/play/2' },
+  { id: 'social-engineering', name: 'FIREWALL',   emoji: '🛡️', x: 50,  y: 46,  route: '/play/5' },
+  { id: 'qr',                 name: 'QR TEMPLE',  emoji: '🔳', x: 37,  y: 69,  route: '/play/3' },
+  { id: 'ai-threat',          name: 'AI LAB',     emoji: '🤖', x: 72,  y: 25,  route: '/play/6' },
+  { id: 'scam',               name: 'SCAMS',      emoji: '🎭', x: 73,  y: 49,  route: '/play/4' },
+  { id: 'final',              name: 'DARK WEB',   emoji: '💀', x: 69,  y: 75,  route: '/play/7' },
+  { id: 'final',              name: 'CYBER CORE', emoji: '👑', x: 50,  y: 18,  route: '/play/7' },
 ];
 
 /* Sidebar nav items */

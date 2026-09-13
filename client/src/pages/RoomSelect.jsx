@@ -5,13 +5,13 @@ import { ArrowLeft } from 'lucide-react';
 import { gameService } from '../services/gameService';
 
 const ROOM_CONFIG = {
-  phishing:    { name: 'Phishing Port',    emoji: '📧', desc: 'Learn to identify and avoid phishing emails.',     color: '#4a90d0' },
-  passwords:   { name: 'Password Vault',   emoji: '🔐', desc: 'Build strong passwords and defend your vault.',    color: '#50c878' },
-  firewall:    { name: 'Firewall City',    emoji: '🏰', desc: 'Configure firewalls to protect the kingdom.',      color: '#e05040' },
-  'qr-codes':  { name: 'QR Temple',        emoji: '📱', desc: 'Scan wisely — not all QR codes are safe.',         color: '#9b59b6' },
-  'ai-threats': { name: 'AI Lab',          emoji: '🤖', desc: 'Detect AI-generated threats and deepfakes.',       color: '#40c8e0' },
-  scams:       { name: 'Scam Market',      emoji: '🏪', desc: 'Navigate the market and spot the scams.',          color: '#f0a030' },
-  'dark-web':  { name: 'Dark Web Depths',  emoji: '🕳️', desc: 'Explore the dark web safely.',                    color: '#8a4af0' },
+  phishing:    { id: 1, name: 'Phishing Port',    emoji: '📧', desc: 'Learn to identify and avoid phishing emails.',     color: '#4a90d0' },
+  passwords:   { id: 2, name: 'Password Vault',   emoji: '🔐', desc: 'Build strong passwords and defend your vault.',    color: '#50c878' },
+  firewall:    { id: 5, name: 'Firewall City',    emoji: '🏰', desc: 'Configure firewalls to protect the kingdom.',      color: '#e05040' },
+  'qr-codes':  { id: 3, name: 'QR Temple',        emoji: '📱', desc: 'Scan wisely — not all QR codes are safe.',         color: '#9b59b6' },
+  'ai-threats': { id: 6, name: 'AI Lab',          emoji: '🤖', desc: 'Detect AI-generated threats and deepfakes.',       color: '#40c8e0' },
+  scams:       { id: 4, name: 'Scam Market',      emoji: '🏪', desc: 'Navigate the market and spot the scams.',          color: '#f0a030' },
+  'dark-web':  { id: 7, name: 'Dark Web Depths',  emoji: '🕳️', desc: 'Explore the dark web safely.',                    color: '#8a4af0' },
 };
 
 export default function RoomSelect() {
@@ -75,7 +75,7 @@ export default function RoomSelect() {
             </div>
 
             {/* Enter button */}
-            <button onClick={() => navigate(`/game/${zone}`)}
+            <button onClick={() => navigate(`/play/${room.id}`)}
                     className="cq-btn cq-btn-primary w-full justify-center">
               ⚔ Enter
             </button>
