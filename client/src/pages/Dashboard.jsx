@@ -61,11 +61,13 @@ export default function Dashboard() {
              height: 'max(100vh, 100vw * (576/1024))'
            }}>
         
-        <img
-          src="/assets/clean-map.jpg"
-          alt="Cyber Quest World Map"
-          className="absolute inset-0 w-full h-full"
-          draggable={false}
+        <video
+          src="/assets/bg-video.mp4"
+          className="absolute inset-0 w-full h-full object-cover"
+          autoPlay
+          loop
+          muted
+          playsInline
         />
 
         {/* ═══ MAP CONTAINER ═══ */}
