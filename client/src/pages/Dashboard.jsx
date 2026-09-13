@@ -62,7 +62,7 @@ export default function Dashboard() {
            }}>
         
         <video
-          src="/assets/bg-video.mp4"
+          src="/assets/bg-video-2.mp4"
           className="absolute inset-0 w-full h-full object-cover"
           autoPlay
           loop
