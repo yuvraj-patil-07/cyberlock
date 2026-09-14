@@ -30,7 +30,7 @@ export default function RoomSelect() {
   if (zone && ROOM_CONFIG[zone]) {
     const room = ROOM_CONFIG[zone];
     return (
-      <div className="h-full flex items-center justify-center p-8"
+      <div className="h-full flex items-center justify-center p-4"
            style={{ background: `linear-gradient(180deg, ${room.color}20 0%, #f5e6c8 100%)` }}>
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
@@ -87,7 +87,7 @@ export default function RoomSelect() {
 
   // Default: show all rooms in a grid
   return (
-    <div className="p-6 h-full overflow-auto">
+    <div className="p-3 h-full overflow-auto">
       <div className="flex items-center gap-3 mb-6">
         <button onClick={() => navigate('/dashboard')}
                 className="cq-btn cq-btn-secondary text-[8px]">

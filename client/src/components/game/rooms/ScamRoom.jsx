@@ -165,7 +165,7 @@ const ScamRoom = ({ onComplete }) => {
 
       {/* Top Bar */}
       <div className="pixel-panel-wood mx-4 mt-4 p-4 flex justify-between items-center z-10">
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 font-pixel text-xl">
             <Shield className="w-6 h-6 text-orange-400" />
             <span>{timeLeft}s</span>
@@ -252,7 +252,7 @@ const ScamRoom = ({ onComplete }) => {
           transition={{ delay: 3, duration: 1 }}
           className="absolute inset-0 flex items-center justify-center pointer-events-none z-30"
         >
-          <div className="pixel-panel-wood p-6 text-center shadow-[8px_8px_0_rgba(0,0,0,0.5)]">
+          <div className="pixel-panel-wood p-3 text-center shadow-[8px_8px_0_rgba(0,0,0,0.5)]">
             <h2 className="font-pixel text-2xl text-orange-400 mb-2 drop-shadow-[2px_2px_0_#000]">Protect the Village!</h2>
             <p className="font-pixel text-sm text-white">Click on SCAM messages to intercept them.</p>
             <p className="font-pixel text-sm text-white mt-1">Let SAFE messages pass.</p>

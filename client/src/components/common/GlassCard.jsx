@@ -7,7 +7,7 @@ const GlassCard = ({
   className = '',
   glowColor = 'none',
   hoverable = false,
-  padding = 'p-6',
+  padding = 'p-3',
   ...props
 }) => {
   const glowStyles = {

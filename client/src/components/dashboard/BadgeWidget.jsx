@@ -50,7 +50,7 @@ const BadgeWidget = ({ badges = [] }) => {
 
   return (
     <>
-      <div className="glass-card p-6 flex flex-col justify-between h-full bg-white border border-slate-200 shadow-sm">
+      <div className="glass-card p-3 flex flex-col justify-between h-full bg-white border border-slate-200 shadow-sm">
         <div className="flex justify-between items-center pb-3 border-b border-slate-200 mb-4">
           <div className="flex items-center gap-2">
             <Award size={18} className="text-purple-600" />
@@ -90,7 +90,7 @@ const BadgeWidget = ({ badges = [] }) => {
       <Modal isOpen={!!selectedBadge} onClose={() => setSelectedBadge(null)} title="Badge Dossier">
         {selectedBadge && (
           <div className="flex flex-col items-center text-center p-4">
-            <div className={`p-6 rounded-3xl bg-slate-50 border ${
+            <div className={`p-3 rounded-3xl bg-slate-50 border ${
               selectedBadge.earned ? 'border-cyan-300 shadow-md' : 'border-slate-200'
             } mb-4`}>
               <selectedBadge.IconComponent className={`h-16 w-16 ${selectedBadge.earned ? selectedBadge.color : 'text-slate-400'}`} />

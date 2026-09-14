@@ -41,7 +41,7 @@ export default function DemoMode() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6 text-slate-800 font-sans relative overflow-hidden">
+    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-3 text-slate-800 font-sans relative overflow-hidden">
       <div className="absolute top-0 left-0 w-96 h-96 bg-cyan-100/60 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-100/60 rounded-full blur-[120px] pointer-events-none" />
 
@@ -98,7 +98,7 @@ export default function DemoMode() {
 
         {/* AI Generator Live Demo Output If Triggered */}
         {aiLoading && (
-          <div className="p-6 bg-purple-50 border border-purple-200 rounded-3xl text-center space-y-2 animate-pulse shadow-sm">
+          <div className="p-3 bg-purple-50 border border-purple-200 rounded-3xl text-center space-y-2 animate-pulse shadow-sm">
             <Bot className="w-8 h-8 text-purple-600 mx-auto animate-spin" />
             <p className="font-mono text-sm font-bold text-purple-800">AI ATTACKER GENERATING ADAPTIVE THREAT SCENARIO...</p>
           </div>
@@ -108,7 +108,7 @@ export default function DemoMode() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="p-6 bg-white border border-purple-200 rounded-3xl shadow-xl space-y-4 text-slate-800"
+            className="p-3 bg-white border border-purple-200 rounded-3xl shadow-xl space-y-4 text-slate-800"
           >
             <div className="flex items-center justify-between pb-3 border-b border-purple-100">
               <div className="flex items-center gap-2 text-purple-700 font-bold text-sm">

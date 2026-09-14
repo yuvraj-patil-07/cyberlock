@@ -67,7 +67,7 @@ export default function FinalScreen() {
   const weakestSkill   = dna?.weakestSkill?.label || 'AI Threat Awareness';
 
   return (
-    <div className="min-h-screen relative overflow-hidden flex flex-col items-center justify-center p-6"
+    <div className="min-h-screen relative overflow-hidden flex flex-col items-center justify-center p-3"
          style={{ background: 'linear-gradient(180deg, #0a0d1a 0%, #111827 50%, #1a1a2e 100%)' }}>
 
       <div className="stars-bg"/>
@@ -115,7 +115,7 @@ export default function FinalScreen() {
 
         {/* ── VICTORY SCROLL ── */}
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
-                    className="pixel-panel-parchment p-6 relative overflow-hidden">
+                    className="pixel-panel-parchment p-3 relative overflow-hidden">
           {/* Wax seal decoration */}
           <div className="absolute top-3 right-3 w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold"
                style={{ background: 'linear-gradient(135deg, #c8922a, #7d5713)', border: '2px solid #ffd700', boxShadow: '0 0 15px rgba(255,215,0,0.4)' }}>

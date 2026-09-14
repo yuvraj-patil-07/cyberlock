@@ -97,7 +97,7 @@ const PhishingRoom = ({ onComplete }) => {
 
       {/* Top Stats Bar */}
       <div className="pixel-panel-wood mx-4 mt-4 p-4 flex justify-between items-center z-10">
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
             <Clock className={`w-6 h-6 ${timeLeft < 10 ? 'text-red-500 animate-pulse' : 'text-white'}`} />
             <span className="font-pixel text-xl">{timeLeft}s</span>
@@ -107,7 +107,7 @@ const PhishingRoom = ({ onComplete }) => {
           </div>
         </div>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 font-pixel text-xl">
             <span className="text-gray-300">SCORE:</span>
             <span className="text-yellow-400">{score}</span>
@@ -130,7 +130,7 @@ const PhishingRoom = ({ onComplete }) => {
       </div>
 
       {/* Main Play Area */}
-      <div className="flex-1 flex flex-col items-center justify-center p-8 relative z-10">
+      <div className="flex-1 flex flex-col items-center justify-center p-4 relative z-10">
         
         {/* Floating Feedback */}
         <AnimatePresence>
@@ -154,7 +154,7 @@ const PhishingRoom = ({ onComplete }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="w-full max-w-2xl pixel-panel-parchment p-8 flex flex-col gap-6"
+            className="w-full max-w-2xl pixel-panel-parchment p-4 flex flex-col gap-3"
           >
             <div className="flex flex-col gap-2 border-b-4 border-[#d97706] pb-4">
               <div className="flex items-center gap-3">
@@ -167,7 +167,7 @@ const PhishingRoom = ({ onComplete }) => {
               </div>
             </div>
             
-            <div className="min-h-[150px] font-pixel text-xl leading-relaxed text-[#451a03]">
+            <div className="min-h-[80px] font-pixel text-xl leading-relaxed text-[#451a03]">
               Dear User, <br/><br/>
               Please review the following information regarding "{currentEmail?.subject}". 
               Clicking links in untrusted emails can lead to severe consequences.
@@ -180,10 +180,10 @@ const PhishingRoom = ({ onComplete }) => {
       </div>
 
       {/* Buttons */}
-      <div className="p-6 flex justify-center gap-8 z-10">
+      <div className="p-3 flex justify-center gap-4 z-10">
         <button 
           onClick={() => processAnswer(currentEmail, 'safe')}
-          className="pixel-btn pixel-btn-success text-xl px-8 py-6 w-64"
+          className="pixel-btn pixel-btn-success text-xl px-4 py-3 w-64"
         >
           <ShieldCheck className="w-8 h-8" />
           SAFE
@@ -191,7 +191,7 @@ const PhishingRoom = ({ onComplete }) => {
 
         <button 
           onClick={() => processAnswer(currentEmail, 'suspicious')}
-          className="pixel-btn pixel-btn-secondary text-xl px-8 py-6 w-64"
+          className="pixel-btn pixel-btn-secondary text-xl px-4 py-3 w-64"
         >
           <HelpCircle className="w-8 h-8" />
           SUSPICIOUS
@@ -199,7 +199,7 @@ const PhishingRoom = ({ onComplete }) => {
 
         <button 
           onClick={() => processAnswer(currentEmail, 'phishing')}
-          className="pixel-btn pixel-btn-danger text-xl px-8 py-6 w-64"
+          className="pixel-btn pixel-btn-danger text-xl px-4 py-3 w-64"
         >
           <AlertTriangle className="w-8 h-8" />
           PHISHING

@@ -385,7 +385,7 @@ export default function GameRoom() {
             {/* Room Complete! */}
             {gameState === 'room_complete' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                          className="flex flex-col items-center justify-center p-8 text-center h-full gap-6">
+                          className="flex flex-col items-center justify-center p-4 text-center h-full gap-3">
                 <ParticleBurst trigger={1} color="#ffd700"/>
 
                 <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}
@@ -500,7 +500,7 @@ export default function GameRoom() {
                style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}>
             <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.9, opacity: 0 }}
-                        className="max-w-md w-full pixel-panel-stone p-6"
+                        className="max-w-md w-full pixel-panel-stone p-3"
                         style={{ borderColor: 'rgba(155,89,182,0.4)' }}>
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-2xl animate-float">🔮</span>

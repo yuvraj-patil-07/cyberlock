@@ -48,7 +48,7 @@ const AdminCharts = ({ chartData }) => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
       <GlassCard>
         <h3 className="text-lg font-bold text-slate-100 mb-6">Category Performance Avg</h3>
         <div className="h-[300px] w-full">

@@ -133,7 +133,7 @@ const PasswordRoom = ({ onComplete }) => {
         </div>
       </div>
 
-      <div className="flex-1 p-6 flex flex-col gap-6 z-10 relative">
+      <div className="flex-1 p-3 flex flex-col gap-3 z-10 relative">
         
         {/* Strength Meter */}
         <div className="pixel-panel-stone p-4">
@@ -159,7 +159,7 @@ const PasswordRoom = ({ onComplete }) => {
         </div>
 
         {/* The Anvil (Crafting Area) */}
-        <div className="pixel-panel-blue p-6 min-h-[150px] flex flex-wrap gap-4 items-center justify-center relative">
+        <div className="pixel-panel-blue p-3 min-h-[80px] flex flex-wrap gap-4 items-center justify-center relative">
           {craftedPassword.length === 0 ? (
             <span className="font-pixel text-sm flex items-center gap-2 text-white/70">
               <Key className="w-5 h-5" /> Select blocks to build
@@ -184,7 +184,7 @@ const PasswordRoom = ({ onComplete }) => {
         </div>
 
         {/* Available Pieces */}
-        <div className="flex-1 pixel-panel-parchment p-6">
+        <div className="flex-1 pixel-panel-parchment p-3">
           <p className="font-pixel text-xs text-[#78350f] mb-4">INVENTORY (CLICK TO ADD):</p>
           <div className="flex flex-wrap gap-4">
             <AnimatePresence>

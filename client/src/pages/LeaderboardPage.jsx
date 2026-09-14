@@ -20,7 +20,7 @@ export default function LeaderboardPage() {
   const medals = ['🥇', '🥈', '🥉'];
 
   return (
-    <div className="p-6 h-full overflow-auto">
+    <div className="p-3 h-full overflow-auto">
       <div className="max-w-lg mx-auto">
         <div className="cq-panel-dark">
           {/* Title */}

@@ -74,7 +74,7 @@ const ReasoningPrompt = ({
   };
 
   return (
-    <div className="bg-white/95 backdrop-blur-xl border border-indigo-200 rounded-3xl p-6 md:p-8 shadow-2xl space-y-6 text-slate-800">
+    <div className="bg-white/95 backdrop-blur-xl border border-indigo-200 rounded-3xl p-3 md:p-4 shadow-2xl space-y-6 text-slate-800">
       <div className="flex items-start gap-4 pb-4 border-b border-slate-200">
         <div className="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-600 shrink-0 shadow-sm">
           <Brain size={24} />

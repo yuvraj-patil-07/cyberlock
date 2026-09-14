@@ -110,26 +110,26 @@ export default function AdminDashboard() {
         </div>
 
         {/* 4 Summary Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="glass-card border-slate-200 bg-white shadow-sm p-6 space-y-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="glass-card border-slate-200 bg-white shadow-sm p-3 space-y-1">
             <span className="text-xs font-mono text-slate-600 font-bold uppercase">TOTAL REGISTERED PLAYERS</span>
             <p className="text-3xl font-black text-cyan-700 font-mono">{summary.totalPlayers || 148}</p>
             <span className="text-[11px] text-slate-500">Active trainees</span>
           </div>
 
-          <div className="glass-card border-slate-200 bg-white shadow-sm p-6 space-y-1">
+          <div className="glass-card border-slate-200 bg-white shadow-sm p-3 space-y-1">
             <span className="text-xs font-mono text-slate-600 font-bold uppercase">AVG CYBER SCORE</span>
             <p className="text-3xl font-black text-emerald-700 font-mono">{summary.avgCyberScore || 72}%</p>
             <span className="text-[11px] text-emerald-700 font-bold">Class benchmark</span>
           </div>
 
-          <div className="glass-card border-slate-200 bg-white shadow-sm p-6 space-y-1">
+          <div className="glass-card border-slate-200 bg-white shadow-sm p-3 space-y-1">
             <span className="text-xs font-mono text-slate-600 font-bold uppercase">TOTAL CHALLENGES ATTEMPTED</span>
             <p className="text-3xl font-black text-purple-700 font-mono">{summary.totalAttempts || 1240}</p>
             <span className="text-[11px] text-slate-500">Telemetry data points</span>
           </div>
 
-          <div className="glass-card border-slate-200 bg-white shadow-sm p-6 space-y-1">
+          <div className="glass-card border-slate-200 bg-white shadow-sm p-3 space-y-1">
             <span className="text-xs font-mono text-slate-600 font-bold uppercase">ROOM COMPLETION FUNNEL</span>
             <p className="text-3xl font-black text-amber-700 font-mono">{summary.avgCompletionRate || 64}%</p>
             <span className="text-[11px] text-slate-500">Average room progress</span>
@@ -137,9 +137,9 @@ export default function AdminDashboard() {
         </div>
 
         {/* Recharts Analytics Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           {/* Failure Rates by Threat Category Bar Chart */}
-          <div className="glass-card p-6 border border-slate-200 bg-white shadow-sm space-y-4">
+          <div className="glass-card p-3 border border-slate-200 bg-white shadow-sm space-y-4">
             <div className="flex justify-between items-center pb-2 border-b border-slate-100">
               <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
                 <AlertTriangle size={16} className="text-red-600" />
@@ -164,7 +164,7 @@ export default function AdminDashboard() {
           </div>
 
           {/* Room Completion Funnel */}
-          <div className="glass-card p-6 border border-slate-200 bg-white shadow-sm space-y-4">
+          <div className="glass-card p-3 border border-slate-200 bg-white shadow-sm space-y-4">
             <div className="flex justify-between items-center pb-2 border-b border-slate-100">
               <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
                 <TrendingUp size={16} className="text-cyan-600" />
@@ -190,7 +190,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Most Improved Users Table */}
-        <div className="glass-card p-6 border border-slate-200 bg-white shadow-sm space-y-4">
+        <div className="glass-card p-3 border border-slate-200 bg-white shadow-sm space-y-4">
           <div className="flex justify-between items-center pb-2 border-b border-slate-100">
             <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
               <Award size={16} className="text-amber-500" />

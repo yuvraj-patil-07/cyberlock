@@ -58,9 +58,9 @@ const QRRoom = ({ onComplete }) => {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-center p-6 gap-8 z-10 relative">
+      <div className="flex-1 flex flex-col items-center justify-center p-3 gap-4 z-10 relative">
         
-        <div className="pixel-panel-stone p-6 flex flex-col items-center">
+        <div className="pixel-panel-stone p-3 flex flex-col items-center">
           
           <div className="w-64 h-64 border-4 border-purple-500 bg-white relative p-4 flex items-center justify-center overflow-hidden">
             <motion.div

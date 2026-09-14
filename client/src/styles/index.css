@@ -38,7 +38,24 @@
   --health-red: #e05040;
   --coin-gold: #ffd700;
   --gem-emerald: #50d890;
+
+  /* ═══════════════════════════════════════════
+     19. PIXEL FONT SCALING
+     Press Start 2P renders significantly larger than standard fonts.
+     These overrides ensure Tailwind text sizing classes scale appropriately.
+  ═══════════════════════════════════════════ */
+  .font-pixel.text-6xl, h1.text-6xl { font-size: 2rem !important; line-height: 1.2 !important; }
+  .font-pixel.text-5xl, h1.text-5xl { font-size: 1.5rem !important; line-height: 1.2 !important; }
+  .font-pixel.text-4xl, h1.text-4xl { font-size: 1.25rem !important; line-height: 1.2 !important; }
+  .font-pixel.text-3xl, h1.text-3xl { font-size: 1rem !important; line-height: 1.2 !important; }
+  .font-pixel.text-2xl, h1.text-2xl { font-size: 0.85rem !important; line-height: 1.4 !important; }
+  .font-pixel.text-xl, h1.text-xl, .pixel-btn.text-xl { font-size: 0.75rem !important; line-height: 1.4 !important; }
+  .font-pixel.text-lg, h1.text-lg, .pixel-btn.text-lg { font-size: 0.65rem !important; line-height: 1.5 !important; }
+  .font-pixel.text-base, h1.text-base, .pixel-btn.text-base { font-size: 0.55rem !important; line-height: 1.5 !important; }
+  .font-pixel.text-sm, h1.text-sm, .pixel-btn.text-sm { font-size: 0.45rem !important; line-height: 1.5 !important; }
+  .font-pixel.text-xs, h1.text-xs, .pixel-btn.text-xs { font-size: 0.35rem !important; line-height: 1.5 !important; }
 }
+
 
 @layer base {
   * {
@@ -71,7 +88,24 @@
     border: 2px solid var(--panel-wood-dark);
   }
   ::-webkit-scrollbar-thumb:hover { background: var(--panel-wood-light); }
+
+  /* ═══════════════════════════════════════════
+     19. PIXEL FONT SCALING
+     Press Start 2P renders significantly larger than standard fonts.
+     These overrides ensure Tailwind text sizing classes scale appropriately.
+  ═══════════════════════════════════════════ */
+  .font-pixel.text-6xl, h1.text-6xl { font-size: 2rem !important; line-height: 1.2 !important; }
+  .font-pixel.text-5xl, h1.text-5xl { font-size: 1.5rem !important; line-height: 1.2 !important; }
+  .font-pixel.text-4xl, h1.text-4xl { font-size: 1.25rem !important; line-height: 1.2 !important; }
+  .font-pixel.text-3xl, h1.text-3xl { font-size: 1rem !important; line-height: 1.2 !important; }
+  .font-pixel.text-2xl, h1.text-2xl { font-size: 0.85rem !important; line-height: 1.4 !important; }
+  .font-pixel.text-xl, h1.text-xl, .pixel-btn.text-xl { font-size: 0.75rem !important; line-height: 1.4 !important; }
+  .font-pixel.text-lg, h1.text-lg, .pixel-btn.text-lg { font-size: 0.65rem !important; line-height: 1.5 !important; }
+  .font-pixel.text-base, h1.text-base, .pixel-btn.text-base { font-size: 0.55rem !important; line-height: 1.5 !important; }
+  .font-pixel.text-sm, h1.text-sm, .pixel-btn.text-sm { font-size: 0.45rem !important; line-height: 1.5 !important; }
+  .font-pixel.text-xs, h1.text-xs, .pixel-btn.text-xs { font-size: 0.35rem !important; line-height: 1.5 !important; }
 }
+
 
 @layer components {
 
@@ -546,4 +580,21 @@
   .btn-danger { @apply cq-btn cq-btn-danger; }
   .btn-ghost { @apply cq-btn cq-btn-secondary; }
   .glass-panel { @apply cq-panel-dark; }
+
+  /* ═══════════════════════════════════════════
+     19. PIXEL FONT SCALING
+     Press Start 2P renders significantly larger than standard fonts.
+     These overrides ensure Tailwind text sizing classes scale appropriately.
+  ═══════════════════════════════════════════ */
+  .font-pixel.text-6xl, h1.text-6xl { font-size: 2rem !important; line-height: 1.2 !important; }
+  .font-pixel.text-5xl, h1.text-5xl { font-size: 1.5rem !important; line-height: 1.2 !important; }
+  .font-pixel.text-4xl, h1.text-4xl { font-size: 1.25rem !important; line-height: 1.2 !important; }
+  .font-pixel.text-3xl, h1.text-3xl { font-size: 1rem !important; line-height: 1.2 !important; }
+  .font-pixel.text-2xl, h1.text-2xl { font-size: 0.85rem !important; line-height: 1.4 !important; }
+  .font-pixel.text-xl, h1.text-xl, .pixel-btn.text-xl { font-size: 0.75rem !important; line-height: 1.4 !important; }
+  .font-pixel.text-lg, h1.text-lg, .pixel-btn.text-lg { font-size: 0.65rem !important; line-height: 1.5 !important; }
+  .font-pixel.text-base, h1.text-base, .pixel-btn.text-base { font-size: 0.55rem !important; line-height: 1.5 !important; }
+  .font-pixel.text-sm, h1.text-sm, .pixel-btn.text-sm { font-size: 0.45rem !important; line-height: 1.5 !important; }
+  .font-pixel.text-xs, h1.text-xs, .pixel-btn.text-xs { font-size: 0.35rem !important; line-height: 1.5 !important; }
 }
+

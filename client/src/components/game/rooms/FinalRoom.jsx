@@ -131,7 +131,7 @@ const FinalRoom = ({ onComplete }) => {
       </AnimatePresence>
 
       {/* Top HUD for Boss Battle */}
-      <div className="flex justify-between items-center p-6 pixel-panel-stone m-4 z-10">
+      <div className="flex justify-between items-center p-3 pixel-panel-stone m-4 z-10">
         
         {/* Player Health */}
         <div className="flex flex-col gap-2 w-1/3">
@@ -169,7 +169,7 @@ const FinalRoom = ({ onComplete }) => {
       </div>
 
       {/* Combat Arena */}
-      <div className="flex-1 relative flex flex-col items-center justify-center p-8 z-10">
+      <div className="flex-1 relative flex flex-col items-center justify-center p-4 z-10">
         
         {/* The Boss Avatar */}
         <motion.div 
@@ -191,7 +191,7 @@ const FinalRoom = ({ onComplete }) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="text-center max-w-2xl pixel-panel-parchment p-6 mb-8 shadow-[8px_8px_0_rgba(0,0,0,0.5)]"
+              className="text-center max-w-2xl pixel-panel-parchment p-3 mb-8 shadow-[8px_8px_0_rgba(0,0,0,0.5)]"
             >
               <h3 className="text-red-600 text-lg mb-4 flex items-center justify-center gap-2">
                 <Zap className="w-5 h-5" /> Phase {currentPhase + 1}: {phase.name}

@@ -61,7 +61,7 @@ const BadgeShowcase = ({ earnedBadges, allBadges }) => {
       <Modal isOpen={!!selected} onClose={() => setSelected(null)} title="Badge Detail">
         {selected && (
           <div className="flex flex-col items-center text-center">
-            <div className={`p-8 rounded-2xl bg-slate-800 border-2 mb-6 relative overflow-hidden ${
+            <div className={`p-4 rounded-2xl bg-slate-800 border-2 mb-6 relative overflow-hidden ${
               selected.earned ? rarityColors[selected.rarity] : 'border-slate-700'
             }`}>
               {selected.earned && <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />}

@@ -136,7 +136,7 @@ export default function Dashboard() {
         </div>
 
         {/* Currencies Section */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3">
           <div className="flex items-center gap-1">
             <span className="text-sm drop-shadow-[2px_2px_0_rgba(0,0,0,0.5)]">❤️</span>
             <span className="text-sm drop-shadow-[2px_2px_0_rgba(0,0,0,0.5)]">❤️</span>
@@ -179,7 +179,7 @@ export default function Dashboard() {
       </div>
 
       {/* ═══ RIGHT SIDEBARS ═══ */}
-      <div className="absolute top-24 right-6 w-[260px] flex flex-col gap-6 z-20">
+      <div className="absolute top-24 right-6 w-[260px] flex flex-col gap-3 z-20">
         
         {/* Current Quest */}
         <div className="bg-[#15213d] border-[4px] border-[#0a1020] p-4 shadow-[8px_8px_0_rgba(0,0,0,0.3)] relative">

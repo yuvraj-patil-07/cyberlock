@@ -22,7 +22,7 @@ const ChallengeResult = ({
     <motion.div
       initial={{ opacity: 0, scale: 0.95, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
-      className={`bg-white border-2 rounded-2xl p-8 max-w-2xl mx-auto shadow-xl relative overflow-hidden text-slate-800 ${
+      className={`bg-white border-2 rounded-2xl p-4 max-w-2xl mx-auto shadow-xl relative overflow-hidden text-slate-800 ${
         isCorrect 
           ? 'border-emerald-500 shadow-emerald-500/10' 
           : 'border-rose-500 shadow-rose-500/10'

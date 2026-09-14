@@ -17,7 +17,7 @@ const ConsequenceEngine = ({ consequenceChain, trustChange, onRecoveryStart }) =
   }, [activeStep, consequenceChain.length]);
 
   return (
-    <div className="bg-white border-2 border-rose-300 rounded-2xl p-6 shadow-xl text-slate-800">
+    <div className="bg-white border-2 border-rose-300 rounded-2xl p-3 shadow-xl text-slate-800">
       <div className="flex items-center justify-center gap-3 mb-6 text-rose-600">
         <ShieldAlert className="h-8 w-8 animate-bounce" />
         <h2 className="text-2xl font-black uppercase tracking-widest">Security Breach Cascading</h2>

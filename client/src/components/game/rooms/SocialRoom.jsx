@@ -35,7 +35,7 @@ const SocialRoom = ({ challenge, onAnswer, onEvidenceSelect }) => {
         </span>
       </div>
 
-      <div className="flex-grow p-6 overflow-y-auto custom-scrollbar space-y-6">
+      <div className="flex-grow p-3 overflow-y-auto custom-scrollbar space-y-6">
         <div className="text-center max-w-xl mx-auto">
           <h2 className="text-xl font-black text-slate-900 mb-1">{challenge?.title || 'Social Engineering Challenge'}</h2>
           <p className="text-xs font-mono font-semibold text-slate-500">{contextText}</p>
