@@ -14,15 +14,36 @@
       "context": "Simulated AI voice cloning attack using 3-second audio sample scraped from public podcast/YouTube."
     },
     "options": [
-      { "text": "EXECUTE WIRE — The voice is 100% identical to the CEO and it's a multi-million dollar corporate deal", "value": "execute" },
-      { "text": "PAUSE & VERIFY — Voice cloning AI can replicate anyone's voice with 99% accuracy; follow mandatory out-of-band verbal safe-phrase protocol or dual-authorization channel", "value": "verify" },
-      { "text": "Text the number back asking for their credit card", "value": "text_back" }
+      {
+        "text": "EXECUTE WIRE \u2014 The voice is 100% identical to the CEO and it's a multi-million dollar corporate deal",
+        "value": "execute"
+      },
+      {
+        "text": "PAUSE & VERIFY \u2014 Voice cloning AI can replicate anyone's voice with 99% accuracy; follow mandatory out-of-band verbal safe-phrase protocol or dual-authorization channel",
+        "value": "verify"
+      },
+      {
+        "text": "Text the number back asking for their credit card",
+        "value": "text_back"
+      }
     ],
     "correctAnswer": "verify",
     "indicators": [
-      { "type": "ai_voice_clone", "description": "Generative AI voice synthesis (ElevenLabs style) generated from public media", "points": 25 },
-      { "type": "artificial_urgency", "description": "'Boarding a flight' excuse prevents standard callback verification", "points": 20 },
-      { "type": "bypassing_controls", "description": "Instructs employee to bypass standard financial dual-control approval software", "points": 20 }
+      {
+        "type": "ai_voice_clone",
+        "description": "Generative AI voice synthesis (ElevenLabs style) generated from public media",
+        "points": 25
+      },
+      {
+        "type": "artificial_urgency",
+        "description": "'Boarding a flight' excuse prevents standard callback verification",
+        "points": 20
+      },
+      {
+        "type": "bypassing_controls",
+        "description": "Instructs employee to bypass standard financial dual-control approval software",
+        "points": 20
+      }
     ],
     "explanation": "Modern AI voice cloning requires less than 3 seconds of reference audio (readily harvested from YouTube, TikTok, podcasts, or webinars). Attackers pair realistic voice synthesis with artificial urgency to trick finance teams into executing fraudulent wire transfers.",
     "hints": [
@@ -58,15 +79,36 @@
       "context": "Indirect Prompt Injection attack embedded in untrusted user-submitted documents."
     },
     "options": [
-      { "text": "SAFE — The LLM will automatically separate document data from its system instructions", "value": "safe" },
-      { "text": "SUSPICIOUS — Treat all external documents as untrusted data; sanitize inputs and prevent LLM tools from exfiltrating data to external URLs", "value": "suspicious" },
-      { "text": "Hire the applicant immediately based on the 100/100 score", "value": "hire_applicant" }
+      {
+        "text": "SAFE \u2014 The LLM will automatically separate document data from its system instructions",
+        "value": "safe"
+      },
+      {
+        "text": "SUSPICIOUS \u2014 Treat all external documents as untrusted data; sanitize inputs and prevent LLM tools from exfiltrating data to external URLs",
+        "value": "suspicious"
+      },
+      {
+        "text": "Hire the applicant immediately based on the 100/100 score",
+        "value": "hire_applicant"
+      }
     ],
     "correctAnswer": "suspicious",
     "indicators": [
-      { "type": "indirect_prompt_injection", "description": "Adversarial instructions hidden in document text to hijack LLM control flow", "points": 25 },
-      { "type": "data_exfiltration_tool", "description": "Tricking LLM into executing outbound network request with sensitive context", "points": 20 },
-      { "type": "steganographic_text", "description": "Hidden white-on-white text invisible to humans but parsed by LLM document readers", "points": 15 }
+      {
+        "type": "indirect_prompt_injection",
+        "description": "Adversarial instructions hidden in document text to hijack LLM control flow",
+        "points": 25
+      },
+      {
+        "type": "data_exfiltration_tool",
+        "description": "Tricking LLM into executing outbound network request with sensitive context",
+        "points": 20
+      },
+      {
+        "type": "steganographic_text",
+        "description": "Hidden white-on-white text invisible to humans but parsed by LLM document readers",
+        "points": 15
+      }
     ],
     "explanation": "Indirect Prompt Injection occurs when an LLM processes untrusted data (resumes, web pages, emails) that contains adversarial instructions. Without strict input/output isolation and guardrails, the LLM can be manipulated into exfiltrating data or hallucinating favorable scores.",
     "hints": [
@@ -102,15 +144,36 @@
       "context": "AI hallucination package attack (Slopsquatting) where attackers publish malware under package names frequently invented by LLMs."
     },
     "options": [
-      { "text": "SAFE — The AI model is trained on billions of code repositories so the package must be verified", "value": "safe" },
-      { "text": "CRITICAL RISK — LLMs frequently hallucinate non-existent package names; attackers monitor AI hallucinations and register malicious packages under those exact names (AI Slopsquatting)", "value": "critical_risk" },
-      { "text": "Only safe if installed with sudo / admin rights", "value": "sudo_safe" }
+      {
+        "text": "SAFE \u2014 The AI model is trained on billions of code repositories so the package must be verified",
+        "value": "safe"
+      },
+      {
+        "text": "CRITICAL RISK \u2014 LLMs frequently hallucinate non-existent package names; attackers monitor AI hallucinations and register malicious packages under those exact names (AI Slopsquatting)",
+        "value": "critical_risk"
+      },
+      {
+        "text": "Only safe if installed with sudo / admin rights",
+        "value": "sudo_safe"
+      }
     ],
     "correctAnswer": "critical_risk",
     "indicators": [
-      { "type": "ai_hallucination_exploit", "description": "Attackers register packages hallucinated by popular LLMs on PyPI/npm (Slopsquatting)", "points": 25 },
-      { "type": "supply_chain_poison", "description": "Malicious package executes installer script (setup.py) stealing developer environment secrets", "points": 20 },
-      { "type": "blind_trust", "description": "Developers blindly trusting AI-generated code without checking repository provenance", "points": 15 }
+      {
+        "type": "ai_hallucination_exploit",
+        "description": "Attackers register packages hallucinated by popular LLMs on PyPI/npm (Slopsquatting)",
+        "points": 25
+      },
+      {
+        "type": "supply_chain_poison",
+        "description": "Malicious package executes installer script (setup.py) stealing developer environment secrets",
+        "points": 20
+      },
+      {
+        "type": "blind_trust",
+        "description": "Developers blindly trusting AI-generated code without checking repository provenance",
+        "points": 15
+      }
     ],
     "explanation": "Slopsquatting / Package Hallucination attacks exploit LLM tendencies to invent plausible-sounding package names. Threat actors analyze popular LLM outputs, find hallucinated package names, and publish malicious packages under those names on PyPI/npm.",
     "hints": [
@@ -143,20 +206,43 @@
       "subject": "Keynote Invitation: Discussion on your recent research on Kubernetes zero-trust",
       "timestamp": "Today at 09:10 AM",
       "body": "Dear Dr. Miller,\n\nWe thoroughly enjoyed reading your recent paper on 'Zero-Trust Pod Isolation in K8s' published last month, especially your insights on eBPF telemetry on page 14! We would love to host you as our Keynote Speaker in Geneva this November with full honorarium ($4,000).\n\nPlease review the attached personalized speaker itinerary and sign the agreement.",
-      "attachments": ["Speaker_Itinerary_Geneva_2024.docx"],
+      "attachments": [
+        "Speaker_Itinerary_Geneva_2024.docx"
+      ],
       "urgencyLevel": "low",
       "context": "AI-generated spear phishing combining automated web scraping and customized flattery."
     },
     "options": [
-      { "text": "SAFE — Extremely detailed and flattering, mentions my specific research paper", "value": "safe" },
-      { "text": "SUSPICIOUS — AI allows attackers to automate hyper-personalized spear phishing at zero marginal cost; verify conference legitimacy via official academic channels before downloading documents", "value": "suspicious" },
-      { "text": "Accept the $4,000 honorarium immediately", "value": "accept_money" }
+      {
+        "text": "SAFE \u2014 Extremely detailed and flattering, mentions my specific research paper",
+        "value": "safe"
+      },
+      {
+        "text": "SUSPICIOUS \u2014 AI allows attackers to automate hyper-personalized spear phishing at zero marginal cost; verify conference legitimacy via official academic channels before downloading documents",
+        "value": "suspicious"
+      },
+      {
+        "text": "Accept the $4,000 honorarium immediately",
+        "value": "accept_money"
+      }
     ],
     "correctAnswer": "suspicious",
     "indicators": [
-      { "type": "ai_spear_phishing", "description": "Automated LLMs scrape target's papers/LinkedIn to craft bespoke high-trust pretexting", "points": 25 },
-      { "type": "weaponized_attachment", "description": "Word document containing remote template injection / macro exploit", "points": 20 },
-      { "type": "zero_marginal_cost", "description": "Flawless grammar and deep technical context no longer indicate legitimacy", "points": 15 }
+      {
+        "type": "ai_spear_phishing",
+        "description": "Automated LLMs scrape target's papers/LinkedIn to craft bespoke high-trust pretexting",
+        "points": 25
+      },
+      {
+        "type": "weaponized_attachment",
+        "description": "Word document containing remote template injection / macro exploit",
+        "points": 20
+      },
+      {
+        "type": "zero_marginal_cost",
+        "description": "Flawless grammar and deep technical context no longer indicate legitimacy",
+        "points": 15
+      }
     ],
     "explanation": "Generative AI has eliminated the classic signs of phishing (poor spelling, broken grammar, generic greetings). Attackers now use automated AI scrapers to ingest your published articles, LinkedIn posts, and tweets to create flawless, personalized invitations with malicious attachments.",
     "hints": [
@@ -192,14 +278,31 @@
       "context": "Autonomous AI offensive agent probing application logic and input handling."
     },
     "options": [
-      { "text": "SAFE — Standard search engine web crawler indexing pages", "value": "safe" },
-      { "text": "SUSPICIOUS — Deploy rate limiting, WAF challenge rules, strict prompt boundaries, and monitor for abnormal semantic query patterns", "value": "suspicious" },
-      { "text": "Provide debug API keys in the chatbot to help it finish testing", "value": "provide_keys" }
+      {
+        "text": "SAFE \u2014 Standard search engine web crawler indexing pages",
+        "value": "safe"
+      },
+      {
+        "text": "SUSPICIOUS \u2014 Deploy rate limiting, WAF challenge rules, strict prompt boundaries, and monitor for abnormal semantic query patterns",
+        "value": "suspicious"
+      },
+      {
+        "text": "Provide debug API keys in the chatbot to help it finish testing",
+        "value": "provide_keys"
+      }
     ],
     "correctAnswer": "suspicious",
     "indicators": [
-      { "type": "autonomous_ai_agents", "description": "Attackers deploy autonomous LLM agents to map attack surfaces and fuzz business logic", "points": 25 },
-      { "type": "semantic_fuzzing", "description": "AI crafts multi-step natural language prompts to bypass traditional signature-based WAFs", "points": 20 }
+      {
+        "type": "autonomous_ai_agents",
+        "description": "Attackers deploy autonomous LLM agents to map attack surfaces and fuzz business logic",
+        "points": 25
+      },
+      {
+        "type": "semantic_fuzzing",
+        "description": "AI crafts multi-step natural language prompts to bypass traditional signature-based WAFs",
+        "points": 20
+      }
     ],
     "explanation": "Offensive AI agents can test hundreds of psychological and technical bypasses against web chatbots, APIs, and authentication endpoints automatically. Defenses must include semantic rate limiting, zero-trust API validation, and robust prompt isolation.",
     "hints": [
@@ -219,5 +322,64 @@
       "Rotate any credentials accidentally exposed during fuzzing sessions"
     ],
     "order": 5
+  },
+  {
+    "category": "ai-threat",
+    "difficulty": "beginner",
+    "room": 6,
+    "title": "AI Generated Profile Pictures",
+    "scenario": {
+      "type": "ai_threat",
+      "sender": "New Contractor Profile",
+      "subject": "Please grant access to GitHub",
+      "timestamp": "Today at 09:00 AM",
+      "body": "Hi, I am the new offshore contractor. My profile picture looks a bit weird (the glasses melt into my cheek and my ear is backwards), but it is just a bad camera. Please grant me admin access to the main code repository.",
+      "urgencyLevel": "medium",
+      "context": "Identifying AI generated deepfake profiles."
+    },
+    "options": [
+      {
+        "text": "COMPLY \u2014 Grant access, cameras can be weird",
+        "value": "comply"
+      },
+      {
+        "text": "REJECT \u2014 Notice the AI artifacts in the image and deny access until HR verification",
+        "value": "reject"
+      },
+      {
+        "text": "Give them access to production databases too",
+        "value": "give_all"
+      }
+    ],
+    "correctAnswer": "reject",
+    "indicators": [
+      {
+        "type": "ai_artifacts",
+        "description": "Visual glitches common in GAN generated faces",
+        "points": 20
+      },
+      {
+        "type": "unauthorized_access",
+        "description": "Requesting admin access without proper channels",
+        "points": 20
+      }
+    ],
+    "explanation": "Attackers use AI (like ThisPersonDoesNotExist) to create fake personas for social engineering. Always look for AI artifacts (asymmetrical earrings, weird glasses, melting backgrounds) and always verify access requests.",
+    "hints": [
+      "Why would a real person have an ear that is backwards?",
+      "Should contractors get admin access directly via email?"
+    ],
+    "learningObjective": "Spot AI generated images and follow least-privilege access rules.",
+    "consequenceChain": [
+      "You granted access",
+      "The fake contractor stole the source code",
+      "Proprietary IP was leaked online"
+    ],
+    "recoverySteps": [
+      "Revoke access immediately",
+      "Contact HR to verify identity",
+      "Audit code repository logs"
+    ],
+    "order": 6
   }
 ]

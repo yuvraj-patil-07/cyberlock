@@ -7,9 +7,9 @@ import { gameService } from '../services/gameService';
 const ROOM_CONFIG = {
   phishing:    { id: 1, name: 'Phishing Port',    emoji: '📧', desc: 'Learn to identify and avoid phishing emails.',     color: '#4a90d0' },
   passwords:   { id: 2, name: 'Password Vault',   emoji: '🔐', desc: 'Build strong passwords and defend your vault.',    color: '#50c878' },
-  firewall:    { id: 5, name: 'Firewall City',    emoji: '🏰', desc: 'Configure firewalls to protect the kingdom.',      color: '#e05040' },
+  firewall:    { id: 5, name: 'Firewall Defense', emoji: '🛡️', desc: 'BLOCK or ALLOW packets to defend the server!', color: '#e05040' },
   'qr-codes':  { id: 3, name: 'QR Temple',        emoji: '📱', desc: 'Scan wisely — not all QR codes are safe.',         color: '#9b59b6' },
-  'ai-threats': { id: 6, name: 'AI Lab',          emoji: '🤖', desc: 'Detect AI-generated threats and deepfakes.',       color: '#40c8e0' },
+  'ai-threats': { id: 6, name: 'Deepfake Detective', emoji: '🧠', desc: 'Classify content as REAL or AI-GENERATED!',   color: '#40c8e0' },
   scams:       { id: 4, name: 'Scam Market',      emoji: '🏪', desc: 'Navigate the market and spot the scams.',          color: '#f0a030' },
   'dark-web':  { id: 7, name: 'Dark Web Depths',  emoji: '🕳️', desc: 'Explore the dark web safely.',                    color: '#8a4af0' },
 };

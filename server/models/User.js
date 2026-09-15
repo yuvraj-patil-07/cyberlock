@@ -8,6 +8,7 @@ const UserSchema = new mongoose.Schema({
   role: { type: String, enum: ['user', 'admin'], default: 'user' },
   xp: { type: Number, default: 0 },
   level: { type: Number, default: 1 },
+  coins: { type: Number, default: 0 },
   cyberScore: { type: Number, default: 50, min: 0, max: 100 },
   trustScore: { type: Number, default: 100, min: 0, max: 100 },
   lives: { type: Number, default: 5 },
@@ -16,6 +17,12 @@ const UserSchema = new mongoose.Schema({
     unlockedAt: { type: Date, default: Date.now }
   }],
   completedRooms: [{ type: String }],
+  // roomStars stores star rating (0-3) per room ID as a string key
+  roomStars: {
+    type: Map,
+    of: Number,
+    default: {}
+  },
   skillProfile: {
     phishing: { type: Number, default: 50 },
     passwords: { type: Number, default: 50 },

@@ -14,15 +14,36 @@
       "context": "Simulated physical tailgating social engineering attack exploiting natural politeness."
     },
     "options": [
-      { "text": "COMPLY — Hold the door open politely because they are holding breakfast and look friendly", "value": "comply" },
-      { "text": "REFUSE POLITELY — Hold the door closed, explain security policy requires everyone to badge in independently, and direct them to the reception check-in desk", "value": "refuse" },
-      { "text": "Take the donuts and let them inside", "value": "take_donuts" }
+      {
+        "text": "COMPLY \u2014 Hold the door open politely because they are holding breakfast and look friendly",
+        "value": "comply"
+      },
+      {
+        "text": "REFUSE POLITELY \u2014 Hold the door closed, explain security policy requires everyone to badge in independently, and direct them to the reception check-in desk",
+        "value": "refuse"
+      },
+      {
+        "text": "Take the donuts and let them inside",
+        "value": "take_donuts"
+      }
     ],
     "correctAnswer": "refuse",
     "indicators": [
-      { "type": "tailgating", "description": "Classic physical penetration testing tactic exploiting social norms of politeness", "points": 20 },
-      { "type": "prop_distraction", "description": "Using props (coffee, heavy boxes, crutches) to prevent badge inspection", "points": 15 },
-      { "type": "security_perimeter", "description": "Bypasses electronic badge audit trail and physical access control", "points": 15 }
+      {
+        "type": "tailgating",
+        "description": "Classic physical penetration testing tactic exploiting social norms of politeness",
+        "points": 20
+      },
+      {
+        "type": "prop_distraction",
+        "description": "Using props (coffee, heavy boxes, crutches) to prevent badge inspection",
+        "points": 15
+      },
+      {
+        "type": "security_perimeter",
+        "description": "Bypasses electronic badge audit trail and physical access control",
+        "points": 15
+      }
     ],
     "explanation": "Tailgating (Piggybacking) relies on people's reluctance to seem rude or unhelpful. Physical red teamers and industrial spies regularly use props like coffee trays or fake delivery boxes to slip past badge readers without leaving an access log.",
     "hints": [
@@ -54,20 +75,41 @@
       "senderAddress": "vp-mark.turner@company-slack-direct.org",
       "subject": "Urgent Board Meeting Deliverable",
       "timestamp": "Today at 04:40 PM",
-      "body": "Hey, I'm currently presenting live in the board of directors room with the CEO. We need the unmasked customer dataset for our EMEA enterprise accounts exported to CSV immediately for our slide presentation. Don't submit an IT ticket — that takes 2 days. Upload it directly to my personal Dropbox right now. The CEO is watching the clock!",
+      "body": "Hey, I'm currently presenting live in the board of directors room with the CEO. We need the unmasked customer dataset for our EMEA enterprise accounts exported to CSV immediately for our slide presentation. Don't submit an IT ticket \u2014 that takes 2 days. Upload it directly to my personal Dropbox right now. The CEO is watching the clock!",
       "urgencyLevel": "critical",
       "context": "Authority pressure & fear-based social engineering bypassing compliance controls."
     },
     "options": [
-      { "text": "COMPLY — The VP and CEO need it immediately and you don't want to get fired", "value": "comply" },
-      { "text": "REJECT & VERIFY — Follow mandatory data governance protocol; never export unmasked PII to personal cloud storage or via informal chat", "value": "reject" },
-      { "text": "Email the data directly to all board members", "value": "email_board" }
+      {
+        "text": "COMPLY \u2014 The VP and CEO need it immediately and you don't want to get fired",
+        "value": "comply"
+      },
+      {
+        "text": "REJECT & VERIFY \u2014 Follow mandatory data governance protocol; never export unmasked PII to personal cloud storage or via informal chat",
+        "value": "reject"
+      },
+      {
+        "text": "Email the data directly to all board members",
+        "value": "email_board"
+      }
     ],
     "correctAnswer": "reject",
     "indicators": [
-      { "type": "authority_pressure", "description": "Weaponizing executive hierarchy ('CEO is watching') to coerce rule violation", "points": 20 },
-      { "type": "policy_bypass", "description": "Explicit instruction to skip standard compliance/IT change control", "points": 20 },
-      { "type": "shadow_it", "description": "Directing sensitive PII to personal unmanaged Dropbox account", "points": 15 }
+      {
+        "type": "authority_pressure",
+        "description": "Weaponizing executive hierarchy ('CEO is watching') to coerce rule violation",
+        "points": 20
+      },
+      {
+        "type": "policy_bypass",
+        "description": "Explicit instruction to skip standard compliance/IT change control",
+        "points": 20
+      },
+      {
+        "type": "shadow_it",
+        "description": "Directing sensitive PII to personal unmanaged Dropbox account",
+        "points": 15
+      }
     ],
     "explanation": "Attackers pose as high-ranking executives to induce panic and intimidate employees into bypassing compliance safeguards. Legitimate executives understand that compliance and data protection rules cannot be overridden through informal chat requests.",
     "hints": [
@@ -104,15 +146,36 @@
       "context": "Voice Phishing (Vishing) with spoofed internal Caller ID."
     },
     "options": [
-      { "text": "COMPLY — Caller ID clearly says 'INTERNAL HELPDESK' so it must be real IT", "value": "comply" },
-      { "text": "VERIFY OUT-OF-BAND — Hang up, check company internal directory, and call the verified IT desk extension directly to verify Marcus's ticket", "value": "verify" },
-      { "text": "Give him your Windows password over the phone instead", "value": "give_password" }
+      {
+        "text": "COMPLY \u2014 Caller ID clearly says 'INTERNAL HELPDESK' so it must be real IT",
+        "value": "comply"
+      },
+      {
+        "text": "VERIFY OUT-OF-BAND \u2014 Hang up, check company internal directory, and call the verified IT desk extension directly to verify Marcus's ticket",
+        "value": "verify"
+      },
+      {
+        "text": "Give him your Windows password over the phone instead",
+        "value": "give_password"
+      }
     ],
     "correctAnswer": "verify",
     "indicators": [
-      { "type": "caller_id_spoof", "description": "Caller ID numbers and text names can be easily spoofed using VoIP SIP trunks", "points": 25 },
-      { "type": "remote_access_lure", "description": "Directs user to third-party unapproved remote control website", "points": 15 },
-      { "type": "threat_of_disconnect", "description": "Threatens switch port disconnection to pressure immediate obedience", "points": 10 }
+      {
+        "type": "caller_id_spoof",
+        "description": "Caller ID numbers and text names can be easily spoofed using VoIP SIP trunks",
+        "points": 25
+      },
+      {
+        "type": "remote_access_lure",
+        "description": "Directs user to third-party unapproved remote control website",
+        "points": 15
+      },
+      {
+        "type": "threat_of_disconnect",
+        "description": "Threatens switch port disconnection to pressure immediate obedience",
+        "points": 10
+      }
     ],
     "explanation": "Caller ID is completely untrustworthy because VoIP phone technology allows anyone to display any phone number or name they want. Always hang up and call the published internal helpdesk number yourself.",
     "hints": [
@@ -148,15 +211,36 @@
       "context": "Simulated physical USB Drop / Baiting attack exploiting human curiosity."
     },
     "options": [
-      { "text": "Plug it into your work laptop to find the owner's resume or files so you can return it to them", "value": "plug_in" },
-      { "text": "Plug it into a friend's computer instead to be safe", "value": "plug_friend" },
-      { "text": "DO NOT PLUG IT IN — Hand it directly to Corporate Physical Security / IT Security for safe isolation analysis", "value": "hand_security" }
+      {
+        "text": "Plug it into your work laptop to find the owner's resume or files so you can return it to them",
+        "value": "plug_in"
+      },
+      {
+        "text": "Plug it into a friend's computer instead to be safe",
+        "value": "plug_friend"
+      },
+      {
+        "text": "DO NOT PLUG IT IN \u2014 Hand it directly to Corporate Physical Security / IT Security for safe isolation analysis",
+        "value": "hand_security"
+      }
     ],
     "correctAnswer": "hand_security",
     "indicators": [
-      { "type": "usb_baiting", "description": "Classic physical baiting attack (Rubber Ducky / BadUSB / USB Killer)", "points": 25 },
-      { "type": "curiosity_trigger", "description": "Labeling device with enticing sensitive topics (salaries, executive plans)", "points": 15 },
-      { "type": "hardware_attack", "description": "Malicious USB microcontrollers emulate keyboards (HID) to inject keystroke exploits in milliseconds", "points": 20 }
+      {
+        "type": "usb_baiting",
+        "description": "Classic physical baiting attack (Rubber Ducky / BadUSB / USB Killer)",
+        "points": 25
+      },
+      {
+        "type": "curiosity_trigger",
+        "description": "Labeling device with enticing sensitive topics (salaries, executive plans)",
+        "points": 15
+      },
+      {
+        "type": "hardware_attack",
+        "description": "Malicious USB microcontrollers emulate keyboards (HID) to inject keystroke exploits in milliseconds",
+        "points": 20
+      }
     ],
     "explanation": "Plugging an unknown USB drive into a computer is extremely dangerous. BadUSB hardware devices (such as USB Rubber Ducky or Bash Bunny) masquerade as keyboards, injecting hundreds of commands per second the instant they are inserted, bypassing antivirus.",
     "hints": [
@@ -189,20 +273,43 @@
       "subject": "Help debugging custom cryptographic library",
       "timestamp": "Yesterday at 07:00 PM",
       "body": "Hey! Saw your insightful post on StackOverflow regarding our mutual employer's internal microservices architecture. I'm building an open-source tool for engineers in our specific niche. Could you test this zero-dependency utility on your workstation and let me know if it solves the latency issue?",
-      "links": ["https://github.com/alex-tools-project/microservice-bench.tar.gz"],
+      "links": [
+        "https://github.com/alex-tools-project/microservice-bench.tar.gz"
+      ],
       "urgencyLevel": "low",
       "context": "Watering hole / targeted developer supply chain reconnaissance attack (Lazarus style)."
     },
     "options": [
-      { "text": "COMPLY — Run the benchmark script to help a fellow niche developer", "value": "comply" },
-      { "text": "ANALYZE & REFUSE — Review repo code in an isolated sandbox, never discuss internal company architecture online, and report the targeted outreach", "value": "refuse" },
-      { "text": "Share your corporate GitHub API token with them", "value": "share_token" }
+      {
+        "text": "COMPLY \u2014 Run the benchmark script to help a fellow niche developer",
+        "value": "comply"
+      },
+      {
+        "text": "ANALYZE & REFUSE \u2014 Review repo code in an isolated sandbox, never discuss internal company architecture online, and report the targeted outreach",
+        "value": "refuse"
+      },
+      {
+        "text": "Share your corporate GitHub API token with them",
+        "value": "share_token"
+      }
     ],
     "correctAnswer": "refuse",
     "indicators": [
-      { "type": "developer_targeting", "description": "State-sponsored campaigns targeting software developers with malicious source repositories", "points": 25 },
-      { "type": "osint_recon", "description": "Attacker mapped target's employment and technical stack via public social media and StackOverflow", "points": 20 },
-      { "type": "untrusted_binary", "description": "Pre-compiled tar.gz containing malicious build script (postinstall hook)", "points": 15 }
+      {
+        "type": "developer_targeting",
+        "description": "State-sponsored campaigns targeting software developers with malicious source repositories",
+        "points": 25
+      },
+      {
+        "type": "osint_recon",
+        "description": "Attacker mapped target's employment and technical stack via public social media and StackOverflow",
+        "points": 20
+      },
+      {
+        "type": "untrusted_binary",
+        "description": "Pre-compiled tar.gz containing malicious build script (postinstall hook)",
+        "points": 15
+      }
     ],
     "explanation": "Advanced threat groups (e.g. Lazarus/Diamond Sleet) create fake developer personas on LinkedIn, GitHub, and X. They flatter developers with collaboration requests or fake job interviews, then send trojanized coding tests that deploy malware upon execution.",
     "hints": [
@@ -222,5 +329,123 @@
       "Review employee public social media profiles to eliminate internal architecture disclosures"
     ],
     "order": 5
+  },
+  {
+    "category": "social-engineering",
+    "difficulty": "beginner",
+    "room": 5,
+    "title": "The Desperate Job Applicant",
+    "scenario": {
+      "type": "social_engineering",
+      "sender": "Alex_Resume_Final.doc",
+      "subject": "Please review my application - I really need this job!",
+      "timestamp": "Today at 10:15 AM",
+      "body": "Hi, I saw you work at this company. I am desperate for a job to support my family. Please look at my resume (attached) and put in a good word for me? I even wrote a cover letter specifically for you.",
+      "urgencyLevel": "medium",
+      "context": "Emotional manipulation via unsolicited attachments."
+    },
+    "options": [
+      {
+        "text": "COMPLY \u2014 Open the document out of pity to help them out",
+        "value": "comply"
+      },
+      {
+        "text": "REJECT \u2014 Do not open unsolicited attachments, refer them to the official careers portal",
+        "value": "reject"
+      },
+      {
+        "text": "Forward to the CEO directly",
+        "value": "forward"
+      }
+    ],
+    "correctAnswer": "reject",
+    "indicators": [
+      {
+        "type": "emotional_manipulation",
+        "description": "Using pity to bypass security logic",
+        "points": 20
+      },
+      {
+        "type": "unsolicited_attachment",
+        "description": "Malicious payload delivery via resume lure",
+        "points": 20
+      }
+    ],
+    "explanation": "Attackers use emotional triggers (pity, fear, greed) to force you into making a mistake, like opening a macro-enabled Word document.",
+    "hints": [
+      "Why would they bypass the normal career portal?",
+      "Can a Word document contain malware?"
+    ],
+    "learningObjective": "Never open unsolicited attachments regardless of the emotional story attached.",
+    "consequenceChain": [
+      "You opened the Word document",
+      "Macro virus executed",
+      "Ransomware deployed across the network"
+    ],
+    "recoverySteps": [
+      "Isolate the machine",
+      "Run anti-virus scans",
+      "Report the phishing attempt"
+    ],
+    "order": 6
+  },
+  {
+    "category": "social-engineering",
+    "difficulty": "intermediate",
+    "room": 5,
+    "title": "Fake LinkedIn Recruiter",
+    "scenario": {
+      "type": "social_engineering",
+      "sender": "Sarah - Executive Tech Recruiter",
+      "subject": "Incredible 300k/yr Opportunity",
+      "timestamp": "Yesterday at 4:00 PM",
+      "body": "Hi there! Your profile is amazing. I have an unlisted VP role at a Fortune 500 paying  base. I need your updated resume with your full home address and personal phone number to submit you for the interview today.",
+      "urgencyLevel": "high",
+      "context": "Greed-based OSINT gathering via fake recruiter profiles."
+    },
+    "options": [
+      {
+        "text": "COMPLY \u2014 Give them your personal details, 300k is a lot of money!",
+        "value": "comply"
+      },
+      {
+        "text": "REJECT & VERIFY \u2014 Check their profile age, connections, and refuse to give PII upfront",
+        "value": "reject"
+      },
+      {
+        "text": "Give them your corporate credit card",
+        "value": "give_card"
+      }
+    ],
+    "correctAnswer": "reject",
+    "indicators": [
+      {
+        "type": "greed_trigger",
+        "description": "Offering unrealistic salaries to bypass critical thinking",
+        "points": 20
+      },
+      {
+        "type": "data_harvesting",
+        "description": "Asking for sensitive PII immediately",
+        "points": 20
+      }
+    ],
+    "explanation": "Fake recruiters are used by threat actors to map corporate structures, harvest personal data for spear-phishing, or build a rapport before sending malicious coding tests.",
+    "hints": [
+      "Does a legitimate recruiter demand a home address immediately?",
+      "Is a  salary offer out of nowhere realistic?"
+    ],
+    "learningObjective": "Identify and ignore greed-based social engineering on professional networks.",
+    "consequenceChain": [
+      "You gave your details",
+      "Your identity was stolen",
+      "Your accounts were compromised via SIM swapping"
+    ],
+    "recoverySteps": [
+      "Block the recruiter",
+      "Report the profile to LinkedIn",
+      "Enable MFA on all accounts"
+    ],
+    "order": 7
   }
 ]

@@ -5,14 +5,14 @@ import { useAuth } from '../hooks/useAuth';
 
 /* Zone definitions with exact % positions mapped to the 1024x576 image */
 const ZONES = [
-  { id: 'phishing',           name: 'PHISHING',   emoji: '💀', x: 28,  y: 25,  route: '/play/1' },
-  { id: 'password',           name: 'PASSWORDS',  emoji: '🔑', x: 26,  y: 49,  route: '/play/2' },
-  { id: 'social-engineering', name: 'FIREWALL',   emoji: '🛡️', x: 50,  y: 46,  route: '/play/5' },
-  { id: 'qr',                 name: 'QR TEMPLE',  emoji: '🔳', x: 37,  y: 69,  route: '/play/3' },
-  { id: 'ai-threat',          name: 'AI LAB',     emoji: '🤖', x: 72,  y: 25,  route: '/play/6' },
-  { id: 'scam',               name: 'SCAMS',      emoji: '🎭', x: 73,  y: 49,  route: '/play/4' },
-  { id: 'final',              name: 'DARK WEB',   emoji: '💀', x: 69,  y: 75,  route: '/play/7' },
-  { id: 'final',              name: 'CYBER CORE', emoji: '👑', x: 50,  y: 18,  route: '/play/7' },
+  { id: 'phishing',           roomId: 1, name: 'PHISHING',   emoji: '💀', x: 28,  y: 25,  route: '/play/1' },
+  { id: 'password',           roomId: 2, name: 'PASSWORDS',  emoji: '🔑', x: 26,  y: 49,  route: '/play/2' },
+  { id: 'social-engineering', roomId: 5, name: 'FIREWALL',   emoji: '🛡️', x: 50,  y: 46,  route: '/play/5' },
+  { id: 'qr',                 roomId: 3, name: 'QR TEMPLE',  emoji: '🔳', x: 37,  y: 69,  route: '/play/3' },
+  { id: 'ai-threat',          roomId: 6, name: 'AI LAB',     emoji: '🤖', x: 72,  y: 25,  route: '/play/6' },
+  { id: 'scam',               roomId: 4, name: 'SCAMS',      emoji: '🎭', x: 73,  y: 49,  route: '/play/4' },
+  { id: 'final',              roomId: 7, name: 'DARK WEB',   emoji: '💀', x: 69,  y: 75,  route: '/play/7' },
+  { id: 'final',              roomId: 7, name: 'CYBER CORE', emoji: '👑', x: 50,  y: 18,  route: '/play/7' },
 ];
 
 /* Sidebar nav items */
@@ -27,24 +27,29 @@ const SIDEBAR_ITEMS = [
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, loadUser } = useAuth();
   const [progress, setProgress] = useState(null);
+  
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const backgroundVideos = ['/assets/bg-video-2.mp4', '/assets/bg-video-3.mp4'];
 
   useEffect(() => {
-    gameService.getProgress()
-      .then(res => setProgress(res.data))
-      .catch(() => {});
+    // Re-fetch every time dashboard mounts — ensures XP/coins/stars update immediately after a game
+    const refresh = async () => {
+      try {
+        const res = await gameService.getProgress();
+        setProgress(res.data);
+      } catch {}
+      try { await loadUser(2, true); } catch {}
+    };
+    refresh();
   }, []);
 
-  const getZoneStars = (zoneId) => {
-    if (!progress?.completedRooms) return 0;
-    const room = progress.completedRooms.find(r => r.category === zoneId);
-    if (!room) return 0;
-    const pct = (room.correct / Math.max(room.total, 1)) * 100;
-    if (pct >= 90) return 3;
-    if (pct >= 60) return 2;
-    if (pct > 0) return 1;
-    return 0;
+  // Read stars from the persistent roomStars map (keyed by room ID string)
+  const getZoneStars = (zone) => {
+    const roomStars = progress?.user?.roomStars;
+    if (!roomStars) return 0;
+    return roomStars[String(zone.roomId)] || 0;
   };
 
   return (
@@ -62,21 +67,21 @@ export default function Dashboard() {
            }}>
         
         <video
-          src="/assets/bg-video-2.mp4"
+          src={backgroundVideos[currentVideoIndex]}
           className="absolute inset-0 w-full h-full object-cover"
           autoPlay
-          loop
           muted
           playsInline
+          onEnded={() => setCurrentVideoIndex((prev) => (prev + 1) % backgroundVideos.length)}
         />
 
         {/* ═══ MAP CONTAINER ═══ */}
         <div className="absolute inset-0 z-10 pointer-events-auto">
-          {ZONES.map((zone) => {
-            const stars = getZoneStars(zone.id);
+          {ZONES.map((zone, zIdx) => {
+            const stars = getZoneStars(zone);
             return (
               <div
-                key={zone.id}
+                key={`${zone.id}-${zIdx}`}
                 className="absolute flex flex-col items-center justify-center group"
                 style={{
                   left: `${zone.x}%`,
@@ -127,10 +132,21 @@ export default function Dashboard() {
               <span className="text-[#3b4c6b] text-[8px] leading-none">LV.{user?.level || 2}</span>
             </div>
             <div className="w-28 h-2 bg-[#a2b5cc] border-[2px] border-[#8ba3c0] relative shadow-[inset_0_1px_3px_rgba(0,0,0,0.3)]">
-              <div className="absolute top-0 left-0 h-full bg-[#40aa66] shadow-[inset_0_1px_0_rgba(255,255,255,0.5)]" style={{ width: '52%' }}></div>
-              <div className="absolute inset-0 flex items-center justify-center text-[6px] text-white drop-shadow-[1px_1px_0_rgba(0,0,0,0.8)]">
-                420/800 XP
-              </div>
+              {(() => {
+                const currentLevel = user?.level || 1;
+                const xpAtCurrent = Math.pow(currentLevel - 1, 2) * 100;
+                const xpAtNext = Math.pow(currentLevel, 2) * 100;
+                const currentXp = user?.xp || 0;
+                const progressPercent = Math.max(0, Math.min(100, ((currentXp - xpAtCurrent) / (xpAtNext - xpAtCurrent)) * 100));
+                return (
+                  <>
+                    <div className="absolute top-0 left-0 h-full bg-[#40aa66] shadow-[inset_0_1px_0_rgba(255,255,255,0.5)]" style={{ width: `${progressPercent}%` }}></div>
+                    <div className="absolute inset-0 flex items-center justify-center text-[6px] text-white drop-shadow-[1px_1px_0_rgba(0,0,0,0.8)]">
+                      {currentXp}/{xpAtNext} XP
+                    </div>
+                  </>
+                );
+              })()}
             </div>
           </div>
         </div>
@@ -138,13 +154,15 @@ export default function Dashboard() {
         {/* Currencies Section */}
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1">
-            <span className="text-sm drop-shadow-[2px_2px_0_rgba(0,0,0,0.5)]">❤️</span>
-            <span className="text-sm drop-shadow-[2px_2px_0_rgba(0,0,0,0.5)]">❤️</span>
-            <span className="text-sm grayscale opacity-50">❤️</span>
+            {[...Array(5)].map((_, i) => (
+              <span key={i} className={`text-sm ${i < (user?.lives ?? 5) ? 'drop-shadow-[2px_2px_0_rgba(0,0,0,0.5)]' : 'grayscale opacity-50'}`}>
+                ❤️
+              </span>
+            ))}
           </div>
           <div className="flex items-center gap-2 bg-[#0a1020]/50 px-2 py-1 border-[3px] border-[#15213d]">
             <span className="text-sm">🪙</span>
-            <span className="text-white text-[10px]">{user?.coins || 120}</span>
+            <span className="text-white text-[10px]">{user?.coins || 0}</span>
           </div>
           <div className="flex items-center gap-2 bg-[#0a1020]/50 px-2 py-1 border-[3px] border-[#15213d]">
             <span className="text-sm">💎</span>
@@ -182,57 +200,67 @@ export default function Dashboard() {
       <div className="absolute top-24 right-6 w-[260px] flex flex-col gap-3 z-20">
         
         {/* Current Quest */}
-        <div className="bg-[#15213d] border-[4px] border-[#0a1020] p-4 shadow-[8px_8px_0_rgba(0,0,0,0.3)] relative">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-white/10"></div>
-          
-          <div className="flex items-center gap-2 mb-4">
-            <span className="text-sm">📜</span>
-            <span className="text-white text-[9px] tracking-widest mt-1">QUEST</span>
-          </div>
-          <p className="text-[#c8d4e4] text-[8px] leading-loose mb-4 uppercase">
-            Identify 5 phishing emails in Phishing Port.
-          </p>
-          <div className="w-full h-3 bg-[#0a1020] border-[2px] border-[#2a3852] mb-2 shadow-inner">
-            <div className="h-full bg-[#40aa66] shadow-[inset_0_2px_0_rgba(255,255,255,0.3)] relative" style={{ width: '40%' }}></div>
-          </div>
-          <div className="text-right text-[#8ba3c0] text-[8px]">2/5</div>
-        </div>
+        {(() => {
+          const completedRooms = progress?.rooms?.filter(r => r.completed) || [];
+          const totalRooms = 7;
+          const completedCount = completedRooms.length;
+          const nextRoom = progress?.rooms?.find(r => !r.completed && r.unlocked);
+          return (
+            <div className="bg-[#15213d] border-[4px] border-[#0a1020] p-4 shadow-[8px_8px_0_rgba(0,0,0,0.3)] relative">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-white/10"></div>
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-sm">📜</span>
+                <span className="text-white text-[9px] tracking-widest mt-1">MAIN QUEST</span>
+              </div>
+              <p className="text-[#c8d4e4] text-[8px] leading-loose mb-4 uppercase">
+                {nextRoom ? `Conquer ${nextRoom.title}` : 'All zones conquered!'}
+              </p>
+              <div className="w-full h-3 bg-[#0a1020] border-[2px] border-[#2a3852] mb-2 shadow-inner">
+                <div className="h-full bg-[#40aa66] shadow-[inset_0_2px_0_rgba(255,255,255,0.3)] relative"
+                     style={{ width: `${(completedCount / totalRooms) * 100}%` }}></div>
+              </div>
+              <div className="text-right text-[#8ba3c0] text-[8px]">{completedCount}/{totalRooms} zones</div>
+            </div>
+          );
+        })()}
 
         {/* Daily Missions */}
-        <div className="bg-[#15213d] border-[4px] border-[#0a1020] p-4 shadow-[8px_8px_0_rgba(0,0,0,0.3)] relative">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-white/10"></div>
-
-          <div className="flex items-center gap-2 mb-5">
-            <span className="text-sm text-yellow-400">☀️</span>
-            <span className="text-white text-[9px] tracking-widest mt-1">MISSIONS</span>
-          </div>
-          
-          <div className="flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-[#0a1020] border-[2px] border-[#2a3852]"></div>
-                <span className="text-[#c8d4e4] text-[7px] uppercase mt-1">COMPLETE A CHAL</span>
+        {(() => {
+          const completedCount = progress?.rooms?.filter(r => r.completed).length || 0;
+          const coins = user?.coins || 0;
+          const visitedAI = progress?.rooms?.find(r => r.id === 6)?.completed || false;
+          const missions = [
+            { label: 'COMPLETE A ZONE', done: completedCount >= 1, cur: Math.min(completedCount, 1), max: 1 },
+            { label: 'EARN 50 COINS',   done: coins >= 50,         cur: Math.min(coins, 50),         max: 50 },
+            { label: 'VISIT AI LAB',    done: visitedAI,           cur: visitedAI ? 1 : 0,           max: 1 },
+          ];
+          return (
+            <div className="bg-[#15213d] border-[4px] border-[#0a1020] p-4 shadow-[8px_8px_0_rgba(0,0,0,0.3)] relative">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-white/10"></div>
+              <div className="flex items-center gap-2 mb-5">
+                <span className="text-sm text-yellow-400">☀️</span>
+                <span className="text-white text-[9px] tracking-widest mt-1">MISSIONS</span>
               </div>
-              <span className="text-[#8ba3c0] text-[7px] mt-1">0/1</span>
-            </div>
-            
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-[#0a1020] border-[2px] border-[#2a3852]"></div>
-                <span className="text-[#c8d4e4] text-[7px] uppercase mt-1">EARN 100 COINS</span>
+              <div className="flex flex-col gap-4">
+                {missions.map(m => (
+                  <div key={m.label} className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className={`w-3 h-3 border-[2px] flex items-center justify-center ${
+                        m.done ? 'bg-[#40aa66] border-[#40aa66]' : 'bg-[#0a1020] border-[#2a3852]'
+                      }`}>
+                        {m.done && <span className="text-[8px] text-white">✓</span>}
+                      </div>
+                      <span className={`text-[7px] uppercase mt-1 ${m.done ? 'text-[#40aa66]' : 'text-[#c8d4e4]'}`}>
+                        {m.label}
+                      </span>
+                    </div>
+                    <span className="text-[#8ba3c0] text-[7px] mt-1">{m.cur}/{m.max}</span>
+                  </div>
+                ))}
               </div>
-              <span className="text-[#8ba3c0] text-[7px] mt-1">20/100</span>
             </div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-[#0a1020] border-[2px] border-[#2a3852]"></div>
-                <span className="text-[#c8d4e4] text-[7px] uppercase mt-1">VISIT AI LAB</span>
-              </div>
-              <span className="text-[#8ba3c0] text-[7px] mt-1">0/1</span>
-            </div>
-          </div>
-        </div>
+          );
+        })()}
 
       </div>
 

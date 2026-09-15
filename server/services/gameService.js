@@ -89,12 +89,24 @@ export const getGameProgress = async (userId) => {
       cyberScore: user.cyberScore || 50,
       xp: user.xp || 0,
       level: user.level || 1,
+      coins: user.coins || 0,
       trustScore: user.trustScore || 100,
       lives: user.lives ?? 5,
       badges: user.badges || [],
       skillProfile: user.skillProfile || {},
       firstAttemptScore: user.firstAttemptScore || 50,
-      currentScore: user.currentScore || 50
+      currentScore: user.currentScore || 50,
+      roomStars: (() => {
+        const obj = {};
+        if (user.roomStars) {
+          if (user.roomStars.forEach) {
+            user.roomStars.forEach((v, k) => { obj[k] = v; });
+          } else {
+            Object.assign(obj, user.roomStars);
+          }
+        }
+        return obj;
+      })()
     },
     rooms: roomStatus,
     session: activeSession,
@@ -103,7 +115,7 @@ export const getGameProgress = async (userId) => {
   };
 };
 
-export const completeRoom = async (userId, roomId) => {
+export const completeRoom = async (userId, roomId, stars = 1) => {
   let user = null;
   if (isMongoConnected()) {
     try {
@@ -117,25 +129,61 @@ export const completeRoom = async (userId, roomId) => {
 
   const rIdStr = String(roomId);
   if (!user.completedRooms) user.completedRooms = [];
+
+  // Award XP only on first completion
+  let xpGained = 0;
   if (!user.completedRooms.includes(rIdStr)) {
     user.completedRooms.push(rIdStr);
-    user.xp = (user.xp || 0) + 150;
-    if (isMongoConnected() && typeof user.save === 'function') {
-      try { await user.save(); } catch (err) { /* ignore */ }
+    xpGained = 150;
+    user.xp = (user.xp || 0) + xpGained;
+  }
+
+  // Always update stars if the new value is better
+  const starsNum = Math.max(1, Math.min(3, Math.round(stars)));
+  if (!user.roomStars) user.roomStars = new Map();
+  const prevStars = user.roomStars.get ? (user.roomStars.get(rIdStr) || 0) : (user.roomStars[rIdStr] || 0);
+  if (starsNum > prevStars) {
+    if (user.roomStars.set) {
+      user.roomStars.set(rIdStr, starsNum);
+    } else {
+      user.roomStars[rIdStr] = starsNum;
     }
+  }
+
+  // Recalculate level after XP change
+  if (typeof user.calculateLevel === 'function') {
+    user.level = user.calculateLevel();
+  } else {
+    user.level = Math.floor(Math.sqrt((user.xp || 0) / 100)) + 1;
+  }
+
+  if (isMongoConnected() && typeof user.save === 'function') {
+    try { await user.save(); } catch (err) { console.warn('completeRoom save failed:', err.message); }
   }
 
   let newBadges = [];
   try {
     newBadges = await checkAndAwardBadges(userId, { roomCompleted: parseInt(roomId, 10) });
-  } catch (err) {
-    /* ignore */
+  } catch (err) { /* ignore */ }
+
+  // Convert Map to plain object for JSON response
+  const roomStarsObj = {};
+  if (user.roomStars) {
+    if (user.roomStars.forEach) {
+      user.roomStars.forEach((v, k) => { roomStarsObj[k] = v; });
+    } else {
+      Object.assign(roomStarsObj, user.roomStars);
+    }
   }
 
   return {
     success: true,
     completedRooms: user.completedRooms,
-    xpGained: 150,
+    xpGained,
+    newLevel: user.level,
+    newXp: user.xp,
+    starsAwarded: starsNum,
+    roomStars: roomStarsObj,
     newBadges
   };
 };

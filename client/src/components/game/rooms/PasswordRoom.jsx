@@ -14,20 +14,55 @@ const PIECES = [
   { id: 'p8', type: 'symbol', value: '#', color: 'pixel-panel-stone' },
   { id: 'p9', type: 'uppercase', value: 'A', color: 'pixel-btn-success' },
   { id: 'p10', type: 'uppercase', value: 'Z', color: 'pixel-btn-success' },
+  { id: 'p11', type: 'word', value: 'qwerty', color: 'pixel-panel-blue' },
+  { id: 'p12', type: 'word', value: 'admin', color: 'pixel-panel-blue' },
+  { id: 'p13', type: 'word', value: 'sunshine', color: 'pixel-panel-blue' },
+  { id: 'p14', type: 'word', value: 'cyber', color: 'pixel-panel-blue' },
+  { id: 'p15', type: 'word', value: 'knight', color: 'pixel-panel-blue' },
+  { id: 'p16', type: 'number', value: '12345', color: 'pixel-panel-parchment' },
+  { id: 'p17', type: 'number', value: '007', color: 'pixel-panel-parchment' },
+  { id: 'p18', type: 'number', value: '314', color: 'pixel-panel-parchment' },
+  { id: 'p19', type: 'symbol', value: '$', color: 'pixel-panel-stone' },
+  { id: 'p20', type: 'symbol', value: '%', color: 'pixel-panel-stone' },
+  { id: 'p21', type: 'symbol', value: '*', color: 'pixel-panel-stone' },
+  { id: 'p22', type: 'symbol', value: '&', color: 'pixel-panel-stone' },
+  { id: 'p23', type: 'uppercase', value: 'X', color: 'pixel-btn-success' },
+  { id: 'p24', type: 'uppercase', value: 'Q', color: 'pixel-btn-success' },
+  { id: 'p25', type: 'word', value: 'monkey', color: 'pixel-panel-blue' },
+  { id: 'p26', type: 'word', value: 'football', color: 'pixel-panel-blue' },
+  { id: 'p27', type: 'number', value: '1337', color: 'pixel-panel-parchment' },
+  { id: 'p28', type: 'number', value: '42', color: 'pixel-panel-parchment' },
+  { id: 'p29', type: 'uppercase', value: 'K', color: 'pixel-btn-success' },
+  { id: 'p30', type: 'symbol', value: '?', color: 'pixel-panel-stone' },
 ];
 
-const PasswordRoom = ({ onComplete }) => {
+const PasswordRoom = ({ challenge, onComplete, onWrongAnswer }) => {
   const { addXP, addCoins, loseHeart } = useGameStore();
 
   const [craftedPassword, setCraftedPassword] = useState([]);
   const [availablePieces, setAvailablePieces] = useState([]);
   const [timeLeft, setTimeLeft] = useState(45);
+  const [level, setLevel] = useState(1);
+  const diff = challenge?.difficulty || 'beginner';
+  
+  // Calculate dynamic goals based on difficulty
+  const targetStrength = diff === 'advanced' ? 100 : (diff === 'intermediate' ? 80 : 50);
+  
+  useEffect(() => {
+    let startingTime = 60;
+    if (diff === 'intermediate') { startingTime = 45; setLevel(2); }
+    if (diff === 'advanced') { startingTime = 30; setLevel(3); }
+    setTimeLeft(startingTime);
+    
+    // Select subset of pieces for variety
+    const shuffled = [...PIECES].sort(() => Math.random() - 0.5);
+    setAvailablePieces(shuffled.slice(0, 16)); // Give them 16 blocks to choose from
+  }, [diff]);
+
   const [strength, setStrength] = useState(0);
   const [feedback, setFeedback] = useState(null);
 
-  useEffect(() => {
-    setAvailablePieces([...PIECES].sort(() => Math.random() - 0.5));
-  }, []);
+  
 
   useEffect(() => {
     if (timeLeft > 0) {
@@ -75,23 +110,23 @@ const PasswordRoom = ({ onComplete }) => {
   };
 
   const handleSubmit = () => {
-    if (strength >= 80) {
+    if (strength >= targetStrength) {
       const points = 100 + (timeLeft * 2);
       addXP(points);
       addCoins(20);
       setFeedback({ type: 'success', text: `STRONG PASSWORD! +${points} XP` });
-      setTimeout(() => onComplete && onComplete(points), 1500);
+      setTimeout(() => onComplete && onComplete({ xp: points, coins: 20 }), 1500);
     } else {
-      loseHeart();
-      setFeedback({ type: 'error', text: 'TOO WEAK! Need 80+ Strength.' });
+      if (onWrongAnswer) onWrongAnswer();
+      setFeedback({ type: 'error', text: 'TOO WEAK! Need + Strength.' });
       setTimeout(() => setFeedback(null), 1500);
     }
   };
 
   const handleTimeUp = () => {
-    loseHeart();
+    if (onWrongAnswer) onWrongAnswer();
     setFeedback({ type: 'error', text: 'TIME IS UP!' });
-    setTimeout(() => onComplete && onComplete(0), 1500);
+    setTimeout(() => onComplete && onComplete({ xp: 0, coins: 0 }), 1500);
   };
 
   return (
@@ -114,7 +149,7 @@ const PasswordRoom = ({ onComplete }) => {
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1.5 }}
             exit={{ opacity: 0 }}
-            className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 font-pixel text-3xl tracking-wider text-center ${
+            className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 font-pixel text-sm tracking-wider text-center ${
               feedback.type === 'success' ? 'text-green-400 drop-shadow-[4px_4px_0_#000]' : 'text-red-500 drop-shadow-[4px_4px_0_#000]'
             }`}
           >
@@ -123,32 +158,32 @@ const PasswordRoom = ({ onComplete }) => {
         )}
       </AnimatePresence>
 
-      <div className="pixel-panel-wood mx-4 mt-4 p-4 flex justify-between items-center z-10">
+      <div className="pixel-panel-wood mx-4 mt-2 p-2 flex justify-between items-center z-10">
         <div className="flex items-center gap-2">
           <Clock className={`w-6 h-6 ${timeLeft <= 10 ? 'text-red-500 animate-pulse' : 'text-white'}`} />
-          <span className="font-pixel text-xl">{timeLeft}s</span>
+          <span className="font-pixel text-sm">{timeLeft}s</span>
         </div>
         <div className="font-pixel text-yellow-400 text-xl drop-shadow-[2px_2px_0_#000]">
           FORGE YOUR PASSWORD
         </div>
       </div>
 
-      <div className="flex-1 p-3 flex flex-col gap-3 z-10 relative">
+      <div className="flex-1 p-2 flex flex-col gap-2 z-10 relative">
         
         {/* Strength Meter */}
-        <div className="pixel-panel-stone p-4">
+        <div className="pixel-panel-stone p-2">
           <div className="flex justify-between items-center mb-2">
             <span className="font-pixel text-sm flex items-center gap-2">
               <Shield className="w-4 h-4" /> SHIELD POWER
             </span>
-            <span className={`font-pixel text-xl ${strength >= 80 ? 'text-green-400' : strength >= 50 ? 'text-yellow-400' : 'text-red-400'}`}>
+            <span className={`font-pixel text-sm ${strength >= targetStrength ? 'text-green-400' : strength >= 50 ? 'text-yellow-400' : 'text-red-400'}`}>
               {strength}%
             </span>
           </div>
           <div className="pixel-bar-container h-6">
             <motion.div 
               className={`h-full transition-all duration-300 ${
-                strength >= 80 ? 'bg-[#4ade80] shadow-[inset_0px_4px_0px_0px_#86efac]' : 
+                strength >= targetStrength ? 'bg-[#4ade80] shadow-[inset_0px_4px_0px_0px_#86efac]' : 
                 strength >= 50 ? 'bg-[#facc15] shadow-[inset_0px_4px_0px_0px_#fef08a]' : 
                 'bg-[#ef4444] shadow-[inset_0px_4px_0px_0px_#fca5a5]'
               }`}
@@ -159,7 +194,7 @@ const PasswordRoom = ({ onComplete }) => {
         </div>
 
         {/* The Anvil (Crafting Area) */}
-        <div className="pixel-panel-blue p-3 min-h-[80px] flex flex-wrap gap-4 items-center justify-center relative">
+        <div className="pixel-panel-blue p-2 min-h-[60px] flex flex-wrap gap-2 items-center justify-center relative">
           {craftedPassword.length === 0 ? (
             <span className="font-pixel text-sm flex items-center gap-2 text-white/70">
               <Key className="w-5 h-5" /> Select blocks to build
@@ -184,9 +219,9 @@ const PasswordRoom = ({ onComplete }) => {
         </div>
 
         {/* Available Pieces */}
-        <div className="flex-1 pixel-panel-parchment p-3">
+        <div className="flex-1 pixel-panel-parchment p-2">
           <p className="font-pixel text-xs text-[#78350f] mb-4">INVENTORY (CLICK TO ADD):</p>
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-2">
             <AnimatePresence>
               {availablePieces.map((piece) => (
                 <motion.button
@@ -207,23 +242,23 @@ const PasswordRoom = ({ onComplete }) => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-4">
+        <div className="flex gap-2">
           <button 
             onClick={clearAll}
-            className="pixel-btn pixel-btn-danger flex-1 text-sm py-4"
+            className="pixel-btn pixel-btn-danger flex-1 text-sm py-2"
           >
             CLEAR
           </button>
           <button 
             onClick={handleSubmit}
-            className={`pixel-btn flex-[2] text-sm py-4 flex items-center justify-center gap-2 ${
-              strength >= 80 
+            className={`pixel-btn flex-[2] text-sm py-2 flex items-center justify-center gap-2 ${
+              strength >= targetStrength 
                 ? 'pixel-btn-success' 
                 : 'pixel-btn-secondary grayscale cursor-not-allowed'
             }`}
             disabled={strength < 80}
           >
-            <Sparkles className="w-5 h-5" /> {strength >= 80 ? 'UNLOCK GATE' : 'NEED MORE POWER'}
+            <Sparkles className="w-5 h-5" /> {strength >= targetStrength ? 'UNLOCK GATE' : 'NEED MORE POWER'}
           </button>
         </div>
 

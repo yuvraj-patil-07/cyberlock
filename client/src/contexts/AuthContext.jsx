@@ -17,18 +17,30 @@ export const AuthProvider = ({ children }) => {
     }
   }, [token]);
 
-  const loadUser = async () => {
+  const loadUser = async (retries = 2, silent = false) => {
     try {
-      setLoading(true);
+      // Only show the full-screen loading spinner if not silent
+      if (!silent && !user) setLoading(true);
+      
       const res = await api.get('/auth/me');
       setUser(res.data.user);
     } catch (err) {
-      console.error(err);
-      localStorage.removeItem('cyberlock_token');
-      setToken(null);
-      setUser(null);
+      const status = err.response?.status;
+      if (status === 401) {
+        // Only clear session on explicit "not authorized" — token truly invalid
+        localStorage.removeItem('cyberlock_token');
+        setToken(null);
+        setUser(null);
+      } else if (retries > 0 && (!status || status >= 500 || status === 429)) {
+        // Server restart / rate-limit / network blip — retry after a short delay
+        // Do NOT wipe the token; the user is still valid
+        await new Promise(r => setTimeout(r, 1500));
+        return loadUser(retries - 1);
+      }
+      // For any other error (e.g. 400, 403) just keep existing user state
+      console.warn('loadUser failed with status', status, '— keeping existing session');
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 

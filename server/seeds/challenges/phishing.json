@@ -11,21 +11,48 @@
       "subject": "URGENT: Your Account Has Been Locked - Verify Identity Now",
       "timestamp": "Today at 09:14 AM",
       "body": "Dear Valued Customer,\n\nWe detected suspicious login activity from an unknown IP address (192.168.1.99, Bucharest, RO). For your protection, your account has been temporarily locked.\n\nYou MUST verify your full card number and identity within 2 hours or your account will be permanently closed and remaining balance frozen.",
-      "links": ["https://login.paypa1-account-restore.com/auth/verify?session=93821"],
+      "links": [
+        "https://login.paypa1-account-restore.com/auth/verify?session=93821"
+      ],
       "urgencyLevel": "critical",
       "context": "Simulated PayPal spoof email with typo-squatted domain and false urgency."
     },
     "options": [
-      { "text": "SAFE — Legitimate notification from payment provider", "value": "safe" },
-      { "text": "SUSPICIOUS — Need to verify via official mobile app first", "value": "suspicious" },
-      { "text": "PHISHING — Fake typo domain (paypa1), artificial urgency & credential harvesting", "value": "phishing" }
+      {
+        "text": "SAFE \u2014 Legitimate notification from payment provider",
+        "value": "safe"
+      },
+      {
+        "text": "SUSPICIOUS \u2014 Need to verify via official mobile app first",
+        "value": "suspicious"
+      },
+      {
+        "text": "PHISHING \u2014 Fake typo domain (paypa1), artificial urgency & credential harvesting",
+        "value": "phishing"
+      }
     ],
     "correctAnswer": "phishing",
     "indicators": [
-      { "type": "domain", "description": "Typo-squatted sender domain ('paypa1' with number 1 instead of 'l')", "points": 15 },
-      { "type": "urgency", "description": "Artificial 2-hour deadline to induce panic", "points": 10 },
-      { "type": "credential_request", "description": "Requests full credit card number over an unverified link", "points": 15 },
-      { "type": "link_mismatch", "description": "Destination link points to third-party domain 'paypa1-account-restore.com'", "points": 10 }
+      {
+        "type": "domain",
+        "description": "Typo-squatted sender domain ('paypa1' with number 1 instead of 'l')",
+        "points": 15
+      },
+      {
+        "type": "urgency",
+        "description": "Artificial 2-hour deadline to induce panic",
+        "points": 10
+      },
+      {
+        "type": "credential_request",
+        "description": "Requests full credit card number over an unverified link",
+        "points": 15
+      },
+      {
+        "type": "link_mismatch",
+        "description": "Destination link points to third-party domain 'paypa1-account-restore.com'",
+        "points": 10
+      }
     ],
     "explanation": "This email uses classic typo-squatting ('paypa1' instead of 'paypal'), severe artificial urgency (2-hour limit), and aggressive credential harvesting. Legitimate financial institutions never demand card details via urgent email links.",
     "hints": [
@@ -52,6 +79,47 @@
     "category": "phishing",
     "difficulty": "beginner",
     "room": 1,
+    "title": "Routine Security Update Notification",
+    "scenario": {
+      "type": "email",
+      "sender": "GitHub Security",
+      "senderAddress": "noreply@github.com",
+      "subject": "[GitHub] Security update for your account",
+      "timestamp": "Today at 10:00 AM",
+      "body": "Hi there,\n\nWe wanted to let you know that a new device signed into your account on GitHub.com.\n\nDevice: Chrome on Windows\nIP Address: 192.168.1.1\n\nIf this was you, you don't need to do anything. If this wasn't you, please review your security settings.",
+      "links": [],
+      "urgencyLevel": "low",
+      "context": "A routine login notification from a legitimate service."
+    },
+    "options": [
+      {
+        "text": "SAFE - Legitimate login notification",
+        "value": "safe"
+      },
+      {
+        "text": "PHISHING - Attempting to steal credentials",
+        "value": "phishing"
+      }
+    ],
+    "correctAnswer": "safe",
+    "indicators": [
+      {
+        "type": "domain",
+        "description": "Legitimate sender domain (github.com)",
+        "points": 10
+      },
+      {
+        "type": "urgency",
+        "description": "No artificial urgency",
+        "points": 10
+      }
+    ],
+    "explanation": "This is a legitimate login notification. It comes from the correct domain (github.com), does not contain any suspicious links, and does not ask you for your credentials or create artificial urgency."
+  },
+  {
+    "category": "phishing",
+    "difficulty": "beginner",
+    "room": 1,
     "title": "Corporate IT Mandatory Password Reset",
     "scenario": {
       "type": "email",
@@ -60,20 +128,43 @@
       "subject": "Action Required: Company-Wide Security Certificate Upgrade",
       "timestamp": "Today at 11:22 AM",
       "body": "All Employees:\n\nOur IT systems are undergoing a mandatory SSL/TLS certificate migration. In order to maintain active access to VPN and internal servers, all staff must re-authenticate their single sign-on (SSO) credentials immediately.",
-      "links": ["https://sso-portal.globalcorp-portal-auth.net/saml/login"],
+      "links": [
+        "https://sso-portal.globalcorp-portal-auth.net/saml/login"
+      ],
       "urgencyLevel": "high",
       "context": "Fake IT desk email targeting corporate employees."
     },
     "options": [
-      { "text": "SAFE — Standard IT maintenance email", "value": "safe" },
-      { "text": "SUSPICIOUS — Check IT helpdesk ticketing portal first", "value": "suspicious" },
-      { "text": "PHISHING — External domain '.net' and unverified SSO URL", "value": "phishing" }
+      {
+        "text": "SAFE \u2014 Standard IT maintenance email",
+        "value": "safe"
+      },
+      {
+        "text": "SUSPICIOUS \u2014 Check IT helpdesk ticketing portal first",
+        "value": "suspicious"
+      },
+      {
+        "text": "PHISHING \u2014 External domain '.net' and unverified SSO URL",
+        "value": "phishing"
+      }
     ],
     "correctAnswer": "phishing",
     "indicators": [
-      { "type": "domain", "description": "External '.net' domain instead of official internal '.com' corporate intranet", "points": 15 },
-      { "type": "credential_request", "description": "Directs employees to submit enterprise SSO credentials externally", "points": 15 },
-      { "type": "sender_mismatch", "description": "Generic 'All Employees' greeting with no personalized staff ID", "points": 10 }
+      {
+        "type": "domain",
+        "description": "External '.net' domain instead of official internal '.com' corporate intranet",
+        "points": 15
+      },
+      {
+        "type": "credential_request",
+        "description": "Directs employees to submit enterprise SSO credentials externally",
+        "points": 15
+      },
+      {
+        "type": "sender_mismatch",
+        "description": "Generic 'All Employees' greeting with no personalized staff ID",
+        "points": 10
+      }
     ],
     "explanation": "Attackers frequently impersonate internal IT departments using plausible technical jargon (SSL migration, VPN maintenance). Always verify internal IT requests via internal company chat or approved IT service desks.",
     "hints": [
@@ -106,21 +197,46 @@
       "subject": "Sarah Jenkins shared 'Q4_Executive_Compensation_Confidential.pdf' with you",
       "timestamp": "Yesterday at 04:45 PM",
       "body": "Sarah Jenkins (sjenkins@partner-consulting.example) has invited you to view the confidential executive document.\n\nClick below to decrypt and review the PDF securely.",
-      "links": ["https://clouddrive-viewer.online/doc/preview?id=8831"],
-      "attachments": ["Q4_Executive_Compensation_Confidential.pdf.html"],
+      "links": [
+        "https://clouddrive-viewer.online/doc/preview?id=8831"
+      ],
+      "attachments": [
+        "Q4_Executive_Compensation_Confidential.pdf.html"
+      ],
       "urgencyLevel": "medium",
       "context": "Simulated cloud sharing notification with malicious HTML attachment and curiosity bait."
     },
     "options": [
-      { "text": "SAFE — Regular shared document preview", "value": "safe" },
-      { "text": "SUSPICIOUS — Need to ask Sarah directly before opening", "value": "suspicious" },
-      { "text": "PHISHING — Double extension (.pdf.html) and curiosity-lure targeting", "value": "phishing" }
+      {
+        "text": "SAFE \u2014 Regular shared document preview",
+        "value": "safe"
+      },
+      {
+        "text": "SUSPICIOUS \u2014 Need to ask Sarah directly before opening",
+        "value": "suspicious"
+      },
+      {
+        "text": "PHISHING \u2014 Double extension (.pdf.html) and curiosity-lure targeting",
+        "value": "phishing"
+      }
     ],
     "correctAnswer": "phishing",
     "indicators": [
-      { "type": "attachment", "description": "Double extension (.pdf.html) concealing malicious HTML script", "points": 20 },
-      { "type": "social_lure", "description": "High-interest bait ('Executive Compensation') triggering curiosity", "points": 10 },
-      { "type": "domain", "description": "Untrusted third-party viewer domain 'clouddrive-viewer.online'", "points": 10 }
+      {
+        "type": "attachment",
+        "description": "Double extension (.pdf.html) concealing malicious HTML script",
+        "points": 20
+      },
+      {
+        "type": "social_lure",
+        "description": "High-interest bait ('Executive Compensation') triggering curiosity",
+        "points": 10
+      },
+      {
+        "type": "domain",
+        "description": "Untrusted third-party viewer domain 'clouddrive-viewer.online'",
+        "points": 10
+      }
     ],
     "explanation": "Attackers exploit curiosity through sensational document names (salaries, layoffs). The double extension (.pdf.html) opens a browser page designed to harvest email login details rather than a real PDF.",
     "hints": [
@@ -153,20 +269,43 @@
       "subject": "Delivery Attempt Failed: Parcel #US-98319-X requires $1.85 customs redelivery fee",
       "timestamp": "Today at 07:30 AM",
       "body": "Your package could not be delivered on September 09 due to an incomplete address and an unpaid customs clearance fee ($1.85 USD).\n\nPlease settle this minor fee online to reschedule delivery for tomorrow morning.",
-      "links": ["https://express-courier-payment-gateway.info/reschedule"],
+      "links": [
+        "https://express-courier-payment-gateway.info/reschedule"
+      ],
       "urgencyLevel": "medium",
       "context": "Small-fee smishing/phishing tricking users into submitting payment card details."
     },
     "options": [
-      { "text": "SAFE — Only $1.85 fee, standard for customs", "value": "safe" },
-      { "text": "SUSPICIOUS — Check tracking code directly on the official courier website", "value": "suspicious" },
-      { "text": "PHISHING — Micro-fee scam designed to steal complete credit card data", "value": "phishing" }
+      {
+        "text": "SAFE \u2014 Only $1.85 fee, standard for customs",
+        "value": "safe"
+      },
+      {
+        "text": "SUSPICIOUS \u2014 Check tracking code directly on the official courier website",
+        "value": "suspicious"
+      },
+      {
+        "text": "PHISHING \u2014 Micro-fee scam designed to steal complete credit card data",
+        "value": "phishing"
+      }
     ],
     "correctAnswer": "phishing",
     "indicators": [
-      { "type": "micro_fee", "description": "Trivial fee ($1.85) designed to lower victim skepticism", "points": 15 },
-      { "type": "domain", "description": "Unregistered generic .info domain", "points": 10 },
-      { "type": "credential_request", "description": "Demands credit card CVV and billing address under guise of shipping fee", "points": 15 }
+      {
+        "type": "micro_fee",
+        "description": "Trivial fee ($1.85) designed to lower victim skepticism",
+        "points": 15
+      },
+      {
+        "type": "domain",
+        "description": "Unregistered generic .info domain",
+        "points": 10
+      },
+      {
+        "type": "credential_request",
+        "description": "Demands credit card CVV and billing address under guise of shipping fee",
+        "points": 15
+      }
     ],
     "explanation": "The 'low delivery fee' is one of the most widespread scams worldwide. Victims readily enter payment details because $1.85 seems harmless, but attackers use the captured card for thousands in unauthorized charges.",
     "hints": [
@@ -199,20 +338,43 @@
       "subject": "RE: Outstanding Invoice #INV-2024-884 - Updated Wire Transfer Instructions",
       "timestamp": "Today at 02:15 PM",
       "body": "Hi Accounting Team,\n\nPlease note our primary merchant bank account has changed due to our annual banking audit. Kindly remit payment for the attached invoice ($14,250.00) using our new wire routing coordinates in Denver.\n\nPlease confirm receipt of updated banking details.",
-      "attachments": ["Invoice_INV_2024_884_Denver.pdf"],
+      "attachments": [
+        "Invoice_INV_2024_884_Denver.pdf"
+      ],
       "urgencyLevel": "high",
       "context": "Business Email Compromise (BEC) invoice fraud targeting corporate accounts payable."
     },
     "options": [
-      { "text": "SAFE — Normal vendor invoice adjustment", "value": "safe" },
-      { "text": "SUSPICIOUS — Call known vendor rep on established phone number to verify wire change", "value": "suspicious" },
-      { "text": "PHISHING — BEC attack attempting fraudulent wire redirection", "value": "phishing" }
+      {
+        "text": "SAFE \u2014 Normal vendor invoice adjustment",
+        "value": "safe"
+      },
+      {
+        "text": "SUSPICIOUS \u2014 Call known vendor rep on established phone number to verify wire change",
+        "value": "suspicious"
+      },
+      {
+        "text": "PHISHING \u2014 BEC attack attempting fraudulent wire redirection",
+        "value": "phishing"
+      }
     ],
     "correctAnswer": "phishing",
     "indicators": [
-      { "type": "bec_wire", "description": "Sudden request to redirect wire transfers to a new bank account", "points": 20 },
-      { "type": "domain", "description": "Lookalike domain (.co instead of established .com)", "points": 15 },
-      { "type": "out_of_band", "description": "No out-of-band phone confirmation provided for high-value transfer", "points": 15 }
+      {
+        "type": "bec_wire",
+        "description": "Sudden request to redirect wire transfers to a new bank account",
+        "points": 20
+      },
+      {
+        "type": "domain",
+        "description": "Lookalike domain (.co instead of established .com)",
+        "points": 15
+      },
+      {
+        "type": "out_of_band",
+        "description": "No out-of-band phone confirmation provided for high-value transfer",
+        "points": 15
+      }
     ],
     "explanation": "Business Email Compromise (BEC) accounts for billions in corporate losses annually. Legitimate wire transfer detail changes should ALWAYS require secondary verbal verification via a pre-established trusted phone number.",
     "hints": [
@@ -245,20 +407,43 @@
       "subject": "Action Required: Complete Dependent Healthcare & 401(k) Confirmation",
       "timestamp": "Monday at 08:30 AM",
       "body": "Dear Employee,\n\nAnnual healthcare and 401(k) benefits confirmation closes this Friday at 5:00 PM. Failure to confirm your active beneficiary and tax exemptions will result in default enrollment in high-deductible coverage.\n\nLogin below with your corporate credentials to review your 2024 elections.",
-      "links": ["https://benefits.corp-portal-secure-service.org/login?dept=hr"],
+      "links": [
+        "https://benefits.corp-portal-secure-service.org/login?dept=hr"
+      ],
       "urgencyLevel": "high",
       "context": "Targeted HR phishing lure capitalizing on employee fear of losing healthcare coverage."
     },
     "options": [
-      { "text": "SAFE — Standard annual HR benefits email", "value": "safe" },
-      { "text": "SUSPICIOUS — Check company intranet portal independently", "value": "suspicious" },
-      { "text": "PHISHING — Threat of healthcare loss to force immediate credential entry", "value": "phishing" }
+      {
+        "text": "SAFE \u2014 Standard annual HR benefits email",
+        "value": "safe"
+      },
+      {
+        "text": "SUSPICIOUS \u2014 Check company intranet portal independently",
+        "value": "suspicious"
+      },
+      {
+        "text": "PHISHING \u2014 Threat of healthcare loss to force immediate credential entry",
+        "value": "phishing"
+      }
     ],
     "correctAnswer": "phishing",
     "indicators": [
-      { "type": "threat_lure", "description": "Coercive penalty (losing healthcare coverage) inducing compliance", "points": 15 },
-      { "type": "domain", "description": "Generic .org domain not tied to company HR information system", "points": 15 },
-      { "type": "credential_request", "description": "Requests tax identification and payroll credentials via unverified web portal", "points": 15 }
+      {
+        "type": "threat_lure",
+        "description": "Coercive penalty (losing healthcare coverage) inducing compliance",
+        "points": 15
+      },
+      {
+        "type": "domain",
+        "description": "Generic .org domain not tied to company HR information system",
+        "points": 15
+      },
+      {
+        "type": "credential_request",
+        "description": "Requests tax identification and payroll credentials via unverified web portal",
+        "points": 15
+      }
     ],
     "explanation": "HR-themed scams weaponize personal consequences like losing insurance or 401k matches. Always access company benefits by typing the official HR portal URL directly in your browser.",
     "hints": [
@@ -296,15 +481,36 @@
       "context": "Quishing attack designed specifically to bypass corporate email security gateways."
     },
     "options": [
-      { "text": "SAFE — Modern 2FA setup typically uses QR codes", "value": "safe" },
-      { "text": "SUSPICIOUS — QR codes in emails bypass email gateway URL filters", "value": "suspicious" },
-      { "text": "PHISHING — Quishing attack moving victim from protected PC to vulnerable mobile device", "value": "phishing" }
+      {
+        "text": "SAFE \u2014 Modern 2FA setup typically uses QR codes",
+        "value": "safe"
+      },
+      {
+        "text": "SUSPICIOUS \u2014 QR codes in emails bypass email gateway URL filters",
+        "value": "suspicious"
+      },
+      {
+        "text": "PHISHING \u2014 Quishing attack moving victim from protected PC to vulnerable mobile device",
+        "value": "phishing"
+      }
     ],
     "correctAnswer": "phishing",
     "indicators": [
-      { "type": "quishing", "description": "QR code used to evade corporate email URL security scanners", "points": 20 },
-      { "type": "device_pivot", "description": "Shifts victim from protected corporate desktop to unmanaged smartphone", "points": 15 },
-      { "type": "domain", "description": "Unofficial domain 'login-live-auth.online' mimicking Microsoft", "points": 15 }
+      {
+        "type": "quishing",
+        "description": "QR code used to evade corporate email URL security scanners",
+        "points": 20
+      },
+      {
+        "type": "device_pivot",
+        "description": "Shifts victim from protected corporate desktop to unmanaged smartphone",
+        "points": 15
+      },
+      {
+        "type": "domain",
+        "description": "Unofficial domain 'login-live-auth.online' mimicking Microsoft",
+        "points": 15
+      }
     ],
     "explanation": "Quishing (QR Phishing in email) is an emerging technique specifically designed to bypass enterprise email security filters that inspect clickable text links. Scanning the QR code moves the user to their mobile phone where endpoint protections are often weaker.",
     "hints": [
@@ -337,20 +543,43 @@
       "subject": "Completed: NDA_Apex_Holdings_2024.pdf - Review & Download",
       "timestamp": "Today at 01:10 PM",
       "body": "All signers have completed 'NDA_Apex_Holdings_2024.pdf'.\n\nClick the link below to view the finalized signed document. You will be prompted for your standard workspace login to decrypt the digital certificate.",
-      "links": ["https://auth.docusign-envelope-review.net/session/view?env=892318"],
+      "links": [
+        "https://auth.docusign-envelope-review.net/session/view?env=892318"
+      ],
       "urgencyLevel": "low",
       "context": "Sophisticated AitM proxy mimicking DocuSign to steal real-time MFA session cookies."
     },
     "options": [
-      { "text": "SAFE — Standard DocuSign completion notification", "value": "safe" },
-      { "text": "SUSPICIOUS — Log into DocuSign directly to access completed envelopes", "value": "suspicious" },
-      { "text": "PHISHING — AitM reverse-proxy phishing kit stealing live session tokens", "value": "phishing" }
+      {
+        "text": "SAFE \u2014 Standard DocuSign completion notification",
+        "value": "safe"
+      },
+      {
+        "text": "SUSPICIOUS \u2014 Log into DocuSign directly to access completed envelopes",
+        "value": "suspicious"
+      },
+      {
+        "text": "PHISHING \u2014 AitM reverse-proxy phishing kit stealing live session tokens",
+        "value": "phishing"
+      }
     ],
     "correctAnswer": "phishing",
     "indicators": [
-      { "type": "aitm_proxy", "description": "Reverse proxy infrastructure relaying real authentication requests to steal session cookies", "points": 20 },
-      { "type": "domain", "description": "Deceptive domain 'docusign-envelope-review.net' mimicking official DocuSign", "points": 15 },
-      { "type": "context_mismatch", "description": "No prior negotiation or request existed for this specific NDA", "points": 15 }
+      {
+        "type": "aitm_proxy",
+        "description": "Reverse proxy infrastructure relaying real authentication requests to steal session cookies",
+        "points": 20
+      },
+      {
+        "type": "domain",
+        "description": "Deceptive domain 'docusign-envelope-review.net' mimicking official DocuSign",
+        "points": 15
+      },
+      {
+        "type": "context_mismatch",
+        "description": "No prior negotiation or request existed for this specific NDA",
+        "points": 15
+      }
     ],
     "explanation": "Modern AitM (Adversary-in-the-Middle) phishing sites act as a transparent proxy between the victim and the legitimate service. When you enter your password and MFA code, the proxy passes them to the real site and steals the resulting session cookie.",
     "hints": [
@@ -383,20 +612,43 @@
       "subject": "Order Confirmation: 85-inch OLED Smart TV ($2,499.00 Charged)",
       "timestamp": "Today at 06:15 AM",
       "body": "Thank you for your purchase!\n\nOrder #MS-992193\nItem: 85-inch Quantum OLED TV\nAmount Paid: $2,499.00\nShipped to: 742 Evergreen Terrace, Springfield\n\nIf you did NOT authorize this transaction, call our 24/7 Fraud Support Helpline immediately at +1-800-555-0199 or click below to cancel the order.",
-      "links": ["https://megastore-fraud-center.xyz/dispute?order=MS-992193"],
+      "links": [
+        "https://megastore-fraud-center.xyz/dispute?order=MS-992193"
+      ],
       "urgencyLevel": "critical",
       "context": "Scam receipt baiting victim into calling fake fraud helpline or clicking malicious cancel link."
     },
     "options": [
-      { "text": "SAFE — Need to call that 1-800 number to stop the $2,499 charge", "value": "safe" },
-      { "text": "SUSPICIOUS — Check your real shopping account directly from your browser", "value": "suspicious" },
-      { "text": "PHISHING — Fake invoice designed to provoke panic and phone/link engagement", "value": "phishing" }
+      {
+        "text": "SAFE \u2014 Need to call that 1-800 number to stop the $2,499 charge",
+        "value": "safe"
+      },
+      {
+        "text": "SUSPICIOUS \u2014 Check your real shopping account directly from your browser",
+        "value": "suspicious"
+      },
+      {
+        "text": "PHISHING \u2014 Fake invoice designed to provoke panic and phone/link engagement",
+        "value": "phishing"
+      }
     ],
     "correctAnswer": "phishing",
     "indicators": [
-      { "type": "panic_bait", "description": "High-value false charge ($2,499) designed to cause panic", "points": 15 },
-      { "type": "domain", "description": "Random .xyz top level domain", "points": 15 },
-      { "type": "phone_trap", "description": "Prominent phone number routing to boiler-room scam call center", "points": 15 }
+      {
+        "type": "panic_bait",
+        "description": "High-value false charge ($2,499) designed to cause panic",
+        "points": 15
+      },
+      {
+        "type": "domain",
+        "description": "Random .xyz top level domain",
+        "points": 15
+      },
+      {
+        "type": "phone_trap",
+        "description": "Prominent phone number routing to boiler-room scam call center",
+        "points": 15
+      }
     ],
     "explanation": "Fake invoice scams create panic by showing a huge unauthorized charge. They provide fake phone numbers and cancel links so panicked users surrender remote desktop access or financial data.",
     "hints": [
@@ -429,20 +681,43 @@
       "subject": "Notification of Unclaimed Tax Rebate: $840.50 Available",
       "timestamp": "Yesterday at 10:00 AM",
       "body": "Official Government Notice:\n\nOur fiscal year recalculation indicates an overpayment of $840.50 on your tax records. Because direct deposit details on file were incomplete, you must claim your refund online within 72 hours.\n\nEnter your Social Security Number and bank account details below to initiate direct electronic transfer.",
-      "links": ["https://tax-revenue-disbursement-gov.us.com/claim-rebate"],
+      "links": [
+        "https://tax-revenue-disbursement-gov.us.com/claim-rebate"
+      ],
       "urgencyLevel": "high",
       "context": "Fake government tax refund email fishing for SSN and full banking credentials."
     },
     "options": [
-      { "text": "SAFE — Government refund notice", "value": "safe" },
-      { "text": "SUSPICIOUS — Check official IRS/government portal independently", "value": "suspicious" },
-      { "text": "PHISHING — Government agency impersonation harvesting SSN and banking data", "value": "phishing" }
+      {
+        "text": "SAFE \u2014 Government refund notice",
+        "value": "safe"
+      },
+      {
+        "text": "SUSPICIOUS \u2014 Check official IRS/government portal independently",
+        "value": "suspicious"
+      },
+      {
+        "text": "PHISHING \u2014 Government agency impersonation harvesting SSN and banking data",
+        "value": "phishing"
+      }
     ],
     "correctAnswer": "phishing",
     "indicators": [
-      { "type": "domain", "description": "Fake sub-domain '.us.com' masquerading as official '.gov'", "points": 15 },
-      { "type": "sensitive_data", "description": "Requests full SSN and bank account numbers via email link", "points": 15 },
-      { "type": "agency_protocol", "description": "Tax agencies communicate refund details via postal mail, never unsolicited emails", "points": 15 }
+      {
+        "type": "domain",
+        "description": "Fake sub-domain '.us.com' masquerading as official '.gov'",
+        "points": 15
+      },
+      {
+        "type": "sensitive_data",
+        "description": "Requests full SSN and bank account numbers via email link",
+        "points": 15
+      },
+      {
+        "type": "agency_protocol",
+        "description": "Tax agencies communicate refund details via postal mail, never unsolicited emails",
+        "points": 15
+      }
     ],
     "explanation": "Government revenue agencies never initiate contact via email or text message to request personal or financial information regarding tax refunds. The domain '.us.com' is a commercial domain, not an official .gov domain.",
     "hints": [

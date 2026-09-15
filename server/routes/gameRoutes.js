@@ -11,4 +11,6 @@ router.get('/cyber-dna', protect, gameController.getCyberDNA);
 router.post('/reset', protect, gameController.resetGame);
 router.post('/attempt', protect, gameController.submitAttempt);
 
+router.post('/custom-score', protect, gameController.submitCustomScore);
+
 export default router;

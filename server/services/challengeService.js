@@ -114,6 +114,9 @@ export const submitChallengeAttempt = async ({
   // Update User state
   user.xp = (user.xp || 0) + scoring.xpEarned;
   user.level = computeLevel(user.xp);
+  // Award coins: 10 base per correct answer + 2 per wrong (consolation), +3 speed bonus
+  const coinsEarned = isCorrect ? (10 + (scoring.speedBonus > 0 ? 3 : 0)) : 2;
+  user.coins = (user.coins || 0) + coinsEarned;
   user.trustScore = Math.max(0, Math.min(100, (user.trustScore ?? 100) + scoring.trustChange));
   if (!isCorrect) {
     user.lives = Math.max(0, (user.lives ?? 5) - 1);
@@ -184,10 +187,11 @@ export const submitChallengeAttempt = async ({
     isCorrect,
     correctAnswer: challenge.correctAnswer,
     explanation: challenge.explanation,
-    scoring,
+    scoring: { ...scoring, coinsEarned },
     userState: {
       xp: user.xp,
       level: user.level,
+      coins: user.coins,
       trustScore: user.trustScore,
       lives: user.lives,
       cyberScore: user.cyberScore,

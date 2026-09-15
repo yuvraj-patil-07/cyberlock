@@ -15,15 +15,36 @@
       "context": "Simulated SMS smishing leading to telephone boiler room."
     },
     "options": [
-      { "text": "SAFE — Reply NO or call the number right away to stop the charge", "value": "safe" },
-      { "text": "SUSPICIOUS — Call the verified phone number printed on the back of your physical credit card", "value": "suspicious" },
-      { "text": "SCAM — Smishing lure designed to connect you directly to a fraudulent call center agent", "value": "scam" }
+      {
+        "text": "SAFE \u2014 Reply NO or call the number right away to stop the charge",
+        "value": "safe"
+      },
+      {
+        "text": "SUSPICIOUS \u2014 Call the verified phone number printed on the back of your physical credit card",
+        "value": "suspicious"
+      },
+      {
+        "text": "SCAM \u2014 Smishing lure designed to connect you directly to a fraudulent call center agent",
+        "value": "scam"
+      }
     ],
     "correctAnswer": "scam",
     "indicators": [
-      { "type": "smishing_number", "description": "Toll-free number in SMS belongs to scammers, not Chase Bank", "points": 20 },
-      { "type": "panic_prompt", "description": "High charge ($948.50) to trigger immediate impulsive phone call", "points": 15 },
-      { "type": "out_of_band", "description": "Lacks official bank shortcode; sends direct unverified phone number", "points": 15 }
+      {
+        "type": "smishing_number",
+        "description": "Toll-free number in SMS belongs to scammers, not Chase Bank",
+        "points": 20
+      },
+      {
+        "type": "panic_prompt",
+        "description": "High charge ($948.50) to trigger immediate impulsive phone call",
+        "points": 15
+      },
+      {
+        "type": "out_of_band",
+        "description": "Lacks official bank shortcode; sends direct unverified phone number",
+        "points": 15
+      }
     ],
     "explanation": "Bank impersonation via SMS (Smishing) provides fake 1-800 phone numbers. When victims call, a convincing scammer posing as a fraud agent asks for full debit card numbers, PINs, and one-time passcodes under the pretense of 'reversing' the charge.",
     "hints": [
@@ -48,6 +69,39 @@
     "category": "scam",
     "difficulty": "beginner",
     "room": 4,
+    "title": "Official Bank Statement",
+    "scenario": {
+      "platform": "email",
+      "sender": "Your Bank",
+      "senderHandle": "statements@yourbank.com",
+      "message": "Dear Customer,\n\nYour monthly account statement for October is now available. You can view it by logging into your account through our official website or mobile app.\n\nThank you for banking with us.",
+      "attachments": [],
+      "context": "A regular monthly bank statement notification."
+    },
+    "options": [
+      {
+        "text": "SAFE - Routine bank notification",
+        "value": "safe"
+      },
+      {
+        "text": "SCAM - Fake statement phishing attempt",
+        "value": "scam"
+      }
+    ],
+    "correctAnswer": "safe",
+    "indicators": [
+      {
+        "type": "behavior",
+        "description": "Tells you to log in through the official app rather than providing a link.",
+        "points": 20
+      }
+    ],
+    "explanation": "This is safe because it does not provide a direct link for you to click. Legitimate banks often send notifications like this and advise you to log in securely via their known official website or app."
+  },
+  {
+    "category": "scam",
+    "difficulty": "beginner",
+    "room": 4,
     "title": "WhatsApp Remote App Tester High-Pay Job",
     "scenario": {
       "type": "chat",
@@ -60,15 +114,36 @@
       "context": "Classic task scam (task-based optimization scam) requiring upfront deposit to unlock earnings."
     },
     "options": [
-      { "text": "SAFE — Great flexible side hustle", "value": "safe" },
-      { "text": "SUSPICIOUS — Verify job listing on official Adecco career website", "value": "suspicious" },
-      { "text": "SCAM — Task Scam requiring victims to deposit their own money into fake crypto platforms to complete tasks", "value": "scam" }
+      {
+        "text": "SAFE \u2014 Great flexible side hustle",
+        "value": "safe"
+      },
+      {
+        "text": "SUSPICIOUS \u2014 Verify job listing on official Adecco career website",
+        "value": "suspicious"
+      },
+      {
+        "text": "SCAM \u2014 Task Scam requiring victims to deposit their own money into fake crypto platforms to complete tasks",
+        "value": "scam"
+      }
     ],
     "correctAnswer": "scam",
     "indicators": [
-      { "type": "task_scam", "description": "Unrealistic compensation ($300-800/day for 30 mins) for low-skill tasks", "points": 20 },
-      { "type": "crypto_payout", "description": "Compensation promised in cryptocurrency / USDT", "points": 15 },
-      { "type": "unsolicited_chat", "description": "Recruiter contacts via unsolicited WhatsApp/Telegram with foreign country code", "points": 15 }
+      {
+        "type": "task_scam",
+        "description": "Unrealistic compensation ($300-800/day for 30 mins) for low-skill tasks",
+        "points": 20
+      },
+      {
+        "type": "crypto_payout",
+        "description": "Compensation promised in cryptocurrency / USDT",
+        "points": 15
+      },
+      {
+        "type": "unsolicited_chat",
+        "description": "Recruiter contacts via unsolicited WhatsApp/Telegram with foreign country code",
+        "points": 15
+      }
     ],
     "explanation": "Task Scams trick victims into performing simple tasks on a fake website. Initially, small 'profits' can be withdrawn to build trust. Then, the platform freezes your funds and demands thousands of dollars in 'recharge deposits' to unlock your balance.",
     "hints": [
@@ -105,15 +180,36 @@
       "context": "Family emergency impersonation scam leveraging secrecy and late-night panic."
     },
     "options": [
-      { "text": "SAFE — Send the money immediately to save your friend from jail", "value": "safe" },
-      { "text": "SUSPICIOUS — Call Alex's original phone number, call mutual friends/family, or ask a personal question only Alex knows", "value": "suspicious" },
-      { "text": "SCAM — Emergency impersonation scam using panic, isolation, and secrecy to prevent verification", "value": "scam" }
+      {
+        "text": "SAFE \u2014 Send the money immediately to save your friend from jail",
+        "value": "safe"
+      },
+      {
+        "text": "SUSPICIOUS \u2014 Call Alex's original phone number, call mutual friends/family, or ask a personal question only Alex knows",
+        "value": "suspicious"
+      },
+      {
+        "text": "SCAM \u2014 Emergency impersonation scam using panic, isolation, and secrecy to prevent verification",
+        "value": "scam"
+      }
     ],
     "correctAnswer": "scam",
     "indicators": [
-      { "type": "secrecy_coercion", "description": "'Don't tell mom' isolate victim from third-party rational check", "points": 20 },
-      { "type": "broken_phone_pretext", "description": "'Broke my phone' excuse explains why stranger's number is texting", "points": 15 },
-      { "type": "instant_wire", "description": "Demands instant irreversible payment via Zelle / gift card / wire", "points": 15 }
+      {
+        "type": "secrecy_coercion",
+        "description": "'Don't tell mom' isolate victim from third-party rational check",
+        "points": 20
+      },
+      {
+        "type": "broken_phone_pretext",
+        "description": "'Broke my phone' excuse explains why stranger's number is texting",
+        "points": 15
+      },
+      {
+        "type": "instant_wire",
+        "description": "Demands instant irreversible payment via Zelle / gift card / wire",
+        "points": 15
+      }
     ],
     "explanation": "Emergency impersonation scams exploit love, empathy, and urgency. Scammers deliberately tell you 'don't tell anyone' to isolate you from people who would point out the scam. Always verify out-of-band with a secret question only your real friend knows.",
     "hints": [
@@ -145,20 +241,41 @@
       "senderAddress": "+1 (310) 555-8812",
       "subject": "Our Future Together",
       "timestamp": "Yesterday at 09:30 PM",
-      "body": "Good morning dear! My uncle is a chief financial analyst in Singapore and shared private insider signals on ETH liquidity mining node contracts today. Look at my screenshot — I made $14,200 just this morning! We can buy our dream house together sooner if you open a VIP node on global-defi-liquidity.vip. I will guide you step by step!",
+      "body": "Good morning dear! My uncle is a chief financial analyst in Singapore and shared private insider signals on ETH liquidity mining node contracts today. Look at my screenshot \u2014 I made $14,200 just this morning! We can buy our dream house together sooner if you open a VIP node on global-defi-liquidity.vip. I will guide you step by step!",
       "urgencyLevel": "medium",
       "context": "Sha Zhu Pan (Pig Butchering) romance-financial investment scam."
     },
     "options": [
-      { "text": "SAFE — She is sharing valuable insider family investment advice out of love", "value": "safe" },
-      { "text": "SUSPICIOUS — Consult an independent certified financial planner", "value": "suspicious" },
-      { "text": "SCAM — Pig Butchering romance-investment scam routing deposits to an offshore criminal syndicate", "value": "scam" }
+      {
+        "text": "SAFE \u2014 She is sharing valuable insider family investment advice out of love",
+        "value": "safe"
+      },
+      {
+        "text": "SUSPICIOUS \u2014 Consult an independent certified financial planner",
+        "value": "suspicious"
+      },
+      {
+        "text": "SCAM \u2014 Pig Butchering romance-investment scam routing deposits to an offshore criminal syndicate",
+        "value": "scam"
+      }
     ],
     "correctAnswer": "scam",
     "indicators": [
-      { "type": "pig_butchering", "description": "Romance grooming followed by introduction of high-yield crypto platform", "points": 25 },
-      { "type": "fake_exchange", "description": "Custom fake trading platform controlled entirely by scammers", "points": 20 },
-      { "type": "unrealistic_gains", "description": "Guaranteed 200%+ returns on insider crypto arbitrage", "points": 15 }
+      {
+        "type": "pig_butchering",
+        "description": "Romance grooming followed by introduction of high-yield crypto platform",
+        "points": 25
+      },
+      {
+        "type": "fake_exchange",
+        "description": "Custom fake trading platform controlled entirely by scammers",
+        "points": 20
+      },
+      {
+        "type": "unrealistic_gains",
+        "description": "Guaranteed 200%+ returns on insider crypto arbitrage",
+        "points": 15
+      }
     ],
     "explanation": "Pig Butchering (Sha Zhu Pan) scams build romantic or friendly trust over weeks before steering victims to fake cryptocurrency investment platforms. The platform manipulates charts to show fake profits, but victims can never withdraw their real money.",
     "hints": [
@@ -195,15 +312,36 @@
       "context": "Utility disconnection scam targeting homes and small businesses during peak hours."
     },
     "options": [
-      { "text": "SAFE — Rush to store to purchase prepaid card and prevent power outage", "value": "safe" },
-      { "text": "SUSPICIOUS — Check utility account balance on the official power company website/app", "value": "suspicious" },
-      { "text": "SCAM — Utility shutoff scam demanding untraceable prepaid vouchers/cards under extreme urgency", "value": "scam" }
+      {
+        "text": "SAFE \u2014 Rush to store to purchase prepaid card and prevent power outage",
+        "value": "safe"
+      },
+      {
+        "text": "SUSPICIOUS \u2014 Check utility account balance on the official power company website/app",
+        "value": "suspicious"
+      },
+      {
+        "text": "SCAM \u2014 Utility shutoff scam demanding untraceable prepaid vouchers/cards under extreme urgency",
+        "value": "scam"
+      }
     ],
     "correctAnswer": "scam",
     "indicators": [
-      { "type": "prepaid_voucher", "description": "Demands payment via prepaid cash cards (MoneyPak, vanilla reload, gift cards)", "points": 25 },
-      { "type": "extreme_urgency", "description": "45-minute cutoff deadline to prevent victim from checking bills", "points": 15 },
-      { "type": "utility_regulation", "description": "Regulated utilities are legally required to send written postal notices weeks before disconnection", "points": 15 }
+      {
+        "type": "prepaid_voucher",
+        "description": "Demands payment via prepaid cash cards (MoneyPak, vanilla reload, gift cards)",
+        "points": 25
+      },
+      {
+        "type": "extreme_urgency",
+        "description": "45-minute cutoff deadline to prevent victim from checking bills",
+        "points": 15
+      },
+      {
+        "type": "utility_regulation",
+        "description": "Regulated utilities are legally required to send written postal notices weeks before disconnection",
+        "points": 15
+      }
     ],
     "explanation": "Regulated utilities never demand payment via prepaid vouchers, gift cards, or cryptocurrency. They are legally mandated to send multiple written delinquency notices by postal mail over several weeks before shutting off power.",
     "hints": [
@@ -240,15 +378,36 @@
       "context": "Simulated fake rental listing using stolen real estate photos and remote landlord story."
     },
     "options": [
-      { "text": "SAFE — Wire the deposit immediately to lock down this below-market rent", "value": "safe" },
-      { "text": "SUSPICIOUS — Tour the physical apartment in person with a licensed agent before paying anything", "value": "suspicious" },
-      { "text": "SCAM — Classic phantom rental scam where photos are stolen from Zillow and keys never arrive", "value": "scam" }
+      {
+        "text": "SAFE \u2014 Wire the deposit immediately to lock down this below-market rent",
+        "value": "safe"
+      },
+      {
+        "text": "SUSPICIOUS \u2014 Tour the physical apartment in person with a licensed agent before paying anything",
+        "value": "suspicious"
+      },
+      {
+        "text": "SCAM \u2014 Classic phantom rental scam where photos are stolen from Zillow and keys never arrive",
+        "value": "scam"
+      }
     ],
     "correctAnswer": "scam",
     "indicators": [
-      { "type": "remote_landlord", "description": "'Missionary/Doctor overseas' story excuses inability to show the physical apartment", "points": 20 },
-      { "type": "unrealistic_rent", "description": "Luxury downtown penthouse offered at 50% below real market rate", "points": 15 },
-      { "type": "wire_transfer", "description": "Demands wire transfer (Western Union / Zelle) prior to in-person walkthrough or lease signing", "points": 20 }
+      {
+        "type": "remote_landlord",
+        "description": "'Missionary/Doctor overseas' story excuses inability to show the physical apartment",
+        "points": 20
+      },
+      {
+        "type": "unrealistic_rent",
+        "description": "Luxury downtown penthouse offered at 50% below real market rate",
+        "points": 15
+      },
+      {
+        "type": "wire_transfer",
+        "description": "Demands wire transfer (Western Union / Zelle) prior to in-person walkthrough or lease signing",
+        "points": 20
+      }
     ],
     "explanation": "Phantom rental scams steal high-end photos from real estate sites (Zillow/Redfin) and list them at bargain prices. The 'landlord is overseas' excuse explains why they can't meet in person. Never send deposits for properties you have not walked through in person.",
     "hints": [
@@ -285,15 +444,36 @@
       "context": "Wrong Number / Wrong Contact social engineering probe to initiate rapport."
     },
     "options": [
-      { "text": "Reply: 'Sorry, wrong number, I am not David' and continue chatting if they say 'Oh excuse me, you seem very polite!'", "value": "reply_chat" },
-      { "text": "Ignore / Block the number — Scammers send deliberate wrong number texts to find active numbers and initiate Pig Butchering grooming", "value": "block" },
-      { "text": "Forward your own personal contact information", "value": "forward_info" }
+      {
+        "text": "Reply: 'Sorry, wrong number, I am not David' and continue chatting if they say 'Oh excuse me, you seem very polite!'",
+        "value": "reply_chat"
+      },
+      {
+        "text": "Ignore / Block the number \u2014 Scammers send deliberate wrong number texts to find active numbers and initiate Pig Butchering grooming",
+        "value": "block"
+      },
+      {
+        "text": "Forward your own personal contact information",
+        "value": "forward_info"
+      }
     ],
     "correctAnswer": "block",
     "indicators": [
-      { "type": "wrong_number_lure", "description": "Deliberate wrong-number message crafted to sound wealthy and polite", "points": 20 },
-      { "type": "grooming_funnel", "description": "First stage of social engineering grooming funnel (Pig Butchering / Crypto lure)", "points": 20 },
-      { "type": "active_number_probe", "description": "Any response confirms telephone number is active to spam databases", "points": 10 }
+      {
+        "type": "wrong_number_lure",
+        "description": "Deliberate wrong-number message crafted to sound wealthy and polite",
+        "points": 20
+      },
+      {
+        "type": "grooming_funnel",
+        "description": "First stage of social engineering grooming funnel (Pig Butchering / Crypto lure)",
+        "points": 20
+      },
+      {
+        "type": "active_number_probe",
+        "description": "Any response confirms telephone number is active to spam databases",
+        "points": 10
+      }
     ],
     "explanation": "These 'accidental' texts are completely deliberate. If you reply 'wrong number', the scammer responds with flattering messages like 'Oh, so sorry for disturbing you! You seem like such a kind person, let's be friends!' to begin weeks-long financial grooming.",
     "hints": [
@@ -330,15 +510,36 @@
       "context": "Real carrier warning message during active SIM swap attack in progress."
     },
     "options": [
-      { "text": "Ignore it — Assume it's just another spam text", "value": "ignore" },
-      { "text": "IMMEDIATE EMERGENCY ACTION — Call carrier official fraud hotline immediately from another phone or store to block the active SIM swap", "value": "emergency_carrier" },
-      { "text": "Reply 'CANCEL' and go back to work", "value": "reply_cancel" }
+      {
+        "text": "Ignore it \u2014 Assume it's just another spam text",
+        "value": "ignore"
+      },
+      {
+        "text": "IMMEDIATE EMERGENCY ACTION \u2014 Call carrier official fraud hotline immediately from another phone or store to block the active SIM swap",
+        "value": "emergency_carrier"
+      },
+      {
+        "text": "Reply 'CANCEL' and go back to work",
+        "value": "reply_cancel"
+      }
     ],
     "correctAnswer": "emergency_carrier",
     "indicators": [
-      { "type": "sim_swap_in_progress", "description": "Attacker is actively socially engineering your mobile carrier to seize your phone number", "points": 25 },
-      { "type": "carrier_shortcode", "description": "Legitimate shortcode notification warning of imminent cellular disconnect", "points": 20 },
-      { "type": "time_critical", "description": "Victim has minutes before cellular service drops and 2FA SMS goes to attacker", "points": 15 }
+      {
+        "type": "sim_swap_in_progress",
+        "description": "Attacker is actively socially engineering your mobile carrier to seize your phone number",
+        "points": 25
+      },
+      {
+        "type": "carrier_shortcode",
+        "description": "Legitimate shortcode notification warning of imminent cellular disconnect",
+        "points": 20
+      },
+      {
+        "type": "time_critical",
+        "description": "Victim has minutes before cellular service drops and 2FA SMS goes to attacker",
+        "points": 15
+      }
     ],
     "explanation": "Unlike fake scam texts, this message is a REAL warning from your legitimate mobile carrier that an attacker is actively transferring your number to their device (SIM Swap). You have minutes to call carrier fraud support before your phone loses service and your bank accounts are accessed.",
     "hints": [
@@ -375,15 +576,36 @@
       "context": "Full-screen browser lockup scam with audio siren and fake helpline."
     },
     "options": [
-      { "text": "SAFE — Call 1-888-555-0199 to have Microsoft technicians clean the computer remotely", "value": "safe" },
-      { "text": "SUSPICIOUS — Unplug the power cable immediately", "value": "suspicious" },
-      { "text": "SCAM — Browser lockup JavaScript fullscreen trick; press Escape, force-quit browser in Task Manager, and never call the number", "value": "scam" }
+      {
+        "text": "SAFE \u2014 Call 1-888-555-0199 to have Microsoft technicians clean the computer remotely",
+        "value": "safe"
+      },
+      {
+        "text": "SUSPICIOUS \u2014 Unplug the power cable immediately",
+        "value": "suspicious"
+      },
+      {
+        "text": "SCAM \u2014 Browser lockup JavaScript fullscreen trick; press Escape, force-quit browser in Task Manager, and never call the number",
+        "value": "scam"
+      }
     ],
     "correctAnswer": "scam",
     "indicators": [
-      { "type": "browser_fullscreen", "description": "Uses JavaScript requestFullScreen() to fake operating system lockup", "points": 20 },
-      { "type": "fake_msft_support", "description": "Microsoft never displays phone numbers on error screens or asks users to call engineers", "points": 20 },
-      { "type": "remote_access_trap", "description": "Designed to bait victims into allowing remote desktop control (AnyDesk/TeamViewer)", "points": 15 }
+      {
+        "type": "browser_fullscreen",
+        "description": "Uses JavaScript requestFullScreen() to fake operating system lockup",
+        "points": 20
+      },
+      {
+        "type": "fake_msft_support",
+        "description": "Microsoft never displays phone numbers on error screens or asks users to call engineers",
+        "points": 20
+      },
+      {
+        "type": "remote_access_trap",
+        "description": "Designed to bait victims into allowing remote desktop control (AnyDesk/TeamViewer)",
+        "points": 15
+      }
     ],
     "explanation": "Tech support popups use JavaScript fullscreen tricks, looping audio alarms, and cursor lock to make you think Windows is frozen. Microsoft never includes toll-free telephone numbers in operating system alerts. Simply close the browser tab using Task Manager (Ctrl+Shift+Esc).",
     "hints": [
@@ -420,15 +642,36 @@
       "context": "Counterfeit check / advance-fee sweepstakes scam."
     },
     "options": [
-      { "text": "SAFE — Deposit the $4,500 cashier check at your bank and wire the $3,800 tax", "value": "safe" },
-      { "text": "SUSPICIOUS — Wait 3 days for the check to clear before wiring money", "value": "suspicious" },
-      { "text": "SCAM — Counterfeit check scam; the check will bounce after 1-2 weeks and you will be held legally liable for the $3,800 wired money", "value": "scam" }
+      {
+        "text": "SAFE \u2014 Deposit the $4,500 cashier check at your bank and wire the $3,800 tax",
+        "value": "safe"
+      },
+      {
+        "text": "SUSPICIOUS \u2014 Wait 3 days for the check to clear before wiring money",
+        "value": "suspicious"
+      },
+      {
+        "text": "SCAM \u2014 Counterfeit check scam; the check will bounce after 1-2 weeks and you will be held legally liable for the $3,800 wired money",
+        "value": "scam"
+      }
     ],
     "correctAnswer": "scam",
     "indicators": [
-      { "type": "counterfeit_check", "description": "Fake cashier's check appears to clear initially under federal funds availability rules, then bounces days later", "points": 25 },
-      { "type": "advance_fee", "description": "Legitimate lotteries deduct taxes directly from winnings; they never ask winners to wire taxes back", "points": 20 },
-      { "type": "lottery_rule", "description": "You cannot win a sweepstakes or lottery that you never bought a ticket for", "points": 15 }
+      {
+        "type": "counterfeit_check",
+        "description": "Fake cashier's check appears to clear initially under federal funds availability rules, then bounces days later",
+        "points": 25
+      },
+      {
+        "type": "advance_fee",
+        "description": "Legitimate lotteries deduct taxes directly from winnings; they never ask winners to wire taxes back",
+        "points": 20
+      },
+      {
+        "type": "lottery_rule",
+        "description": "You cannot win a sweepstakes or lottery that you never bought a ticket for",
+        "points": 15
+      }
     ],
     "explanation": "Federal banking regulations require banks to make check funds available within 1-2 business days, but true verification of an out-of-state cashier's check takes weeks. When the counterfeit check inevitably bounces, the bank claws back the full $4,500 from your account, and any money you wired to the scammer is gone forever.",
     "hints": [

@@ -1,105 +1,143 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { QrCode, Scan, ExternalLink, ShieldCheck, HelpCircle, AlertTriangle } from 'lucide-react';
-import useGameStore from '../../../store/gameStore';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { QrCode, ShieldCheck, HelpCircle, AlertTriangle, Clock } from 'lucide-react';
 
-const QRRoom = ({ onComplete }) => {
-  const { addXP, addCoins, loseHeart } = useGameStore();
-  const [feedback, setFeedback] = useState(null);
+const QRRoom = ({ challenge, onComplete, onFeedback, onWrongAnswer }) => {
+  const [timeLeft, setTimeLeft] = useState(30);
+  const [feedbackState, setFeedbackState] = useState(null);
 
-  const qrDestination = "https://city-parking-meter-quickpay.online/pay?meterId=4920";
-  const isMalicious = true;
+  const diff = challenge?.difficulty || 'beginner';
 
-  const handleAnswer = (type) => {
-    if (type === 'phishing') {
-      const points = 50;
-      addXP(points);
-      addCoins(10);
-      setFeedback({ type: 'success', text: `CORRECT! +${points} XP` });
-      setTimeout(() => onComplete && onComplete(points), 1500);
+  useEffect(() => {
+    let time = 30;
+    if (diff === 'intermediate') time = 20;
+    if (diff === 'advanced') time = 10;
+    setTimeLeft(time);
+    setFeedbackState(null);
+  }, [challenge, diff]);
+
+  useEffect(() => {
+    if (timeLeft > 0) {
+      const timer = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
+      return () => clearInterval(timer);
+    } else if (timeLeft === 0 && !feedbackState) {
+      handleTimeUp();
+    }
+  }, [timeLeft, feedbackState]);
+
+  const handleTimeUp = () => {
+    setFeedbackState({ type: 'error', text: 'TIME UP!' });
+    if (onFeedback) onFeedback({ isCorrect: false, text: challenge?.explanation || 'You took too long.' });
+    setTimeout(() => {
+      if (onWrongAnswer) onWrongAnswer();
+    }, 2000);
+  };
+
+  const processAnswer = (bucketType) => {
+    if (feedbackState) return;
+    
+    const isCorrect = challenge?.correctAnswer === bucketType;
+
+    if (isCorrect) {
+      setFeedbackState({ type: 'success', text: '+20 XP' });
+      if (onFeedback) onFeedback({ isCorrect: true, text: challenge?.explanation || 'Correctly identified!' });
+      setTimeout(() => {
+        if (onComplete) onComplete({ xp: 20, coins: 5 });
+      }, 2000);
     } else {
-      loseHeart();
-      setFeedback({ type: 'error', text: 'WRONG! The domain is suspicious.' });
-      setTimeout(() => setFeedback(null), 1500);
+      setFeedbackState({ type: 'error', text: 'WRONG!' });
+      if (onFeedback) onFeedback({ isCorrect: false, text: challenge?.explanation || 'Incorrect classification.' });
+      setTimeout(() => {
+        if (onWrongAnswer) onWrongAnswer();
+      }, 2000);
     }
   };
 
+  const scenario = challenge?.scenario || {};
+
   return (
-    <div className="flex flex-col h-full bg-[#1e293b] rounded-3xl border-4 border-purple-500/50 shadow-2xl overflow-hidden relative font-pixel text-white">
+    <div className="flex flex-col h-full bg-[#1e293b] relative overflow-hidden">
       
-      {/* Background */}
-      <div className="absolute inset-0 pointer-events-none opacity-20"
-           style={{
-             backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, #000 2px, #000 4px)'
-           }}
-      />
+      {/* Background Cyber Grid */}
+      <div className="absolute inset-0 pointer-events-none opacity-20" style={{ backgroundImage: 'linear-gradient(#334155 1px, transparent 1px), linear-gradient(90deg, #334155 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
-      {feedback && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1.5 }}
-          exit={{ opacity: 0 }}
-          className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 font-pixel text-3xl tracking-wider text-center ${
-            feedback.type === 'success' ? 'text-green-400 drop-shadow-[4px_4px_0_#000]' : 'text-red-500 drop-shadow-[4px_4px_0_#000]'
-          }`}
-        >
-          {feedback.text}
-        </motion.div>
-      )}
-
-      {/* Top Bar */}
-      <div className="flex justify-between items-center p-4 bg-purple-900/30 border-b-4 border-purple-900">
-        <div className="flex items-center gap-2">
-          <Scan className="w-6 h-6 text-purple-400 animate-pulse" />
-          <span className="text-purple-400 drop-shadow-[2px_2px_0_#000]">QR_SCANNER_V1</span>
-        </div>
-        <div className="text-yellow-400 drop-shadow-[2px_2px_0_#000]">
-          ANALYZE THE CODE
+      {/* Top Stats Bar */}
+      <div className="pixel-panel mx-2 mt-1 p-1 flex justify-between items-center z-10 bg-slate-800 border-slate-600">
+        <div className="flex items-center gap-3">
+          <Clock className={`w-6 h-6 ${timeLeft < 10 ? 'text-red-500 animate-pulse' : 'text-blue-400'}`} />
+          <span className="font-pixel text-xl text-white">{timeLeft}s</span>
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-center p-3 gap-4 z-10 relative">
-        
-        <div className="pixel-panel-stone p-3 flex flex-col items-center">
-          
-          <div className="w-64 h-64 border-4 border-purple-500 bg-white relative p-4 flex items-center justify-center overflow-hidden">
+      {/* Main Scanner Area */}
+      <div className="flex-1 flex flex-col items-center justify-center p-4 relative z-10">
+        <AnimatePresence>
+          {feedbackState && (
             <motion.div
-              className="absolute left-0 right-0 h-1 bg-red-500/50 shadow-[0_0_10px_red]"
-              animate={{ top: ['0%', '100%', '0%'] }}
-              transition={{ repeat: Infinity, duration: 2, ease: 'linear' }}
-            />
-            <QrCode className="w-full h-full text-black" />
-          </div>
+              initial={{ opacity: 0, y: 0, scale: 0.5 }}
+              animate={{ opacity: 1, y: -100, scale: 1.5 }}
+              exit={{ opacity: 0 }}
+              className={`absolute z-50 font-pixel text-4xl tracking-wider ${feedbackState.type === 'success' ? 'text-green-400' : 'text-red-500'} drop-shadow-[4px_4px_0_#000]`}
+            >
+              {feedbackState.text}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-          <div className="mt-6 p-4 border-4 border-black bg-blue-900 text-center w-full">
-            <p className="text-blue-300 text-xs mb-2">DECODED URL:</p>
-            <p className="text-white text-sm break-all">{qrDestination}</p>
-          </div>
+        {/* Scenario Image / QR Target Reticle */}
+        <div className="relative w-64 h-48 border-4 border-blue-500/50 rounded-xl flex items-center justify-center mb-2 bg-black/40 backdrop-blur-sm overflow-hidden">
+          {/* Scanning Animation */}
+          <motion.div 
+            animate={{ top: ['0%', '100%', '0%'] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+            className="absolute left-0 right-0 h-1 bg-cyan-400 shadow-[0_0_10px_#22d3ee] z-20"
+          />
+          {scenario.image ? (
+            <img src={scenario.image} alt="QR Scenario" className="w-full h-full object-cover opacity-80" />
+          ) : (
+            <QrCode className="w-32 h-32 text-blue-300 opacity-50" />
+          )}
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex gap-4 w-full max-w-2xl justify-center">
-          <button 
-            onClick={() => handleAnswer('safe')}
-            className="pixel-btn pixel-btn-success flex-1 py-4 text-sm"
+        {/* Decoded URL Box */}
+        <AnimatePresence mode="popLayout">
+          <motion.div
+            key={challenge?._id}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            className="bg-slate-800 p-2 rounded-xl border-2 border-slate-600 text-center w-full max-w-md shadow-2xl"
           >
-            <ShieldCheck className="w-6 h-6 mr-2" /> SAFE
-          </button>
-          <button 
-            onClick={() => handleAnswer('suspicious')}
-            className="pixel-btn pixel-btn-secondary flex-1 py-4 text-sm"
-          >
-            <HelpCircle className="w-6 h-6 mr-2" /> SUSPICIOUS
-          </button>
-          <button 
-            onClick={() => handleAnswer('phishing')}
-            className="pixel-btn pixel-btn-danger flex-1 py-4 text-sm"
-          >
-            <AlertTriangle className="w-6 h-6 mr-2" /> MALICIOUS
-          </button>
-        </div>
+            <div className="text-xs text-blue-400 font-bold mb-2 uppercase tracking-widest flex items-center justify-center gap-2">
+               Target Acquired
+            </div>
+            <div className="font-mono text-sm text-green-400 break-all bg-black/50 p-3 rounded">
+              {scenario.url || 'No URL decoded.'}
+            </div>
+            
+            {scenario.context && (
+              <div className="mt-3 text-xs text-slate-400 font-sans">
+                Location: {scenario.context}
+              </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
 
       </div>
+
+      {/* Action Buttons */}
+      <div className="p-2 flex justify-center gap-2 z-10">
+        <button onClick={() => processAnswer('safe')} className="pixel-btn pixel-btn-success text-sm px-2 py-2 w-48">
+          <ShieldCheck className="w-8 h-8" /> SAFE
+        </button>
+        <button onClick={() => processAnswer('suspicious')} className="pixel-btn pixel-btn-secondary text-sm px-2 py-2 w-48">
+          <HelpCircle className="w-8 h-8" /> SUSPICIOUS
+        </button>
+        <button onClick={() => processAnswer('phishing')} className="pixel-btn pixel-btn-danger text-sm px-2 py-2 w-48">
+          <AlertTriangle className="w-8 h-8" /> MALICIOUS
+        </button>
+      </div>
+
     </div>
   );
 };

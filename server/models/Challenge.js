@@ -25,7 +25,8 @@ const ChallengeSchema = new mongoose.Schema({
     urgencyLevel: String,
     context: String,
     qrDestination: String,
-    passwordList: [String]
+    passwordList: [String],
+    image: String
   },
   options: [{
     text: String,

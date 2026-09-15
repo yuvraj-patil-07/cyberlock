@@ -7,6 +7,8 @@ export const gameService = {
   submitAttempt: (challengeId, data) => api.post('/game/attempt', { challengeId, ...data }),
   getChallenges: (roomId, params = {}) => api.get('/challenges', { params: { room: roomId, ...params } }),
   getChallengeById: (id) => api.get(`/challenges/${id}`),
-  completeRoom: (roomId) => api.post(`/game/complete-room/${roomId}`),
+  completeRoom: (roomId, stars = 1) => api.post(`/game/complete-room/${roomId}`, { stars }),
   getCyberDNA: () => api.get('/game/cyber-dna'),
+  submitCustomScore: (data) => api.post('/game/custom-score', data),
 };
+

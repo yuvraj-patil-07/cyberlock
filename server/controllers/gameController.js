@@ -23,7 +23,8 @@ export const getProgress = async (req, res, next) => {
 export const completeRoom = async (req, res, next) => {
   try {
     const { roomId } = req.params;
-    const result = await gameService.completeRoom(req.user.id, roomId);
+    const { stars = 1 } = req.body;
+    const result = await gameService.completeRoom(req.user.id, roomId, stars);
     res.status(200).json(result);
   } catch (error) {
     next(error);
@@ -68,5 +69,39 @@ export const submitAttempt = async (req, res, next) => {
     res.status(200).json(result);
   } catch (error) {
     next(error);
+  }
+};
+
+
+export const submitCustomScore = async (req, res) => {
+  try {
+    const { xpEarned = 0, coinsEarned = 0, heartsLost = 0 } = req.body;
+    const userId = req.user.id || req.user._id;
+
+    // MUST fetch real Mongoose document — req.user is a plain sanitized object with no .save()
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    if (xpEarned > 0)    user.xp     = (user.xp    || 0) + xpEarned;
+    if (coinsEarned > 0) user.coins  = (user.coins  || 0) + coinsEarned;
+    if (heartsLost  > 0) user.lives  = Math.max(0, (user.lives || 5) - heartsLost);
+
+    // Always keep level in sync with xp
+    user.level = user.calculateLevel();
+
+    await user.save();
+
+    return res.json({
+      success: true,
+      xpEarned,
+      coinsEarned,
+      newTotalXp: user.xp,
+      newLevel:   user.level,
+      newCoins:   user.coins,
+      newLives:   user.lives,
+    });
+  } catch (error) {
+    console.error('Submit custom score error:', error);
+    return res.status(500).json({ message: 'Server error saving score' });
   }
 };

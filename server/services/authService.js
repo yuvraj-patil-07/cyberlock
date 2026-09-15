@@ -201,11 +201,13 @@ export const sanitizeUser = (user) => {
     role: user.role || 'user',
     xp: user.xp || 0,
     level: user.level || 1,
+    coins: user.coins || 0,          // ← was missing, always showed 0
     cyberScore: user.cyberScore || 50,
     trustScore: user.trustScore || 100,
     lives: user.lives ?? 5,
     badges: user.badges || [],
     completedRooms: user.completedRooms || [],
+    roomStars: user.roomStars || {},   // per-room star ratings
     skillProfile: user.skillProfile || {},
     firstAttemptScore: user.firstAttemptScore || 0,
     currentScore: user.currentScore || user.cyberScore || 0,
