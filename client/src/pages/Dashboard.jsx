@@ -30,8 +30,7 @@ export default function Dashboard() {
   const { user, loadUser } = useAuth();
   const [progress, setProgress] = useState(null);
   
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const backgroundVideos = ['/assets/bg-video-2.mp4', '/assets/bg-video-3.mp4'];
+  const backgroundVideo = '/assets/bg-video-2.mp4';
 
   useEffect(() => {
     // Re-fetch every time dashboard mounts — ensures XP/coins/stars update immediately after a game
@@ -67,12 +66,12 @@ export default function Dashboard() {
            }}>
         
         <video
-          src={backgroundVideos[currentVideoIndex]}
+          src={backgroundVideo}
           className="absolute inset-0 w-full h-full object-cover"
           autoPlay
           muted
+          loop
           playsInline
-          onEnded={() => setCurrentVideoIndex((prev) => (prev + 1) % backgroundVideos.length)}
         />
 
         {/* ═══ MAP CONTAINER ═══ */}
