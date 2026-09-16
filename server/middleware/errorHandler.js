@@ -14,6 +14,14 @@ export const errorHandler = (err, req, res, next) => {
     statusCode = 404;
   }
 
+  // Custom Authentication Errors
+  if (err.message === 'Invalid email or password') {
+    statusCode = 401;
+  }
+  if (err.message === 'Email is already registered' || err.message === 'Username is already taken') {
+    statusCode = 400;
+  }
+
   // Mongoose duplicate key
   if (err.code === 11000) {
     message = 'Duplicate field value entered';
