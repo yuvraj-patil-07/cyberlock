@@ -10,8 +10,8 @@
     "client": "cd client && npm run dev",
     "install:all": "npm install && cd server && npm install && cd ../client && npm install",
     "seed": "cd server && node seeds/seed.js",
-    "build": "npm install --prefix client && npm run build --prefix client",
-    "vercel-build": "npm install --prefix client && npm run build --prefix client"
+    "build": "npm ci --prefix client && npm run build --prefix client",
+    "vercel-build": "npm install --prefix client --include=dev && npm run build --prefix client"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
