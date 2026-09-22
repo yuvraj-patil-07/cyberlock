@@ -1,5 +1,7 @@
 import * as gameService from '../services/gameService.js';
 import * as challengeService from '../services/challengeService.js';
+import User from '../models/User.js';
+import Leaderboard from '../models/Leaderboard.js';
 
 export const startGame = async (req, res, next) => {
   try {
@@ -85,11 +87,35 @@ export const submitCustomScore = async (req, res) => {
     if (xpEarned > 0)    user.xp     = (user.xp    || 0) + xpEarned;
     if (coinsEarned > 0) user.coins  = (user.coins  || 0) + coinsEarned;
     if (heartsLost  > 0) user.lives  = Math.max(0, (user.lives || 5) - heartsLost);
+    if (xpEarned > 0)    user.gamesPlayed = (user.gamesPlayed || 0) + 1;
 
     // Always keep level in sync with xp
     user.level = user.calculateLevel();
 
     await user.save();
+
+    // Sync leaderboard entry for this user
+    try {
+      const improvement = (user.firstAttemptScore || 0) > 0
+        ? Math.round((((user.currentScore || user.cyberScore || 50) - user.firstAttemptScore) / user.firstAttemptScore) * 100)
+        : 0;
+      await Leaderboard.findOneAndUpdate(
+        { userId: user._id },
+        {
+          userId: user._id,
+          username: user.username,
+          totalScore: user.xp || 0,
+          cyberScore: user.cyberScore || 50,
+          gamesCompleted: user.gamesPlayed || 0,
+          evidenceCount: (user.totalCorrect || 0) * 2,
+          improvementPct: improvement,
+          updatedAt: new Date()
+        },
+        { upsert: true, new: true }
+      );
+    } catch (lbErr) {
+      console.warn('Leaderboard sync failed (non-fatal):', lbErr.message);
+    }
 
     return res.json({
       success: true,

@@ -10,5 +10,8 @@ export const gameService = {
   completeRoom: (roomId, stars = 1) => api.post(`/game/complete-room/${roomId}`, { stars }),
   getCyberDNA: () => api.get('/game/cyber-dna'),
   submitCustomScore: (data) => api.post('/game/custom-score', data),
+  getLeaderboard: (category = 'top-score') => api.get(`/leaderboard?category=${category}&limit=50`),
+  getProfile: () => api.get('/profile'),
+  getProfileHistory: () => api.get('/profile/history'),
 };
 

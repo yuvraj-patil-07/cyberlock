@@ -3,6 +3,7 @@ import GameSession from '../models/GameSession.js';
 import User from '../models/User.js';
 import Attempt from '../models/Attempt.js';
 import Challenge from '../models/Challenge.js';
+import Leaderboard from '../models/Leaderboard.js';
 import { checkAndAwardBadges } from './badgeService.js';
 import { computeRiskLevel } from './scoringService.js';
 import { getCurrentUser } from './authService.js';
@@ -173,6 +174,31 @@ export const completeRoom = async (userId, roomId, stars = 1) => {
       user.roomStars.forEach((v, k) => { roomStarsObj[k] = v; });
     } else {
       Object.assign(roomStarsObj, user.roomStars);
+    }
+  }
+
+  // Sync leaderboard entry for this user (upsert so new users appear immediately)
+  if (isMongoConnected()) {
+    try {
+      const improvement = (user.firstAttemptScore || 0) > 0
+        ? Math.round((((user.currentScore || user.cyberScore || 50) - user.firstAttemptScore) / user.firstAttemptScore) * 100)
+        : 0;
+      await Leaderboard.findOneAndUpdate(
+        { userId: user._id },
+        {
+          userId: user._id,
+          username: user.username,
+          totalScore: user.xp || 0,
+          cyberScore: user.cyberScore || 50,
+          gamesCompleted: user.completedRooms?.length || 0,
+          evidenceCount: (user.totalCorrect || 0) * 2,
+          improvementPct: improvement,
+          updatedAt: new Date()
+        },
+        { upsert: true, new: true }
+      );
+    } catch (lbErr) {
+      console.warn('Leaderboard sync on completeRoom failed (non-fatal):', lbErr.message);
     }
   }
 
