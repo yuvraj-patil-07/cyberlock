@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import GlassCard from '../common/GlassCard';
 import PropTypes from 'prop-types';
-import { Mail, Key, QrCode, MessageSquare, Users, Bot, Globe } from 'lucide-react';
+import { Mail, Key, QrCode, MessageSquare, Users, Bot, Globe, ShieldAlert, KeyRound, AlertTriangle, Lock } from 'lucide-react';
 
 const SkillsRadar = ({ skills }) => {
   let data = [];
@@ -11,28 +11,30 @@ const SkillsRadar = ({ skills }) => {
     data = skills;
   } else if (skills && typeof skills === 'object') {
     data = [
-      { name: 'Phishing Detection', score: skills.phishing ?? 75, icon: Mail },
-      { name: 'Password Hygiene', score: skills.passwords ?? 85, icon: Key },
-      { name: 'QR Safety', score: skills.qrSafety ?? 60, icon: QrCode },
-      { name: 'Scam Detection', score: skills.scamDetection ?? 70, icon: MessageSquare },
-      { name: 'Social Engineering', score: skills.socialEngineering ?? 65, icon: Users },
-      { name: 'AI Threat Awareness', score: skills.aiThreats ?? 50, icon: Bot }
+      { name: 'Phishing', score: skills.phishing ?? 0, icon: ShieldAlert },
+      { name: 'Passwords', score: skills.passwords ?? 0, icon: KeyRound },
+      { name: 'QR Safety', score: skills.qrSafety ?? 0, icon: QrCode },
+      { name: 'Scams', score: skills.scamDetection ?? 0, icon: AlertTriangle },
+      { name: 'Social Eng', score: skills.socialEngineering ?? 0, icon: Users },
+      { name: 'Privacy', score: skills.digitalPrivacy ?? 0, icon: Lock },
+      { name: 'AI Threat', score: skills.aiThreats ?? 0, icon: Bot }
     ];
   } else {
     data = [
-      { name: 'Phishing Detection', score: 75, icon: Mail },
-      { name: 'Password Hygiene', score: 85, icon: Key },
-      { name: 'QR Safety', score: 60, icon: QrCode },
-      { name: 'Scam Detection', score: 70, icon: MessageSquare },
-      { name: 'Social Engineering', score: 65, icon: Users },
-      { name: 'AI Threat Awareness', score: 50, icon: Bot }
+      { name: 'Phishing', score: 0, icon: ShieldAlert },
+      { name: 'Passwords', score: 0, icon: KeyRound },
+      { name: 'QR Safety', score: 0, icon: QrCode },
+      { name: 'Scams', score: 0, icon: AlertTriangle },
+      { name: 'Social Eng', score: 0, icon: Users },
+      { name: 'Privacy', score: 0, icon: Lock },
+      { name: 'AI Threat', score: 0, icon: Bot }
     ];
   }
 
   const getColor = (score) => {
     if (score >= 80) return 'bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]';
     if (score >= 65) return 'bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.5)]';
-    if (score >= 50) return 'bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]';
+    if (score >= 30) return 'bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]';
     return 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]';
   };
 

@@ -84,7 +84,7 @@ function getWeakestSkill(skillProfile) {
   if (!skillProfile) return null;
   let min = Infinity; let key = null;
   for (const s of SKILL_CONFIG) {
-    const v = skillProfile[s.key] ?? 50;
+    const v = skillProfile[s.key] ?? 0;
     if (v < min) { min = v; key = s.key; }
   }
   return key;
@@ -94,7 +94,7 @@ function getStrongestSkill(skillProfile) {
   if (!skillProfile) return null;
   let max = -Infinity; let key = null;
   for (const s of SKILL_CONFIG) {
-    const v = skillProfile[s.key] ?? 50;
+    const v = skillProfile[s.key] ?? 0;
     if (v > max) { max = v; key = s.key; }
   }
   return key;
@@ -164,7 +164,7 @@ export default function CyberDNA() {
     ? Object.fromEntries(dna.categories.map(c => [c.key, c.score]))
     : user?.skillProfile || {};
 
-  const overallScore = dna?.overallScore ?? user?.cyberScore ?? 50;
+  const overallScore = dna?.overallScore ?? user?.cyberScore ?? 0;
   const risk = getRiskLabel(overallScore);
   const riskColor = getRiskColor(overallScore);
 
@@ -247,7 +247,7 @@ export default function CyberDNA() {
             </div>
 
             {SKILL_CONFIG.map((skill, i) => {
-              const score = skillProfile[skill.key] ?? 50;
+              const score = skillProfile[skill.key] ?? 0;
               const pct = Math.min(100, Math.max(0, score));
               const isWeakest = skill.key === weakestKey;
               const isStrongest = skill.key === strongestKey;
@@ -431,7 +431,7 @@ export default function CyberDNA() {
                 <p className="font-pixel text-[7px] text-red-400 mb-1">🎯 FOCUS AREA FOR YOU</p>
                 <p className="font-pixel text-[8px] text-white">{weakestConfig.emoji} {weakestConfig.label}</p>
                 <p className="font-pixel text-[6px] text-gray-400 mt-1">
-                  Score: {skillProfile[weakestKey] ?? 50}/100 — needs improvement
+                  Score: {skillProfile[weakestKey] ?? 0}/100 — needs improvement
                 </p>
               </div>
             )}

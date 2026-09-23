@@ -34,19 +34,19 @@ export const register = async ({ username, email, password }) => {
         password,
         xp: 0,
         level: 1,
-        cyberScore: 50,
+        cyberScore: 0,
         trustScore: 100,
         lives: 5,
-        firstAttemptScore: 50,
-        currentScore: 50,
+        firstAttemptScore: 0,
+        currentScore: 0,
         skillProfile: {
-          phishing: 50,
-          passwords: 50,
-          qrSafety: 50,
-          scamDetection: 50,
-          socialEngineering: 50,
-          aiThreats: 50,
-          digitalPrivacy: 50
+          phishing: 0,
+          passwords: 0,
+          qrSafety: 0,
+          scamDetection: 0,
+          socialEngineering: 0,
+          aiThreats: 0,
+          digitalPrivacy: 0
         }
       });
       await user.save();
@@ -56,13 +56,13 @@ export const register = async ({ username, email, password }) => {
         {
           userId: user._id,
           categories: {
-            phishing: { score: 50, attempts: 0, correct: 0 },
-            passwords: { score: 50, attempts: 0, correct: 0 },
-            qrSafety: { score: 50, attempts: 0, correct: 0 },
-            scamDetection: { score: 50, attempts: 0, correct: 0 },
-            socialEngineering: { score: 50, attempts: 0, correct: 0 },
-            aiThreats: { score: 50, attempts: 0, correct: 0 },
-            digitalPrivacy: { score: 50, attempts: 0, correct: 0 }
+            phishing: { score: 0, attempts: 0, correct: 0 },
+            passwords: { score: 0, attempts: 0, correct: 0 },
+            qrSafety: { score: 0, attempts: 0, correct: 0 },
+            scamDetection: { score: 0, attempts: 0, correct: 0 },
+            socialEngineering: { score: 0, attempts: 0, correct: 0 },
+            aiThreats: { score: 0, attempts: 0, correct: 0 },
+            digitalPrivacy: { score: 0, attempts: 0, correct: 0 }
           },
           strongestSkill: 'passwords',
           weakestSkill: 'phishing'
@@ -74,9 +74,9 @@ export const register = async ({ username, email, password }) => {
         { userId: user._id },
         {
           userId: user._id,
-          overallRisk: 'medium',
-          overallScore: 50,
-          categoryRisks: { phishing: 50, passwords: 50, qrSafety: 50, scamDetection: 50, socialEngineering: 50, aiThreats: 50 }
+          overallRisk: 'high',
+          overallScore: 0,
+          categoryRisks: { phishing: 0, passwords: 0, qrSafety: 0, scamDetection: 0, socialEngineering: 0, aiThreats: 0 }
         },
         { upsert: true, new: true }
       );
@@ -87,7 +87,7 @@ export const register = async ({ username, email, password }) => {
           userId: user._id,
           username: user.username,
           totalScore: 0,
-          cyberScore: 50,
+          cyberScore: 0,
           fastestTime: 0,
           evidenceCount: 0,
           improvementPct: 0,
@@ -122,14 +122,14 @@ export const register = async ({ username, email, password }) => {
     role: 'user',
     xp: 0,
     level: 1,
-    cyberScore: 50,
+    cyberScore: 0,
     trustScore: 100,
     lives: 5,
     badges: [],
     completedRooms: [],
-    skillProfile: { phishing: 50, passwords: 50, qrSafety: 50, scamDetection: 50, socialEngineering: 50, aiThreats: 50, digitalPrivacy: 50 },
-    firstAttemptScore: 50,
-    currentScore: 50,
+    skillProfile: { phishing: 0, passwords: 0, qrSafety: 0, scamDetection: 0, socialEngineering: 0, aiThreats: 0, digitalPrivacy: 0 },
+    firstAttemptScore: 0,
+    currentScore: 0,
     gamesPlayed: 0,
     totalChallengesAttempted: 0,
     totalCorrect: 0
@@ -202,7 +202,7 @@ export const sanitizeUser = (user) => {
     xp: user.xp || 0,
     level: user.level || 1,
     coins: user.coins || 0,          // ← was missing, always showed 0
-    cyberScore: user.cyberScore || 50,
+    cyberScore: user.cyberScore || 0,
     trustScore: user.trustScore || 100,
     lives: user.lives ?? 5,
     badges: user.badges || [],

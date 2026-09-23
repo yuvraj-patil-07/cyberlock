@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 import GameHUD from './GameHUD';
-import { Settings } from 'lucide-react';
+import { Settings, LogOut } from 'lucide-react';
 
 const GameEngineLayout = ({ children }) => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const [showSettings, setShowSettings] = useState(false);
 
   return (
     <div className="flex flex-col h-screen overflow-hidden" style={{ background: '#f5e6c8' }}>
@@ -64,9 +67,28 @@ const GameEngineLayout = ({ children }) => {
           </div>
 
           {/* Settings */}
-          <button className="p-2 text-gray-400 hover:text-white transition-colors">
-            <Settings size={18} />
-          </button>
+          <div className="relative">
+            <button 
+              className="p-2 text-gray-400 hover:text-white transition-colors"
+              onClick={() => setShowSettings(!showSettings)}
+            >
+              <Settings size={18} />
+            </button>
+            {showSettings && (
+              <div className="absolute right-0 top-full mt-2 w-32 cq-panel-dark z-50 p-2 border border-gray-700 rounded shadow-lg">
+                <button
+                  onClick={() => {
+                    logout();
+                    navigate('/');
+                  }}
+                  className="w-full flex items-center gap-2 text-red-400 hover:text-red-300 font-pixel text-[8px] py-2 px-2 hover:bg-white/5 transition-colors"
+                >
+                  <LogOut size={12} />
+                  LOGOUT
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
