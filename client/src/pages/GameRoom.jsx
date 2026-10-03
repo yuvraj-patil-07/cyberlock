@@ -21,7 +21,6 @@ import FinalRoom     from '../components/game/rooms/FinalRoom';
 // Game logic components — unchanged
 import EvidenceBoard    from '../components/game/EvidenceBoard';
 import ConsequenceEngine from '../components/game/ConsequenceEngine';
-import ReasoningPrompt  from '../components/game/ReasoningPrompt';
 import HintSystem       from '../components/game/HintSystem';
 import ChallengeResult  from '../components/game/ChallengeResult';
 
@@ -231,7 +230,48 @@ export default function GameRoom() {
 
   const currentChallenge = challenges[currentIndex] || null;
 
-  const handleAnswer = answerValue => { setPendingAnswer(answerValue); setGameState('reasoning'); };
+  const handleAnswer = async (answerValue) => {
+    setPendingAnswer(answerValue);
+    setSelectedReasoning([]);
+    const responseTimeSec = Math.round((Date.now() - startTime) / 1000);
+    try {
+      setLoading(true);
+      const res = await gameService.submitAttempt(currentChallenge._id, {
+        answer: answerValue, reasoning: [], evidenceFound: discoveredEvidence,
+        hintsUsed: hintsUsedCount, responseTime: responseTimeSec
+      });
+      setSubmissionResult(res.data);
+      const xpEarned = res.data.scoring?.xpEarned || 0;
+      setRoomScore(prev => prev + xpEarned);
+      setRoomTotal(prev => prev + 1);
+      if (res.data.isCorrect) setRoomCorrect(prev => prev + 1);
+      await loadUser(2, true);
+        if (res.data.isCorrect) {
+          sounds.playCorrect();
+          setParticleTrigger(t => t + 1);
+          setTimeout(() => setChestOpen(true), 400);
+        } else {
+          sounds.playIncorrect();
+          setLocalLives(prev => Math.max(0, prev - 1));
+        }
+      setGameState((!res.data.isCorrect && res.data.consequenceChain?.length > 0) ? 'consequence' : 'result');
+    } catch (err) {
+      const isCorrect = answerValue === currentChallenge.correctAnswer;
+        if (isCorrect) { sounds.playCorrect(); setParticleTrigger(t => t + 1); setTimeout(() => setChestOpen(true), 400); }
+        else {
+          sounds.playIncorrect();
+          setLocalLives(prev => Math.max(0, prev - 1));
+        }
+      setSubmissionResult({
+        isCorrect, explanation: currentChallenge.explanation,
+        scoring: { xpEarned: isCorrect ? 60 : 10, trustChange: isCorrect ? 15 : -20 },
+        consequenceChain: currentChallenge.consequenceChain || [],
+        recoverySteps: currentChallenge.recoverySteps || [],
+        coachExplanation: { analysis: currentChallenge.explanation, strength: isCorrect ? 'Solid identification.' : 'Good attempt.', vulnerability: isCorrect ? 'None' : 'Watch for subtle tricks.', actionableTip: 'Always verify out-of-band.' }
+      });
+      setGameState(!isCorrect ? 'consequence' : 'result');
+    } finally { setLoading(false); }
+  };
 
   const handleRoomFeedback = (feedback) => {
     setRoomFeedback(feedback);
@@ -270,48 +310,6 @@ export default function GameRoom() {
     setHintsUsedCount(prev => prev + 1);
     setHintLevel(prev => Math.min(3, prev + 1));
     setShowHintModal(true);
-  };
-
-  const handleConfirmReasoning = async reasons => {
-    setSelectedReasoning(reasons);
-    const responseTimeSec = Math.round((Date.now() - startTime) / 1000);
-    try {
-      setLoading(true);
-      const res = await gameService.submitAttempt(currentChallenge._id, {
-        answer: pendingAnswer, reasoning: reasons, evidenceFound: discoveredEvidence,
-        hintsUsed: hintsUsedCount, responseTime: responseTimeSec
-      });
-      setSubmissionResult(res.data);
-      const xpEarned = res.data.scoring?.xpEarned || 0;
-      setRoomScore(prev => prev + xpEarned);
-      setRoomTotal(prev => prev + 1);
-      if (res.data.isCorrect) setRoomCorrect(prev => prev + 1);
-      await loadUser(2, true);
-        if (res.data.isCorrect) {
-          sounds.playCorrect();
-          setParticleTrigger(t => t + 1);
-          setTimeout(() => setChestOpen(true), 400);
-        } else {
-          sounds.playIncorrect();
-          setLocalLives(prev => Math.max(0, prev - 1));
-        }
-      setGameState((!res.data.isCorrect && res.data.consequenceChain?.length > 0) ? 'consequence' : 'result');
-    } catch (err) {
-      const isCorrect = pendingAnswer === currentChallenge.correctAnswer;
-        if (isCorrect) { sounds.playCorrect(); setParticleTrigger(t => t + 1); setTimeout(() => setChestOpen(true), 400); }
-        else {
-          sounds.playIncorrect();
-          setLocalLives(prev => Math.max(0, prev - 1));
-        }
-      setSubmissionResult({
-        isCorrect, explanation: currentChallenge.explanation,
-        scoring: { xpEarned: isCorrect ? 60 : 10, trustChange: isCorrect ? 15 : -20 },
-        consequenceChain: currentChallenge.consequenceChain || [],
-        recoverySteps: currentChallenge.recoverySteps || [],
-        coachExplanation: { analysis: currentChallenge.explanation, strength: isCorrect ? 'Solid identification.' : 'Good attempt.', vulnerability: isCorrect ? 'None' : 'Watch for subtle tricks.', actionableTip: 'Always verify out-of-band.' }
-      });
-      setGameState(!isCorrect ? 'consequence' : 'result');
-    } finally { setLoading(false); }
   };
 
     const handleNextChallenge = async (customScore) => {
@@ -640,21 +638,7 @@ export default function GameRoom() {
         </div>
       </div>
 
-      {/* ════ REASONING MODAL ════ */}
-      <AnimatePresence>
-        {gameState === 'reasoning' && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
-               style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}>
-            <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
-                        exit={{ scale: 0.9, opacity: 0 }} className="max-w-md w-full">
-              <div className="mb-4 text-center">
-                <span className="pixel-tag bg-blue-600 text-white shadow-[4px_4px_0_rgba(0,0,0,0.5)]">⚔ MAKE YOUR VERDICT</span>
-              </div>
-              <ReasoningPrompt category={roomConfig.category} onConfirmReasoning={handleConfirmReasoning}/>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+
 
       {/* ════ HINT MODAL ════ */}
       <AnimatePresence>
