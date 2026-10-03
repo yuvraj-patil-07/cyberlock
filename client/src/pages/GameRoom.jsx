@@ -247,7 +247,7 @@ export default function GameRoom() {
       } catch (err) {
         console.error('Failed to deduct heart on backend', err);
       }
-      setTimeout(() => navigate('/map'), 5000);
+      setTimeout(() => navigate('/dashboard'), 3000);
     } else {
       setLocalLives(prev => prev - 1);
       setTimeout(() => handleNextChallenge({ xp: 0, coins: 0 }), 5000);
@@ -371,7 +371,13 @@ export default function GameRoom() {
       const pct = roomTotal > 0 ? (roomCorrect / roomTotal) * 100 : 50;
       const stars = pct >= 90 ? 3 : pct >= 60 ? 2 : 1;
       try { await gameService.completeRoom(roomId, stars); await loadProgress(); await loadUser(2, true); } catch {}
+      // Room 7 is the final room — go to the victory screen
+      if (parseInt(roomId, 10) === 7) {
+        setTimeout(() => navigate('/final'), 1500);
+        return;
+      }
       setGameState('room_complete');
+
     }
   };
 
@@ -432,6 +438,9 @@ export default function GameRoom() {
             <div className="ml-auto flex items-center gap-2">
               <span className="rune-badge text-[10px]" style={{ borderColor: 'red', color: 'red' }}>
                 {localLives} ♥ LIVES
+              </span>
+              <span className="rune-badge text-[10px]" style={{ borderColor: '#06b6d4', color: '#06b6d4' }}>
+                {user?.trustScore ?? 100}% TRUST
               </span>
               <span className="rune-badge text-[10px]" style={{ borderColor: zoneTheme.border, color: zoneTheme.color }}>
                 {discoveredEvidence.length} clues found
@@ -509,7 +518,7 @@ export default function GameRoom() {
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-3 justify-center">
-                  <button onClick={() => { loadChallenges(); }} className="pixel-btn pixel-btn-primary px-6">
+                  <button onClick={() => { setLocalLives(3); loadChallenges(); }} className="pixel-btn pixel-btn-primary px-6">
                     🔄 TRY AGAIN
                   </button>
                   <button onClick={() => navigate('/dashboard')} className="pixel-btn pixel-btn-secondary px-6">

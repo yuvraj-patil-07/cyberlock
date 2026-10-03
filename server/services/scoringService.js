@@ -68,12 +68,13 @@ export const computeLevel = (xp) => {
 
 export const computeCyberScore = (skillProfile = {}) => {
   const weights = {
-    phishing: 0.25,
-    passwords: 0.15,
-    qrSafety: 0.15,
-    scamDetection: 0.20,
-    socialEngineering: 0.15,
-    aiThreats: 0.10
+    phishing:           0.20,
+    passwords:          0.15,
+    qrSafety:           0.10,
+    scamDetection:      0.20,
+    socialEngineering:  0.15,
+    aiThreats:          0.10,
+    digitalPrivacy:     0.10
   };
 
   let totalWeighted = 0;

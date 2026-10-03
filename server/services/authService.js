@@ -34,7 +34,7 @@ export const register = async ({ username, email, password }) => {
         password,
         xp: 0,
         level: 1,
-        cyberScore: 0,
+        cyberScore: 50,
         trustScore: 100,
         lives: 5,
         firstAttemptScore: 0,

@@ -10,6 +10,50 @@ const COMPANIONS = [
   { id: 'owl', emoji: '🦉', name: 'Owl' },
 ];
 
+const PasswordStrengthMeter = ({ password }) => {
+  const calculateStrength = (pass) => {
+    let strength = 0;
+    if (pass.length >= 8) strength += 1;
+    if (/[A-Z]/.test(pass) && /[a-z]/.test(pass)) strength += 1;
+    if (/[0-9]/.test(pass)) strength += 1;
+    if (/[^A-Za-z0-9]/.test(pass)) strength += 1;
+    return strength;
+  };
+
+  const strength = calculateStrength(password);
+  
+  const getBarColor = (index) => {
+    if (index >= strength) return 'bg-[#374151]'; // gray-700
+    if (strength === 1) return 'bg-red-500';
+    if (strength === 2) return 'bg-orange-500';
+    if (strength === 3) return 'bg-yellow-500';
+    if (strength === 4) return 'bg-green-500';
+    return 'bg-[#374151]';
+  };
+
+  const getLabel = () => {
+    if (strength === 0) return '';
+    if (strength === 1) return 'Weak';
+    if (strength === 2) return 'Fair';
+    if (strength === 3) return 'Good';
+    if (strength === 4) return 'Strong';
+    return '';
+  };
+
+  if (!password) return null;
+
+  return (
+    <div className="mt-1 mb-2 w-full">
+      <div className="flex gap-1 mb-1">
+        {[0, 1, 2, 3].map((idx) => (
+          <div key={idx} className={`h-1.5 w-1/4 rounded-full ${getBarColor(idx)} transition-colors`} />
+        ))}
+      </div>
+      <p className="text-right text-xs text-white" style={{ fontFamily: "'VT323', monospace" }}>{getLabel()}</p>
+    </div>
+  );
+};
+
 export default function Register() {
   const navigate = useNavigate();
   const { register } = useAuth();
@@ -67,6 +111,7 @@ export default function Register() {
                    value={form.password}
                    onChange={(e) => setForm({ ...form, password: e.target.value })}
                    className="cq-input w-full" required />
+            <PasswordStrengthMeter password={form.password} />
 
             <input type="password" placeholder="Confirm Password"
                    value={form.confirmPassword}

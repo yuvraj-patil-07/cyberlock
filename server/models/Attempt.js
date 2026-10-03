@@ -19,6 +19,8 @@ const AttemptSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 AttemptSchema.index({ userId: 1, challengeId: 1 });
+AttemptSchema.index({ userId: 1, roomId: 1 }); // Fast badge-service lookups
+AttemptSchema.index({ userId: 1, isCorrect: 1 }); // Correct-count queries
 
 const Attempt = mongoose.model('Attempt', AttemptSchema);
 export default Attempt;

@@ -2,14 +2,13 @@ import User from '../models/User.js';
 import SkillProfile from '../models/SkillProfile.js';
 import Attempt from '../models/Attempt.js';
 import Badge from '../models/Badge.js';
-import { sanitizeUser } from '../services/authService.js';
+import { sanitizeUser, getCurrentUser } from '../services/authService.js';
 import { getCyberDNA } from '../services/gameService.js';
 
 export const getProfile = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user.id).populate('badges.badgeId');
-    if (!user) return res.status(404).json({ message: 'User not found' });
-    res.status(200).json({ user: sanitizeUser(user) });
+    const user = await getCurrentUser(req.user.id);
+    res.status(200).json({ user });
   } catch (error) {
     next(error);
   }

@@ -16,6 +16,9 @@ const FinalScreen = lazy(() => import('./pages/FinalScreen'));
 const DemoMode = lazy(() => import('./pages/DemoMode'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const GameEngineLayout = lazy(() => import('./components/layout/GameEngineLayout'));
+const BadgesPage = lazy(() => import('./pages/BadgesPage'));
+const InventoryPage = lazy(() => import('./pages/InventoryPage'));
+const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 
 const ProtectedRoute = ({ children, requireAdmin = false }) => {
   const { isAuthenticated, user, loading } = useAuth();
@@ -60,6 +63,9 @@ function App() {
           <Route path="/play/:roomId" element={<ProtectedRoute><GameEngineLayout><GameRoom /></GameEngineLayout></ProtectedRoute>} />
           <Route path="/cyber-dna"   element={<ProtectedRoute><GameEngineLayout><CyberDNA /></GameEngineLayout></ProtectedRoute>} />
           <Route path="/leaderboard" element={<ProtectedRoute><LeaderboardPage /></ProtectedRoute>} />
+          <Route path="/badges"      element={<ProtectedRoute><BadgesPage /></ProtectedRoute>} />
+          <Route path="/inventory"   element={<ProtectedRoute><InventoryPage /></ProtectedRoute>} />
+          <Route path="/settings"    element={<SettingsPage />} />
           <Route path="/final"       element={<ProtectedRoute><FinalScreen /></ProtectedRoute>} />
 
           {/* Admin Routes */}

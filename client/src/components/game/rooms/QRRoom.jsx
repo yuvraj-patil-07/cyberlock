@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { QrCode, ShieldCheck, HelpCircle, AlertTriangle, Clock } from 'lucide-react';
 
-const QRRoom = ({ challenge, onComplete, onFeedback, onWrongAnswer }) => {
+const QRRoom = ({ challenge, onAnswer, onComplete, onFeedback, onWrongAnswer }) => {
   const [timeLeft, setTimeLeft] = useState(30);
   const [feedbackState, setFeedbackState] = useState(null);
 
@@ -35,22 +35,8 @@ const QRRoom = ({ challenge, onComplete, onFeedback, onWrongAnswer }) => {
 
   const processAnswer = (bucketType) => {
     if (feedbackState) return;
-    
-    const isCorrect = challenge?.correctAnswer === bucketType;
-
-    if (isCorrect) {
-      setFeedbackState({ type: 'success', text: '+20 XP' });
-      if (onFeedback) onFeedback({ isCorrect: true, text: challenge?.explanation || 'Correctly identified!' });
-      setTimeout(() => {
-        if (onComplete) onComplete({ xp: 20, coins: 5 });
-      }, 2000);
-    } else {
-      setFeedbackState({ type: 'error', text: 'WRONG!' });
-      if (onFeedback) onFeedback({ isCorrect: false, text: challenge?.explanation || 'Incorrect classification.' });
-      setTimeout(() => {
-        if (onWrongAnswer) onWrongAnswer();
-      }, 2000);
-    }
+    setFeedbackState({ type: 'pending', text: 'Analyzing...' });
+    if (onAnswer) onAnswer(bucketType);
   };
 
   const scenario = challenge?.scenario || {};

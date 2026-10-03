@@ -11,7 +11,6 @@ const ZONES = [
   { id: 'qr',                 roomId: 3, name: 'QR TEMPLE',  emoji: '🔳', x: 37,  y: 69,  route: '/play/3' },
   { id: 'ai-threat',          roomId: 6, name: 'AI LAB',     emoji: '🤖', x: 72,  y: 25,  route: '/play/6' },
   { id: 'scam',               roomId: 4, name: 'SCAMS',      emoji: '🎭', x: 73,  y: 49,  route: '/play/4' },
-  { id: 'final',              roomId: 7, name: 'DARK WEB',   emoji: '💀', x: 69,  y: 75,  route: '/play/7' },
   { id: 'final',              roomId: 7, name: 'CYBER CORE', emoji: '👑', x: 50,  y: 18,  route: '/play/7' },
 ];
 
@@ -19,10 +18,11 @@ const ZONES = [
 const SIDEBAR_ITEMS = [
   { label: 'WORLD',       icon: '🗺️', route: '/dashboard' },
   { label: 'QUESTS',      icon: '📜', route: '/rooms' },
-  { label: 'INVENTORY',   icon: '🧰', route: null },
-  { label: 'BADGES',      icon: '⭐', route: null },
+  { label: 'FIELD KIT',   icon: '🧰', route: '/inventory' },
+  { label: 'MEDALS',      icon: '🎖️', route: '/badges' },
   { label: 'RANKS',       icon: '🏆', route: '/leaderboard' },
   { label: 'PROFILE',     icon: '🧑‍💻', route: '/cyber-dna' },
+  { label: 'SETTINGS',    icon: '⚙️', route: '/settings' },
 ];
 
 export default function Dashboard() {

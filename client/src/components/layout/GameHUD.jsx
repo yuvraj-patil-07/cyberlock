@@ -6,9 +6,9 @@ import useGameStore from '../../store/gameStore';
 const NAV_ITEMS = [
   { path: '/dashboard', icon: MapIcon,    label: 'WORLD',       color: '#4a90d0' },
   { path: '/rooms',     icon: ScrollText, label: 'QUESTS',      color: '#aab' },
-  { path: null,         icon: Backpack,   label: 'INVENTORY',   color: '#aab', disabled: true },
-  { path: null,         icon: Award,      label: 'BADGES',      color: '#aab', disabled: true },
-  { path: '/leaderboard', icon: Trophy,   label: 'LEADERBOARD', color: '#aab' },
+  { path: '/inventory', icon: Backpack,   label: 'FIELD KIT',   color: '#aab' },
+  { path: '/badges',    icon: Award,      label: 'MEDALS',      color: '#aab' },
+  { path: '/leaderboard', icon: Trophy,   label: 'RANKS',       color: '#aab' },
   { path: '/cyber-dna', icon: User,       label: 'PROFILE',     color: '#aab' },
 ];
 

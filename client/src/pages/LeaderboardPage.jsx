@@ -5,9 +5,9 @@ import { gameService } from '../services/gameService';
 import { useAuth } from '../hooks/useAuth';
 
 const CATEGORIES = [
-  { key: 'top-score',      label: '⚡ XP',          desc: 'Total Experience Points' },
-  { key: 'cyber-sentinel', label: '🛡️ Cyber',       desc: 'Cyber Security Score' },
-  { key: 'most-improved',  label: '📈 Improved',    desc: 'Most Improved Player' },
+  { key: 'top-score',     label: '⚡ XP',       desc: 'Total Experience Points' },
+  { key: 'cyber-score',   label: '🛡️ Cyber',    desc: 'Cyber Security Score' },
+  { key: 'most-improved', label: '📈 Improved', desc: 'Most Improved Player' },
 ];
 
 const MEDALS = ['🥇', '🥈', '🥉'];
@@ -21,7 +21,7 @@ function getRankColor(i) {
 
 function getScoreForCategory(entry, cat) {
   switch (cat) {
-    case 'cyber-sentinel': return entry.cyberScore ?? 0;
+    case 'cyber-score':    return entry.cyberScore ?? 0;
     case 'most-improved':  return (entry.improvementPct ?? 0) > 0 ? `+${entry.improvementPct}%` : `${entry.improvementPct ?? 0}%`;
     default:               return (entry.totalScore ?? 0).toLocaleString();
   }

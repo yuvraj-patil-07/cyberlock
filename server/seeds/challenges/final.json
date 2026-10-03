@@ -1,0 +1,166 @@
+[
+  {
+    "category": "phishing",
+    "difficulty": "expert",
+    "room": 7,
+    "title": "The Final Lock — Multi-Vector Attack",
+    "scenario": {
+      "type": "email",
+      "sender": "CyberLock Security Council",
+      "senderAddress": "council@secure-cyberlock-official.training.example",
+      "subject": "⚠️ URGENT: Your CyberLock Account Has Been Compromised — Immediate Action Required",
+      "timestamp": "2024-11-15T07:31:00Z",
+      "body": "Dear CyberLock Champion,\n\nOur automated security systems detected unauthorized access to your CyberLock account from an unrecognized device in Eastern Europe. Your gameplay data, badges, and progress are at immediate risk of deletion.\n\nTo prevent permanent account suspension, you must verify your identity within the next 15 minutes by clicking the Secure Recovery Link below and entering your current password.\n\nThis link expires in: 14:58 (countdown)\n\nSecure Recovery Portal: https://cyberlock-verify.secure-sessions.training.example/recover?token=eXAiOiJKV1QiLCJhb\n\nIf you do not verify in time, your account will be permanently deleted and your leaderboard ranking forfeited.\n\n— The CyberLock Security Council\nIncident Reference: #CL-2024-99821\nDo not reply to this email. This mailbox is unmonitored.",
+      "links": [
+        "https://cyberlock-verify.secure-sessions.training.example/recover?token=eXAiOiJKV1QiLCJhb"
+      ],
+      "attachments": [],
+      "urgencyLevel": "extreme",
+      "context": "You are logged in to CyberLock and just received this email notification. This is the Final Challenge — apply everything you've learned."
+    },
+    "options": [
+      { "text": "SAFE — Legitimate security alert from CyberLock. Click the link to recover your account immediately.", "value": "safe" },
+      { "text": "PHISHING — This is a fake email impersonating CyberLock. Do NOT click the link.", "value": "phishing" },
+      { "text": "UNCERTAIN — Request the email sender to phone you instead before taking any action.", "value": "uncertain" }
+    ],
+    "correctAnswer": "phishing",
+    "indicators": [
+      { "type": "domain", "description": "Sender domain 'secure-cyberlock-official.training.example' is NOT the legitimate CyberLock domain", "points": 25 },
+      { "type": "urgency", "description": "Extreme time pressure ('15 minutes', countdown timer) is a classic manipulation tactic", "points": 20 },
+      { "type": "credential-request", "description": "No legitimate service ever asks for your current password via email", "points": 25 },
+      { "type": "threat", "description": "Threatening 'permanent deletion' of your progress creates panic and impairs rational thinking", "points": 20 },
+      { "type": "link", "description": "The recovery link goes to a subdomain not matching the real service — a spoofed URL", "points": 20 }
+    ],
+    "explanation": "This is a sophisticated spear-phishing email targeting you specifically as a CyberLock user. The attacker knows your username and uses your game progress as leverage. Red flags: wrong sender domain, extreme urgency, countdown timer, password request via email, threat of data loss. Always navigate directly to a service's website by typing the URL yourself — never click links in alarm emails.",
+    "hints": [
+      "Look very carefully at the sender email domain — what legitimate domain would CyberLock use?",
+      "Count the manipulation tactics being used: urgency, fear, time pressure, threats. Multiple tactics = high suspicion.",
+      "Ask yourself: would a real security council ask you to enter your password via a link in an email?"
+    ],
+    "learningObjective": "Recognize advanced spear-phishing that uses personal information, extreme urgency, and credential theft attempts even when the email appears highly professional.",
+    "consequenceChain": [
+      "User clicks the 'Secure Recovery Portal' link",
+      "Redirected to a convincing fake login page that clones the real CyberLock interface",
+      "User enters their username and password",
+      "Credentials harvested by attacker — account fully compromised",
+      "Attacker uses the same credentials on 12 other sites (credential stuffing) — email, banking, and shopping accounts breached"
+    ],
+    "recoverySteps": [
+      "Never click — navigate directly to the site by typing its URL in a new browser tab",
+      "Check the sender email domain against the real service's official domain",
+      "Report the phishing email to your email provider and the impersonated service",
+      "If you did click, immediately change your password on the real site and enable 2FA",
+      "Check HaveIBeenPwned.com to see if your email appears in known data breaches"
+    ],
+    "order": 1,
+    "isActive": true
+  },
+  {
+    "category": "ai-threat",
+    "difficulty": "expert",
+    "room": 7,
+    "title": "The Final Lock — Deepfake CEO Fraud",
+    "scenario": {
+      "type": "message",
+      "sender": "CEO Marcus Reid (via WhatsApp)",
+      "senderAddress": "+1-555-0847",
+      "subject": "URGENT Wire Transfer — Board Meeting",
+      "timestamp": "2024-11-15T14:02:00Z",
+      "body": "Hi — it's Marcus. I'm in an emergency board meeting and can't take calls. Need you to process an urgent wire transfer of $47,500 to a new vendor we just onboarded. CFO is also in the meeting. The contract was signed this morning. Send to:\n\nBank: First Capital International\nAccount: 8841-0092-7751\nRouting: 021000021\n\nI'll brief you after the meeting. This needs to go out in the next 20 minutes or we lose the vendor relationship. Don't email — board policy requires phone/message for today's transactions. Thanks.",
+      "links": [],
+      "attachments": [],
+      "urgencyLevel": "critical",
+      "context": "You work in accounts payable. The CEO's real WhatsApp is listed as this number in your contacts. You received a 30-second voice message that sounds exactly like Marcus Reid's voice, confirming the request."
+    },
+    "options": [
+      { "text": "PROCESS — The CEO's voice message confirms the request. Process the wire transfer immediately.", "value": "safe" },
+      { "text": "FRAUD — This is a CEO fraud / BEC attack. Do NOT process. Verify via an independent channel.", "value": "phishing" },
+      { "text": "ESCALATE — Call the CFO on their known office number to get dual authorization before proceeding.", "value": "uncertain" }
+    ],
+    "correctAnswer": "phishing",
+    "indicators": [
+      { "type": "ai-voice", "description": "The voice message uses AI voice cloning — CEO's voice can be synthesized from public recordings in under 2 minutes", "points": 30 },
+      { "type": "urgency", "description": "20-minute deadline prevents normal verification procedures from being followed", "points": 20 },
+      { "type": "channel-switch", "description": "Attacker blocks email and calls ('board policy') — eliminating your standard verification channels", "points": 25 },
+      { "type": "isolation", "description": "Both CEO and CFO are 'unavailable' — eliminating dual-authorization controls", "points": 20 },
+      { "type": "new-vendor", "description": "Unknown bank account to a newly onboarded vendor with no paper trail you can verify", "points": 15 }
+    ],
+    "explanation": "This is a Business Email Compromise (BEC) / CEO fraud attack enhanced with AI voice cloning. Attackers generate convincing voice messages using clips from earnings calls, interviews, or public videos. The voice sounds authentic because it IS the CEO's voice pattern — reconstructed by AI. The correct answer is to mark it as fraud and escalate via an independent, pre-established channel (not the number that messaged you). Always call back on a number you already have, not one provided in the suspicious message.",
+    "hints": [
+      "Think: how could an attacker get the CEO's voice for a fake message? (Hint: LinkedIn videos, earnings calls, conference recordings)",
+      "The request specifically blocks your normal verification routes (email, calls). Why would a legitimate request do this?",
+      "A real emergency wire transfer would follow established dual-authorization protocols — they never disappear for convenience"
+    ],
+    "learningObjective": "Understand AI voice cloning in CEO fraud attacks. Know that voice alone is no longer reliable proof of identity. Always verify financial requests through independent, pre-established channels.",
+    "consequenceChain": [
+      "Employee processes the $47,500 wire transfer to the fraudulent account",
+      "Money immediately moved through 3 intermediary accounts to a cryptocurrency exchange",
+      "Funds converted and withdrawn — unrecoverable within 90 minutes",
+      "Company loses $47,500 with near-zero chance of recovery",
+      "Employee faces disciplinary review; company must implement emergency wire-transfer controls"
+    ],
+    "recoverySteps": [
+      "Immediately call your bank's wire transfer fraud hotline to attempt a recall",
+      "Report to FBI IC3 (ic3.gov) and your local financial crimes unit within 24 hours",
+      "Preserve all messages, voice clips, and records for the investigation",
+      "Conduct an emergency security review of all vendor payment procedures",
+      "Implement a mandatory callback verification rule for all wire transfers over a threshold"
+    ],
+    "order": 2,
+    "isActive": true
+  },
+  {
+    "category": "social-engineering",
+    "difficulty": "expert",
+    "room": 7,
+    "title": "The Final Lock — The Insider Threat",
+    "scenario": {
+      "type": "email",
+      "sender": "Dave Chen — IT Department",
+      "senderAddress": "d.chen@ithelp.corp.training.example",
+      "subject": "Scheduled System Maintenance — Temporary Credential Verification",
+      "timestamp": "2024-11-15T09:15:00Z",
+      "body": "Hello,\n\nThis is Dave from IT Support. We are conducting a scheduled infrastructure maintenance today between 10:00 AM and 12:00 PM. During this window, our identity verification system will be offline.\n\nTo ensure uninterrupted access after maintenance, we need you to verify your credentials in our temporary system. Please reply to this email with your:\n\n1. Current network username\n2. Current password\n3. Your employee ID\n\nPlease respond before 10:00 AM. Failure to verify may result in temporary loss of system access for up to 48 hours.\n\nAppreciate your cooperation,\nDave Chen\nIT Support | Corp Technology Services\nExt: 4412 | Helpdesk Ticket: #TKT-2024-88761",
+      "links": [],
+      "attachments": [],
+      "urgencyLevel": "high",
+      "context": "You received this email at 9:15 AM. You have a busy day and have been frustrated by IT issues in the past."
+    },
+    "options": [
+      { "text": "COMPLY — Reply with credentials. Dave is from IT and will lock out my account if I don't.", "value": "safe" },
+      { "text": "PHISHING — IT never asks for passwords via email. This is a credential harvesting attack.", "value": "phishing" },
+      { "text": "VERIFY — Call the IT helpdesk on the official number from the company directory to confirm.", "value": "uncertain" }
+    ],
+    "correctAnswer": "phishing",
+    "indicators": [
+      { "type": "credential-request", "description": "Legitimate IT departments NEVER ask for your password — they can reset it without knowing it", "points": 30 },
+      { "type": "authority", "description": "Abuse of IT authority — impersonating helpdesk to trigger compliance reflex", "points": 20 },
+      { "type": "domain", "description": "Sender domain 'ithelp.corp.training.example' differs from official company domain", "points": 20 },
+      { "type": "threat", "description": "'48 hours of lost access' threat pressures the recipient into quick compliance", "points": 15 },
+      { "type": "pretexting", "description": "Fake maintenance window creates a plausible context that justifies the unusual request", "points": 15 }
+    ],
+    "explanation": "This is a classic IT pretexting/social engineering attack. The golden rule of cybersecurity: NO legitimate IT department will EVER ask for your password via email, phone, or any channel. They do not need it — they have administrative tools. The fake maintenance window and ticket number add false legitimacy. The correct response is to call IT directly using a number from the official company directory — never using contact details in the suspicious email.",
+    "hints": [
+      "Apply the golden rule: does ANY legitimate service ever need your password? (No.)",
+      "Check the sender domain carefully against your company's official email domain",
+      "Note the escalating consequences ('48 hours locked out') — this is pressure, not process"
+    ],
+    "learningObjective": "Internalize that password requests via email are ALWAYS illegitimate, regardless of who claims to be asking. IT administrators never need your password.",
+    "consequenceChain": [
+      "Employee replies with username, password, and employee ID",
+      "Attacker gains full network access under the employee's identity",
+      "Attacker maps the network and identifies sensitive data repositories",
+      "Company data exfiltrated over 3 days before the breach is detected",
+      "Employee credentials used to create backdoor admin accounts — breach persists even after password reset"
+    ],
+    "recoverySteps": [
+      "Never reply — forward the email to your real IT security team as a phishing report",
+      "If you did reply, immediately call IT and change your password and enable MFA",
+      "Report the incident to your manager and HR",
+      "IT should audit all login events from your account in the past 72 hours",
+      "Consider security awareness training refresh for the whole team"
+    ],
+    "order": 3,
+    "isActive": true
+  }
+]
