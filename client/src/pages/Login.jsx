@@ -1,24 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = useAuth();
-  const [form, setForm] = useState({ email: '', password: '' });
-  const [error, setError] = useState('');
+  const { login, isAuthenticated } = useAuth();
+  const [form, setForm]     = useState({ email: '', password: '' });
+  const [error, setError]   = useState('');
   const [loading, setLoading] = useState(false);
-  const [remember, setRemember] = useState(false);
+
+  // Already logged in? Skip the login screen entirely
+  useEffect(() => {
+    if (isAuthenticated) navigate('/dashboard', { replace: true });
+  }, [isAuthenticated, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    // Client-side validation
+    if (!form.email.trim()) return setError('Please enter your email address.');
+    if (!form.password)     return setError('Please enter your password.');
+
     setLoading(true);
     try {
-      const result = await login(form.email, form.password);
+      const result = await login(form.email.trim(), form.password);
       if (result.success) {
-        navigate('/dashboard');
+        navigate('/dashboard', { replace: true });
       } else {
         setError(result.error || 'Login failed. Check your credentials.');
       }
@@ -45,11 +54,9 @@ export default function Login() {
       >
         {/* Wooden frame card */}
         <div className="cq-panel-wood">
-          {/* Character sprite + arrows */}
+          {/* Character sprite */}
           <div className="flex items-center justify-center gap-4 mb-4">
-            <button className="text-2xl text-white opacity-50 hover:opacity-100">◀</button>
             <div className="text-5xl cq-float">🧑‍💻</div>
-            <button className="text-2xl text-white opacity-50 hover:opacity-100">▶</button>
           </div>
 
           <h2 className="font-pixel text-sm text-center text-white mb-6"
@@ -57,12 +64,13 @@ export default function Login() {
             Welcome Back
           </h2>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-            {/* Username/Email field */}
+          <form onSubmit={handleSubmit} className="flex flex-col gap-3" noValidate>
+            {/* Email field */}
             <div>
               <input
                 type="email"
-                placeholder="Username"
+                placeholder="Email address"
+                autoComplete="email"
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 className="cq-input w-full"
@@ -75,21 +83,13 @@ export default function Login() {
               <input
                 type="password"
                 placeholder="Password"
+                autoComplete="current-password"
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 className="cq-input w-full"
                 required
               />
             </div>
-
-            {/* Remember me */}
-            <label className="flex items-center gap-2 text-white cursor-pointer"
-                   style={{ fontFamily: "'VT323', monospace", fontSize: '18px' }}>
-              <input type="checkbox" checked={remember}
-                     onChange={(e) => setRemember(e.target.checked)}
-                     className="w-4 h-4" />
-              Remember me
-            </label>
 
             {/* Error */}
             {error && (
@@ -101,7 +101,7 @@ export default function Login() {
             {/* Login Button */}
             <button type="submit" disabled={loading}
                     className="cq-btn cq-btn-primary w-full justify-center mt-2">
-              {loading ? '⏳ Loading...' : '🔑 Login'}
+              {loading ? '⏳ Logging in...' : '🔑 Login'}
             </button>
           </form>
 

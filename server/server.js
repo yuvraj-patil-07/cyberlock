@@ -28,10 +28,26 @@ app.use(helmet({
 }));
 
 app.use(cors({
-  origin: [config.clientUrl, 'http://localhost:5173', 'http://localhost:3000'],
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, curl, server-to-server)
+    if (!origin) return callback(null, true);
+    // Allow localhost (development)
+    if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
+      return callback(null, true);
+    }
+    // Allow any Vercel deployment for this project
+    if (origin.includes('vercel.app') || origin.includes('cyberlock')) {
+      return callback(null, true);
+    }
+    // Allow explicitly configured CLIENT_URL
+    if (config.clientUrl && origin === config.clientUrl) {
+      return callback(null, true);
+    }
+    callback(null, true); // Permissive in dev — tighten in prod if needed
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 // Rate Limiting

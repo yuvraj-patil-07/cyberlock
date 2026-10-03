@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
@@ -56,23 +56,37 @@ const PasswordStrengthMeter = ({ password }) => {
 
 export default function Register() {
   const navigate = useNavigate();
-  const { register } = useAuth();
+  const { register, isAuthenticated } = useAuth();
   const [form, setForm] = useState({ username: '', email: '', password: '', confirmPassword: '' });
   const [companion, setCompanion] = useState('knight');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Already logged in? Skip registration
+  useEffect(() => {
+    if (isAuthenticated) navigate('/dashboard', { replace: true });
+  }, [isAuthenticated, navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    if (form.password !== form.confirmPassword) {
-      setError('Passwords do not match!');
-      return;
-    }
+
+    // Client-side validation
+    if (!form.username.trim()) return setError('Username is required.');
+    if (form.username.trim().length < 3) return setError('Username must be at least 3 characters.');
+    if (!form.email.trim()) return setError('Email is required.');
+    if (!form.password) return setError('Password is required.');
+    if (form.password.length < 6) return setError('Password must be at least 6 characters.');
+    if (form.password !== form.confirmPassword) return setError('Passwords do not match!');
+
     setLoading(true);
     try {
-      await register(form.username, form.email, form.password);
-      navigate('/dashboard');
+      const result = await register(form.username.trim(), form.email.trim(), form.password);
+      if (result.success) {
+        navigate('/dashboard', { replace: true });
+      } else {
+        setError(result.error || 'Registration failed.');
+      }
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed.');
     } finally {

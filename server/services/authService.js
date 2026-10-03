@@ -10,6 +10,13 @@ import memoryStore from '../utils/memoryStore.js';
 
 const isMongoConnected = () => mongoose.connection.readyState === 1;
 
+// XP needed to reach the next level from current XP
+const calcXpToNext = (xp = 0) => {
+  const level = Math.floor(Math.sqrt(xp / 100)) + 1;
+  const nextLevelXp = Math.pow(level, 2) * 100;
+  return Math.max(0, nextLevelXp - xp);
+};
+
 export const generateToken = (userId, role) => {
   return jwt.sign({ id: userId, role }, config.jwtSecret, {
     expiresIn: config.jwtExpiresIn
@@ -99,8 +106,14 @@ export const register = async ({ username, email, password }) => {
       const token = generateToken(user._id, user.role);
       return { token, user: sanitizeUser(user) };
     } catch (err) {
+      // Re-throw user-facing errors immediately — do NOT fall to memoryStore
       if (err.message === 'Email is already registered' || err.message === 'Username is already taken') {
         throw err;
+      }
+      // Also re-throw Mongoose duplicate-key as a readable error
+      if (err.code === 11000) {
+        const field = Object.keys(err.keyValue || {})[0] || 'field';
+        throw new Error(`${field === 'email' ? 'Email' : 'Username'} is already registered`);
       }
       console.warn('MongoDB register query failed, falling back to memoryStore:', err.message);
     }
@@ -122,11 +135,13 @@ export const register = async ({ username, email, password }) => {
     role: 'user',
     xp: 0,
     level: 1,
+    coins: 0,
     cyberScore: 0,
     trustScore: 100,
     lives: 5,
     badges: [],
     completedRooms: [],
+    roomStars: {},
     skillProfile: { phishing: 0, passwords: 0, qrSafety: 0, scamDetection: 0, socialEngineering: 0, aiThreats: 0, digitalPrivacy: 0 },
     firstAttemptScore: 0,
     currentScore: 0,
@@ -152,8 +167,13 @@ export const login = async ({ email, password }) => {
           const token = generateToken(user._id, user.role);
           return { token, user: sanitizeUser(user) };
         }
+        // Password is wrong for a KNOWN user — throw immediately, don't fall to memoryStore
+        throw new Error('Invalid email or password');
       }
+      // User not found in MongoDB — fall through to check memoryStore
     } catch (err) {
+      if (err.message === 'Invalid email or password') throw err;
+      // Network/DB error — fall through to memoryStore as fallback
       console.warn('MongoDB login query failed, falling back to memoryStore:', err.message);
     }
   }
@@ -171,47 +191,66 @@ export const login = async ({ email, password }) => {
         const token = generateToken(u._id, u.role);
         return { token, user: sanitizeUser(u) };
       }
+      // Found the user but password doesn't match
+      throw new Error('Invalid email or password');
     }
   }
 
   throw new Error('Invalid email or password');
 };
 
+// Returns null if user not found — never throws — so middleware can handle 401 cleanly
 export const getCurrentUser = async (userId) => {
   if (isMongoConnected()) {
     try {
       const user = await User.findById(userId).populate('badges.badgeId');
       if (user) return sanitizeUser(user);
     } catch (err) {
-      console.warn('MongoDB getCurrentUser query failed, checking memoryStore:', err.message);
+      // CastError = bad ObjectId format (e.g. mem-user- prefix), fall to memoryStore
+      if (err.name !== 'CastError') {
+        console.warn('MongoDB getCurrentUser query failed, checking memoryStore:', err.message);
+      }
     }
   }
 
   const memUser = memoryStore.users.get(String(userId));
   if (memUser) return sanitizeUser(memUser);
 
-  throw new Error('User not found');
+  return null; // ← return null instead of throwing so middleware sends clean 401
 };
 
 export const sanitizeUser = (user) => {
+  const xp = user.xp || 0;
+  const level = user.level || Math.floor(Math.sqrt(xp / 100)) + 1;
+  const xpToNext = calcXpToNext(xp);
+
+  // roomStars: Mongoose Maps come back as a Map object; convert to plain object
+  let roomStars = user.roomStars || {};
+  if (roomStars instanceof Map) {
+    roomStars = Object.fromEntries(roomStars);
+  }
+
   return {
     id: user._id || user.id,
     username: user.username,
     email: user.email,
     role: user.role || 'user',
-    xp: user.xp || 0,
-    level: user.level || 1,
-    coins: user.coins || 0,          // ← was missing, always showed 0
+    xp,
+    level,
+    xpToNext,
+    coins: user.coins || 0,
     cyberScore: user.cyberScore || 0,
-    trustScore: user.trustScore || 100,
-    lives: user.lives ?? 5,
+    trustScore: user.trustScore !== undefined ? user.trustScore : 100,
+    lives: user.lives !== undefined ? user.lives : 5,
     badges: user.badges || [],
     completedRooms: user.completedRooms || [],
-    roomStars: user.roomStars || {},   // per-room star ratings
+    roomStars,
     skillProfile: user.skillProfile || {},
     firstAttemptScore: user.firstAttemptScore || 0,
     currentScore: user.currentScore || user.cyberScore || 0,
-    improvementPct: (user.firstAttemptScore || 0) > 0 ? Math.round((((user.currentScore || user.cyberScore || 0) - user.firstAttemptScore) / user.firstAttemptScore) * 100) : 0,
+    improvementPct: (user.firstAttemptScore || 0) > 0
+      ? Math.round((((user.currentScore || user.cyberScore || 0) - user.firstAttemptScore) / user.firstAttemptScore) * 100)
+      : 0,
     gamesPlayed: user.gamesPlayed || 0,
     totalChallengesAttempted: user.totalChallengesAttempted || 0,
     totalCorrect: user.totalCorrect || 0
